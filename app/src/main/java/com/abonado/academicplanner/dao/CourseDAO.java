@@ -1,5 +1,6 @@
 package com.abonado.academicplanner.dao;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -11,6 +12,7 @@ import com.abonado.academicplanner.entities.Course;
 
 import java.util.List;
 
+@Dao
 public interface CourseDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -28,7 +30,7 @@ public interface CourseDAO {
     @Query("SELECT * FROM course ORDER BY courseId ASC")
     List<Course> getAllCourses();
 
-    @Query("SELECT * FROM assessment WHERE assessmentId=:asmtId ORDER BY assessmentId ASC ")
-    List<Assessment> getAssociatedAssessments(int asmtId);
+    @Query("SELECT * FROM assessment WHERE asmntCourseId=:crsId ORDER BY assessmentId ASC ")
+    List<Assessment> getAssociatedAssessments(int crsId);
 
 }

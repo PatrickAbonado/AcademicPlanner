@@ -18,7 +18,7 @@ public class Course {
     private String courseTitle;
     private Timestamp courseStart;
     private Timestamp courseEnd;
-    private String courseStatus;
+    private boolean isPerformance;
     private Instructor courseInstructor;
     private String courseNotes;
     private List<Assessment> courseAssessments;
@@ -26,13 +26,13 @@ public class Course {
     private int courseInstrId;
 
     public Course(int courseId, String courseTitle, Timestamp courseStart, Timestamp courseEnd,
-                  String courseStatus, Instructor courseInstructor, String courseNotes,
+                  boolean isPerformance, Instructor courseInstructor, String courseNotes,
                   List<Assessment> courseAssessments, int courseTermId, int courseInstrId) {
         this.courseId = courseId;
         this.courseTitle = courseTitle;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
-        this.courseStatus = courseStatus;
+        this.isPerformance = isPerformance;
         this.courseInstructor = courseInstructor;
         this.courseNotes = courseNotes;
         this.courseAssessments = courseAssessments;
@@ -73,12 +73,12 @@ public class Course {
         this.courseEnd = courseEnd;
     }
 
-    public String getCourseStatus() {
-        return courseStatus;
+    public boolean getIsPerformance() {
+        return isPerformance;
     }
 
-    public void setCourseStatus(String courseStatus) {
-        this.courseStatus = courseStatus;
+    public void setCourseStatus(boolean isPerformance) {
+        this.isPerformance = isPerformance;
     }
 
     public Instructor getCourseInstructor() {

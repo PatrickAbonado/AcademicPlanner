@@ -28,4 +28,6 @@ public interface AssessmentDAO {
 
     @Query("SELECT * FROM assessment WHERE assessmentId=:asmntId ORDER BY assessmentId ASC ")
     Assessment getAssessment(int asmntId);
+
+
 }
