@@ -1,14 +1,18 @@
 package com.abonado.academicplanner.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity
+@Entity(foreignKeys =  {
+        @ForeignKey(entity = Term.class, parentColumns = "termId",
+                childColumns = "courseTermId", onDelete = ForeignKey.RESTRICT),
+        @ForeignKey(entity = Instructor.class, parentColumns = "instructorId",
+                childColumns = "courseInstrId", onDelete = ForeignKey.RESTRICT)})
 public class Course {
-
     @PrimaryKey(autoGenerate = true)
     private int courseId;
     private String courseTitle;
@@ -18,8 +22,12 @@ public class Course {
     private Instructor courseInstructor;
     private String courseNotes;
     private List<Assessment> courseAssessments;
+    private int courseTermId;
+    private int courseInstrId;
 
-    public Course(int courseId, String courseTitle, Timestamp courseStart, Timestamp courseEnd, String courseStatus, Instructor courseInstructor, String courseNotes, List<Assessment> courseAssessments) {
+    public Course(int courseId, String courseTitle, Timestamp courseStart, Timestamp courseEnd,
+                  String courseStatus, Instructor courseInstructor, String courseNotes,
+                  List<Assessment> courseAssessments, int courseTermId, int courseInstrId) {
         this.courseId = courseId;
         this.courseTitle = courseTitle;
         this.courseStart = courseStart;
@@ -28,7 +36,10 @@ public class Course {
         this.courseInstructor = courseInstructor;
         this.courseNotes = courseNotes;
         this.courseAssessments = courseAssessments;
+        this.courseTermId = courseTermId;
+        this.courseInstrId = courseInstrId;
     }
+
 
     public int getCourseId() {
         return courseId;
@@ -92,5 +103,21 @@ public class Course {
 
     public void setCourseAssessments(List<Assessment> courseAssessments) {
         this.courseAssessments = courseAssessments;
+    }
+
+    public int getCourseTermId() {
+        return courseTermId;
+    }
+
+    public void setCourseTermId(int courseTermId) {
+        this.courseTermId = courseTermId;
+    }
+
+    public int getCourseInstrId() {
+        return courseInstrId;
+    }
+
+    public void setCourseInstrId(int courseInstrId) {
+        this.courseInstrId = courseInstrId;
     }
 }

@@ -14,8 +14,10 @@ public class Term {
     private String termName;
     private Timestamp termStart;
     private Timestamp termEnd;
+    private List<Course> termCourses;
 
-    public Term(int termId, String termName, Timestamp termStart, Timestamp termEnd, List<Course> termCourses) {
+    public Term(int termId, String termName, Timestamp termStart,
+                Timestamp termEnd, List<Course> termCourses) {
         this.termId = termId;
         this.termName = termName;
         this.termStart = termStart;
@@ -63,5 +65,5 @@ public class Term {
         this.termCourses = termCourses;
     }
 
-    private List<Course> termCourses;
+
 }

@@ -1,15 +1,17 @@
 package com.abonado.academicplanner.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.sql.Timestamp;
 
-@Entity
+@Entity(foreignKeys =  @ForeignKey(entity = Course.class, parentColumns = "courseId",
+        childColumns = "asmntCourseId", onDelete = ForeignKey.RESTRICT))
 public class Assessment {
-
-    public Assessment(int assessmentId, String assessmentTitle, String assessmentType, Timestamp assessmentStart, Timestamp assessmentEnd) {
+    public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle, String assessmentType, Timestamp assessmentStart, Timestamp assessmentEnd) {
         this.assessmentId = assessmentId;
+        this.asmntCourseId = asmntCourseId;
         this.assessmentTitle = assessmentTitle;
         this.assessmentType = assessmentType;
         this.assessmentStart = assessmentStart;
@@ -58,8 +60,18 @@ public class Assessment {
 
     @PrimaryKey(autoGenerate = true)
     private int assessmentId;
+    private int asmntCourseId;
     private String assessmentTitle;
     private String assessmentType;
     private Timestamp assessmentStart;
     private Timestamp assessmentEnd;
+
+
+    public int getAsmntCourseId() {
+        return asmntCourseId;
+    }
+
+    public void setAsmntCourseId(int asmntCourseId) {
+        this.asmntCourseId = asmntCourseId;
+    }
 }
