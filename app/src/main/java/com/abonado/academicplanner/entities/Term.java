@@ -65,5 +65,4 @@ public class Term {
         this.termCourses = termCourses;
     }
 
-
 }
