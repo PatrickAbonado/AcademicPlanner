@@ -31,6 +31,6 @@ public interface CourseDAO {
     List<Course> getAllCourses();
 
     @Query("SELECT * FROM assessment WHERE asmntCourseId=:crsId ORDER BY assessmentId ASC ")
-    List<Assessment> getAssociatedAssessments(int crsId);
+    List<Assessment> getCrsAstdAsmnts(int crsId);
 
 }

@@ -9,6 +9,15 @@ import java.sql.Timestamp;
 @Entity(foreignKeys =  @ForeignKey(entity = Course.class, parentColumns = "courseId",
         childColumns = "asmntCourseId", onDelete = ForeignKey.RESTRICT))
 public class Assessment {
+
+    @PrimaryKey(autoGenerate = true)
+    private int assessmentId;
+    private int asmntCourseId;
+    private String assessmentTitle;
+    private String assessmentType;
+    private Timestamp assessmentStart;
+    private Timestamp assessmentEnd;
+
     public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle, String assessmentType, Timestamp assessmentStart, Timestamp assessmentEnd) {
         this.assessmentId = assessmentId;
         this.asmntCourseId = asmntCourseId;
@@ -57,15 +66,6 @@ public class Assessment {
     public void setAssessmentEnd(Timestamp assessmentEnd) {
         this.assessmentEnd = assessmentEnd;
     }
-
-    @PrimaryKey(autoGenerate = true)
-    private int assessmentId;
-    private int asmntCourseId;
-    private String assessmentTitle;
-    private String assessmentType;
-    private Timestamp assessmentStart;
-    private Timestamp assessmentEnd;
-
 
     public int getAsmntCourseId() {
         return asmntCourseId;

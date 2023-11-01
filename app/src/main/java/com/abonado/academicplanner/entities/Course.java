@@ -25,6 +25,7 @@ public class Course {
     private int courseTermId;
     private int courseInstrId;
 
+
     public Course(int courseId, String courseTitle, Timestamp courseStart, Timestamp courseEnd,
                   boolean isPerformance, Instructor courseInstructor, String courseNotes,
                   List<Assessment> courseAssessments, int courseTermId, int courseInstrId) {
