@@ -12,12 +12,12 @@ public class Term {
     @PrimaryKey(autoGenerate = true)
     private int termId;
     private String termName;
-    private Timestamp termStart;
-    private Timestamp termEnd;
+    private String termStart;
+    private String termEnd;
     private List<Course> termCourses;
 
-    public Term(int termId, String termName, Timestamp termStart,
-                Timestamp termEnd, List<Course> termCourses) {
+    public Term(int termId, String termName, String termStart,
+                String termEnd, List<Course> termCourses) {
         this.termId = termId;
         this.termName = termName;
         this.termStart = termStart;
@@ -41,19 +41,19 @@ public class Term {
         this.termName = termName;
     }
 
-    public Timestamp getTermStart() {
+    public String getTermStart() {
         return termStart;
     }
 
-    public void setTermStart(Timestamp termStart) {
+    public void setTermStart(String termStart) {
         this.termStart = termStart;
     }
 
-    public Timestamp getTermEnd() {
+    public String getTermEnd() {
         return termEnd;
     }
 
-    public void setTermEnd(Timestamp termEnd) {
+    public void setTermEnd(String termEnd) {
         this.termEnd = termEnd;
     }
 

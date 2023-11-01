@@ -15,10 +15,10 @@ public class Assessment {
     private int asmntCourseId;
     private String assessmentTitle;
     private String assessmentType;
-    private Timestamp assessmentStart;
-    private Timestamp assessmentEnd;
+    private String assessmentStart;
+    private String assessmentEnd;
 
-    public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle, String assessmentType, Timestamp assessmentStart, Timestamp assessmentEnd) {
+    public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle, String assessmentType, String assessmentStart, String assessmentEnd) {
         this.assessmentId = assessmentId;
         this.asmntCourseId = asmntCourseId;
         this.assessmentTitle = assessmentTitle;
@@ -51,19 +51,19 @@ public class Assessment {
         this.assessmentType = assessmentType;
     }
 
-    public Timestamp getAssessmentStart() {
+    public String getAssessmentStart() {
         return assessmentStart;
     }
 
-    public void setAssessmentStart(Timestamp assessmentStart) {
+    public void setAssessmentStart(String assessmentStart) {
         this.assessmentStart = assessmentStart;
     }
 
-    public Timestamp getAssessmentEnd() {
+    public String getAssessmentEnd() {
         return assessmentEnd;
     }
 
-    public void setAssessmentEnd(Timestamp assessmentEnd) {
+    public void setAssessmentEnd(String assessmentEnd) {
         this.assessmentEnd = assessmentEnd;
     }
 

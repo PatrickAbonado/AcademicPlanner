@@ -26,7 +26,7 @@ public interface TermDAO {
     void delete(Term term);
 
     @Query("SELECT * FROM term WHERE termId=:trmId ORDER BY termId ASC ")
-    Term getTerms(int trmId);
+    Term getTerm(int trmId);
 
     @Query("SELECT * FROM term ORDER BY termId ASC")
     List<Term> getAllTerms();

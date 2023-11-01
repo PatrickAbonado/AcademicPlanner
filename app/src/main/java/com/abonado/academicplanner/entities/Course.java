@@ -16,8 +16,8 @@ public class Course {
     @PrimaryKey(autoGenerate = true)
     private int courseId;
     private String courseTitle;
-    private Timestamp courseStart;
-    private Timestamp courseEnd;
+    private String courseStart;
+    private String courseEnd;
     private boolean isPerformance;
     private Instructor courseInstructor;
     private String courseNotes;
@@ -26,7 +26,7 @@ public class Course {
     private int courseInstrId;
 
 
-    public Course(int courseId, String courseTitle, Timestamp courseStart, Timestamp courseEnd,
+    public Course(int courseId, String courseTitle, String courseStart, String courseEnd,
                   boolean isPerformance, Instructor courseInstructor, String courseNotes,
                   List<Assessment> courseAssessments, int courseTermId, int courseInstrId) {
         this.courseId = courseId;
@@ -58,19 +58,19 @@ public class Course {
         this.courseTitle = courseTitle;
     }
 
-    public Timestamp getCourseStart() {
+    public String getCourseStart() {
         return courseStart;
     }
 
-    public void setCourseStart(Timestamp courseStart) {
+    public void setCourseStart(String courseStart) {
         this.courseStart = courseStart;
     }
 
-    public Timestamp getCourseEnd() {
+    public String getCourseEnd() {
         return courseEnd;
     }
 
-    public void setCourseEnd(Timestamp courseEnd) {
+    public void setCourseEnd(String courseEnd) {
         this.courseEnd = courseEnd;
     }
 
