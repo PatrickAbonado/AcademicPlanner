@@ -1,6 +1,5 @@
 package com.abonado.academicplanner.database;
 
-
 import android.content.Context;
 
 import androidx.room.Database;
@@ -22,7 +21,6 @@ public abstract class AcademicDatabaseBuilder extends RoomDatabase {
     public abstract TermDAO termDAO();
 
     private static volatile AcademicDatabaseBuilder INSTANCE;
-
 
     static AcademicDatabaseBuilder getDatabase(final Context context){
         if (INSTANCE==null){
