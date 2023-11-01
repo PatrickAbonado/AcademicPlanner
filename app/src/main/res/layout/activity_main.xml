@@ -7,45 +7,59 @@
     tools:context=".UI.MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Academic Planner"
+        android:text="@string/academic_planner"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="70dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/termHomeButton"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Terms"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="171dp" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/coursesHomeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Courses"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="260dp" />
+        <Button
+            android:id="@+id/termHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/terms" />
 
-    <Button
-        android:id="@+id/assessmentHomeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Assessments"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="332dp" />
+        <Button
+            android:id="@+id/coursesHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/courses" />
 
-    <Button
-        android:id="@+id/exitHomeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exit"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="406dp" />
+        <Button
+            android:id="@+id/assessmentHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/assessments"
+            app:layout_constraintBottom_toTopOf="@+id/exitHomeButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coursesHomeButton" />
+
+        <Button
+            android:id="@+id/exitHomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

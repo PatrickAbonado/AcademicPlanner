@@ -87,9 +87,9 @@ public class CourseRepository {
         }
     }
 
-    public List<Assessment>getCrsAsscAsmnts(int courseId){
+    public List<Assessment>getCrsAsmnts(int courseId){
         databaseExecutor.execute(()->{
-            mAllAsscAsmnts = mCourseDAO.getCrsAstdAsmnts(courseId);
+            mAllAsscAsmnts = mCourseDAO.getAsmntByCrsId(courseId);
         });
 
         try {

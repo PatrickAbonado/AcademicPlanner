@@ -3,7 +3,6 @@ package com.abonado.academicplanner.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -14,15 +13,14 @@ public class Term {
     private String termName;
     private String termStart;
     private String termEnd;
-    private List<Course> termCourses;
+
 
     public Term(int termId, String termName, String termStart,
-                String termEnd, List<Course> termCourses) {
+                String termEnd) {
         this.termId = termId;
         this.termName = termName;
         this.termStart = termStart;
         this.termEnd = termEnd;
-        this.termCourses = termCourses;
     }
 
     public int getTermId() {
@@ -57,12 +55,5 @@ public class Term {
         this.termEnd = termEnd;
     }
 
-    public List<Course> getTermCourses() {
-        return termCourses;
-    }
-
-    public void setTermCourses(List<Course> termCourses) {
-        this.termCourses = termCourses;
-    }
 
 }

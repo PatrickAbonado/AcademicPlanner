@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey;
 
 import java.sql.Timestamp;
 
-@Entity(foreignKeys =  @ForeignKey(entity = Course.class, parentColumns = "courseId",
-        childColumns = "asmntCourseId", onDelete = ForeignKey.RESTRICT))
+@Entity()
 public class Assessment {
 
     @PrimaryKey(autoGenerate = true)
@@ -18,7 +17,8 @@ public class Assessment {
     private String assessmentStart;
     private String assessmentEnd;
 
-    public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle, String assessmentType, String assessmentStart, String assessmentEnd) {
+    public Assessment(int assessmentId, int asmntCourseId, String assessmentTitle,
+                      String assessmentType, String assessmentStart, String assessmentEnd) {
         this.assessmentId = assessmentId;
         this.asmntCourseId = asmntCourseId;
         this.assessmentTitle = assessmentTitle;

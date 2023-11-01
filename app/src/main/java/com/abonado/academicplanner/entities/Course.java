@@ -4,43 +4,39 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import java.sql.Timestamp;
-import java.util.List;
 
-@Entity(foreignKeys =  {
-        @ForeignKey(entity = Term.class, parentColumns = "termId",
-                childColumns = "courseTermId", onDelete = ForeignKey.RESTRICT),
-        @ForeignKey(entity = Instructor.class, parentColumns = "instructorId",
-                childColumns = "courseInstrId", onDelete = ForeignKey.RESTRICT)})
+@Entity(foreignKeys = @ForeignKey(entity = Term.class, parentColumns = "termId",
+                childColumns = "courseTermId", onDelete = ForeignKey.RESTRICT))
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int courseId;
+    private int courseTermId;
     private String courseTitle;
     private String courseStart;
     private String courseEnd;
-    private boolean isPerformance;
-    private Instructor courseInstructor;
-    private String courseNotes;
-    private List<Assessment> courseAssessments;
-    private int courseTermId;
+    private String courseStatus;
     private int courseInstrId;
+    private String courseNotes;
+    private String courseInstrName;
+    private String courseInstrPhone;
+    private String courseInstrEmail;
 
 
-    public Course(int courseId, String courseTitle, String courseStart, String courseEnd,
-                  boolean isPerformance, Instructor courseInstructor, String courseNotes,
-                  List<Assessment> courseAssessments, int courseTermId, int courseInstrId) {
+    public Course(int courseId, int courseTermId, String courseTitle, String courseStart,
+                  String courseEnd, String courseStatus, int courseInstrId, String courseNotes,
+                  String courseInstrName, String courseInstrPhone, String courseInstrEmail) {
         this.courseId = courseId;
+        this.courseTermId = courseTermId;
         this.courseTitle = courseTitle;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
-        this.isPerformance = isPerformance;
-        this.courseInstructor = courseInstructor;
-        this.courseNotes = courseNotes;
-        this.courseAssessments = courseAssessments;
-        this.courseTermId = courseTermId;
+        this.courseStatus = courseStatus;
         this.courseInstrId = courseInstrId;
+        this.courseNotes = courseNotes;
+        this.courseInstrName = courseInstrName;
+        this.courseInstrPhone = courseInstrPhone;
+        this.courseInstrEmail = courseInstrEmail;
     }
-
 
     public int getCourseId() {
         return courseId;
@@ -48,6 +44,14 @@ public class Course {
 
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+
+    public int getCourseTermId() {
+        return courseTermId;
+    }
+
+    public void setCourseTermId(int courseTermId) {
+        this.courseTermId = courseTermId;
     }
 
     public String getCourseTitle() {
@@ -74,20 +78,20 @@ public class Course {
         this.courseEnd = courseEnd;
     }
 
-    public boolean getIsPerformance() {
-        return isPerformance;
+    public String getCourseStatus() {
+        return courseStatus;
     }
 
-    public void setCourseStatus(boolean isPerformance) {
-        this.isPerformance = isPerformance;
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
     }
 
-    public Instructor getCourseInstructor() {
-        return courseInstructor;
+    public int getCourseInstrId() {
+        return courseInstrId;
     }
 
-    public void setCourseInstructor(Instructor courseInstructor) {
-        this.courseInstructor = courseInstructor;
+    public void setCourseInstrId(int courseInstrId) {
+        this.courseInstrId = courseInstrId;
     }
 
     public String getCourseNotes() {
@@ -98,27 +102,27 @@ public class Course {
         this.courseNotes = courseNotes;
     }
 
-    public List<Assessment> getCourseAssessments() {
-        return courseAssessments;
+    public String getCourseInstrName() {
+        return courseInstrName;
     }
 
-    public void setCourseAssessments(List<Assessment> courseAssessments) {
-        this.courseAssessments = courseAssessments;
+    public void setCourseInstrName(String courseInstrName) {
+        this.courseInstrName = courseInstrName;
     }
 
-    public int getCourseTermId() {
-        return courseTermId;
+    public String getCourseInstrPhone() {
+        return courseInstrPhone;
     }
 
-    public void setCourseTermId(int courseTermId) {
-        this.courseTermId = courseTermId;
+    public void setCourseInstrPhone(String courseInstrPhone) {
+        this.courseInstrPhone = courseInstrPhone;
     }
 
-    public int getCourseInstrId() {
-        return courseInstrId;
+    public String getCourseInstrEmail() {
+        return courseInstrEmail;
     }
 
-    public void setCourseInstrId(int courseInstrId) {
-        this.courseInstrId = courseInstrId;
+    public void setCourseInstrEmail(String courseInstrEmail) {
+        this.courseInstrEmail = courseInstrEmail;
     }
 }

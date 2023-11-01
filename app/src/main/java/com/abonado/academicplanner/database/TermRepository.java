@@ -90,9 +90,9 @@ public class TermRepository {
         }
     }
 
-    public List<Course>getTrmAscCrs(int termId){
+    public List<Course>getTermCourses(int termId){
         databaseExecutor.execute(()->{
-            mAllAsscCourses = mTermDAO.getTrmAscCrs(termId);
+            mAllAsscCourses = mTermDAO.getTermCourses(termId);
         });
 
         try {
