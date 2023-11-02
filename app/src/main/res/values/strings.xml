@@ -5,4 +5,5 @@
     <string name="courses">Courses</string>
     <string name="assessments">Assessments</string>
     <string name="exit">Exit</string>
+    <string name="assessment">+ASSESSMENT</string>
 </resources>

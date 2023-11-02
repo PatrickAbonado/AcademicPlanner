@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish(); // Exit the application
+                finishAffinity(); // Exit the application
             }
         });
     }
