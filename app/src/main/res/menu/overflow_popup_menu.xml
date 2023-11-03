@@ -3,18 +3,18 @@
 
     <item
         android:id="@+id/homeMenuPop"
-        android:title="HOME" />
+        android:title="@string/home" />
     <item
         android:id="@+id/termLstMenuPop"
-        android:title="TERMS" />
+        android:title="@string/termsOverMenuOpt" />
     <item
         android:id="@+id/courseLstMenuPop"
-        android:title="COURSES" />
+        android:title="@string/coursesOvrMenuOpt" />
     <item
         android:id="@+id/asmntLstMenuPop"
-        android:title="ASSESSMENTS" />
+        android:title="@string/assessmentsOvrMenuOpt" />
     <item
         android:id="@+id/exitMenuPop"
-        android:title="EXIT" />
+        android:title="@string/exitOvrMenuOpt" />
 
 </menu>

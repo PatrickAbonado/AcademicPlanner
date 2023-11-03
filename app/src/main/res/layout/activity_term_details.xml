@@ -42,21 +42,14 @@
 
 
 
-        <Button
-            android:id="@+id/addCoursesTrmDtls"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="+COURSES"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+
 
         <Button
             android:id="@+id/saveAsmntCourseDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:textSize="18sp"
             android:text="SAVE"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

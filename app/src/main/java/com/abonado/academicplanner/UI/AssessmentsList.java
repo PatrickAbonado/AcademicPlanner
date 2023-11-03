@@ -30,7 +30,7 @@ public class AssessmentsList extends AppCompatActivity {
 
 
 
-        Button addAsmntsBut = findViewById(R.id.addAssmntBut);
+        Button addAsmntsBut = findViewById(R.id.addAssmntButAsmntList);
         addAsmntsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

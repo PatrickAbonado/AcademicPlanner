@@ -28,14 +28,6 @@ public class CourseDetails extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Button addAsmntsBut = findViewById(R.id.addAsmntCourseDetails);
-        addAsmntsBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CourseDetails.this, AssessmentsList.class);
-                startActivity(intent);
-            }
-        });
 
 
     }

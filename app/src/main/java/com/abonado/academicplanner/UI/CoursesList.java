@@ -30,11 +30,19 @@ public class CoursesList extends AppCompatActivity {
 
 
         Button addCourse = findViewById(R.id.addCoursesBut);
-
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CoursesList.this, CourseDetails.class);
+                startActivity(intent);
+            }
+        });
+
+        Button addAssessments = findViewById(R.id.addAsmntCrsList);
+        addAssessments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CoursesList.this, AssessmentDetails.class);
                 startActivity(intent);
             }
         });

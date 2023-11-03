@@ -29,20 +29,6 @@ public class TermDetails extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
-
-
-        Button addCoursesBut = findViewById(R.id.addCoursesTrmDtls);
-        addCoursesBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TermDetails.this, CoursesList.class);
-                startActivity(intent);
-            }
-        });
-
-
-
     }
 
     @Override

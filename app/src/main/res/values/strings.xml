@@ -1,9 +1,20 @@
 <resources>
     <string name="app_name">AcademicPlanner</string>
     <string name="academic_planner">Academic Planner</string>
-    <string name="terms">Terms</string>
-    <string name="courses">Courses</string>
-    <string name="assessments">Assessments</string>
-    <string name="exit">Exit</string>
+    <string name="terms">TERMS</string>
+    <string name="courses">COURSES</string>
+    <string name="assessments">ASSESSMENTS</string>
+    <string name="exit">EXIT</string>
     <string name="assessment">+ASSESSMENT</string>
+    <string name="home">HOME</string>
+    <string name="termsOverMenuOpt">ALL TERMS</string>
+    <string name="coursesOvrMenuOpt">ALL COURSES</string>
+    <string name="assessmentsOvrMenuOpt">ALL ASSESSMENTS</string>
+    <string name="exitOvrMenuOpt">EXIT</string>
+    <string name="addCoursesTrmDtls">+COURSES</string>
+    <string name="addCoursesTermList">+COURSE</string>
+    <string name="addTermsTermsList">+TERM</string>
+    <string name="saveButCourseDtls">SAVE</string>
+    <string name="share_noteButCrsDtls">SHARE NOTE</string>
+    <string name="addAssessmentAsmntLst">+ASSESSMENT</string>
 </resources>

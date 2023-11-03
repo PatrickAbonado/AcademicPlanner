@@ -43,10 +43,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/addAssmntBut"
+        android:id="@+id/addAssmntButAsmntList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+Assessment"
+        android:text="@string/addAssessmentAsmntLst"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

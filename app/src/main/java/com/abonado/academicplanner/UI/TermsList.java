@@ -38,6 +38,15 @@ public class TermsList extends AppCompatActivity {
             }
         });
 
+        Button addCourses = findViewById(R.id.addCoursesTrmDtls);
+        addCourses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TermsList.this, CourseDetails.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
