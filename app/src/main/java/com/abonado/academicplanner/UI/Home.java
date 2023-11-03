@@ -13,14 +13,15 @@ import android.widget.Button;
 
 import com.abonado.academicplanner.R;
 
-public class CourseDetails extends AppCompatActivity {
+public class Home extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_details);
+        setContentView(R.layout.activity_home);
 
-        Toolbar myToolbar = findViewById(R.id.course_details_toolbar);
+
+        Toolbar myToolbar = findViewById(R.id.home_list_toolbar);
         setSupportActionBar(myToolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -28,16 +29,47 @@ public class CourseDetails extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Button addAsmntsBut = findViewById(R.id.addAsmntCourseDetails);
-        addAsmntsBut.setOnClickListener(new View.OnClickListener() {
+
+
+        Button terms = findViewById(R.id.termHomeButton);
+        terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CourseDetails.this, AssessmentsList.class);
+                Intent intent = new Intent(Home.this, TermsList.class);
                 startActivity(intent);
             }
         });
 
 
+        Button courses = findViewById(R.id.coursesHomeButton);
+
+        courses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, CoursesList.class);
+                startActivity(intent);
+            }
+        });
+
+        Button assessments = findViewById(R.id.assessmentHomeButton);
+
+        assessments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, AssessmentsList.class);
+                startActivity(intent);
+            }
+        });
+
+
+        Button exit = findViewById(R.id.exitHomeButton);
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishAffinity(); // Exit the application
+            }
+        });
     }
 
     @Override
@@ -92,6 +124,4 @@ public class CourseDetails extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

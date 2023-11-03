@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeMenuPop"
+        android:title="HOME" />
+    <item
+        android:id="@+id/termLstMenuPop"
+        android:title="TERMS" />
+    <item
+        android:id="@+id/courseLstMenuPop"
+        android:title="COURSES" />
+    <item
+        android:id="@+id/asmntLstMenuPop"
+        android:title="ASSESSMENTS" />
+    <item
+        android:id="@+id/exitMenuPop"
+        android:title="EXIT" />
+
+</menu>

@@ -40,7 +40,7 @@
             android:label= "Terms List"
             android:exported="false" />
         <activity
-            android:name=".UI.MainActivity"
+            android:name=".UI.Home"
             android:label= "Home"
             android:exported="true">
             <intent-filter>
