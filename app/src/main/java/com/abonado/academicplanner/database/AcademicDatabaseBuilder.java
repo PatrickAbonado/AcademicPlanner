@@ -13,7 +13,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 
-@Database(entities = {Assessment.class, Course.class, Term.class}, version = 1, exportSchema = false)
+@Database(entities = {Assessment.class, Course.class, Term.class}, version = 3, exportSchema = false)
 public abstract class AcademicDatabaseBuilder extends RoomDatabase {
 
     public abstract AssessmentDAO assessmentDAO();

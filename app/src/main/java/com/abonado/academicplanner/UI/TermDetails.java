@@ -119,7 +119,7 @@ public class TermDetails extends AppCompatActivity {
                         if(editName.getText().toString().equals(term.getTermName())){
                             termRepository.delete(term);
                             Toast.makeText(getApplicationContext(), "ID: " + termToDelete.getTermId()
-                                            + " Name: " + termToDelete.getTermName() + " was deleted",
+                                            + "-- Name: " + termToDelete.getTermName() + " was deleted",
                                     Toast.LENGTH_SHORT).show();
 
                             HelperToTerm.termToUpdate = null;
@@ -134,10 +134,6 @@ public class TermDetails extends AppCompatActivity {
                         }
                     }
                 }
-
-
-
-
 
             }
         });

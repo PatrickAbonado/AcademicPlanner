@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">AcademicPlanner</string>
     <string name="academic_planner">Academic Planner</string>
     <string name="terms">TERMS</string>
@@ -17,4 +18,13 @@
     <string name="saveButCourseDtls">SAVE</string>
     <string name="share_noteButCrsDtls">SHARE NOTE</string>
     <string name="addAssessmentAsmntLst">+ASSESSMENT</string>
+
+    <string-array name="courseStatusSpinner">
+        <item>Status Not Selected</item>
+        <item>In Progress</item>
+        <item>Completed</item>
+        <item>Dropped</item>
+        <item>Plan To Take</item>
+    </string-array>
+
 </resources>

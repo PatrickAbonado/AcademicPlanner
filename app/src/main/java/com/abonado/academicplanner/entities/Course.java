@@ -15,23 +15,21 @@ public class Course {
     private String courseStart;
     private String courseEnd;
     private String courseStatus;
-    private int courseInstrId;
     private String courseNotes;
     private String courseInstrName;
     private String courseInstrPhone;
     private String courseInstrEmail;
 
 
-    public Course(int courseId, int courseTermId, String courseTitle, String courseStart,
-                  String courseEnd, String courseStatus, int courseInstrId, String courseNotes,
+    public Course( int courseTermId, String courseTitle, String courseStart,
+                  String courseEnd, String courseStatus, String courseNotes,
                   String courseInstrName, String courseInstrPhone, String courseInstrEmail) {
-        this.courseId = courseId;
+
         this.courseTermId = courseTermId;
         this.courseTitle = courseTitle;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
         this.courseStatus = courseStatus;
-        this.courseInstrId = courseInstrId;
         this.courseNotes = courseNotes;
         this.courseInstrName = courseInstrName;
         this.courseInstrPhone = courseInstrPhone;
@@ -84,14 +82,6 @@ public class Course {
 
     public void setCourseStatus(String courseStatus) {
         this.courseStatus = courseStatus;
-    }
-
-    public int getCourseInstrId() {
-        return courseInstrId;
-    }
-
-    public void setCourseInstrId(int courseInstrId) {
-        this.courseInstrId = courseInstrId;
     }
 
     public String getCourseNotes() {

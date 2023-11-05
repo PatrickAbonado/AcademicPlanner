@@ -32,8 +32,6 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     public class TermViewHolder extends RecyclerView.ViewHolder {
-
-        private final RecyclerView termItemView;
         TextView termId;
         TextView termName;
         TextView termStart;
@@ -43,7 +41,6 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
             super(itemView);
 
-            termItemView = itemView.findViewById(R.id.trmsLstRcyle);
             termId = itemView.findViewById(R.id.trmsLstRcylTrmId);
             termName = itemView.findViewById(R.id.trmsLstRcylTrmNm);
             termStart = itemView.findViewById(R.id.trmsLstRcylTrmStrt);
