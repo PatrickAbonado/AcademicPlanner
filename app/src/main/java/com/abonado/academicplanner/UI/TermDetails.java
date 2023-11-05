@@ -17,8 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abonado.academicplanner.R;
+import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.database.TermRepository;
+import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
+import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToTerm;
 import com.abonado.academicplanner.utilities.TermAdapter;
 
@@ -35,6 +38,7 @@ public class TermDetails extends AppCompatActivity {
     String termStart;
     String termEnd;
     TermRepository termRepository;
+    CourseRepository courseRepository;
     Term currentTerm;
     int numTerms;
 
@@ -45,13 +49,25 @@ public class TermDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_details);
 
-        RecyclerView recyclerView = findViewById(R.id.trmsLstRcyle);
-        termRepository = new TermRepository(getApplication());
-        List<Term> allTerms = termRepository.getAllTerms();
-        final TermAdapter termAdapter = new TermAdapter(this);
-        recyclerView.setAdapter(termAdapter);
+        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
+        courseRepository = new CourseRepository(getApplication());
+
+        List<Course> associatedCourses = new ArrayList<>();
+        List<Course> allCourses = courseRepository.getAllCourses();
+
+        Term termToAssociate = HelperToTerm.termToUpdate;
+
+        for(Course course : allCourses){
+            if(termToAssociate.getTermId() == course.getCourseTermId()){
+                associatedCourses.add(course);
+            }
+        }
+
+
+        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        termAdapter.setTerms(allTerms);
+        courseAdapter.setCourses(associatedCourses);
 
 
         editName = findViewById(R.id.trmNmEdTxt);
@@ -113,6 +129,8 @@ public class TermDetails extends AppCompatActivity {
                 Term termToDelete = HelperToTerm.termToUpdate;
 
                 termRepository = new TermRepository(getApplication());
+
+                List<Term> allTerms = termRepository.getAllTerms();
 
                 if(allTerms != null){
                     for(Term term : allTerms){
