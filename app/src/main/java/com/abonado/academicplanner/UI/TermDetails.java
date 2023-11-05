@@ -64,8 +64,8 @@ public class TermDetails extends AppCompatActivity {
 
 
         if(HelperToTerm.termToUpdate != null){
-            Term termToPopulate = HelperToTerm.termToUpdate;
 
+            Term termToPopulate = HelperToTerm.termToUpdate;
 
             editName.setText(termToPopulate.getTermName());
             editStart.setText(termToPopulate.getTermStart());
@@ -80,7 +80,6 @@ public class TermDetails extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
 
 
         Button termsSaveButton = findViewById(R.id.saveTermDetails);
@@ -111,42 +110,37 @@ public class TermDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                boolean isDeleted = false;
-
                 Term termToDelete = HelperToTerm.termToUpdate;
 
                 termRepository = new TermRepository(getApplication());
-
-                if(termToDelete != null){
-                    termRepository.delete(termToDelete);
-                    isDeleted = true;
-                }
 
                 if(allTerms != null){
                     for(Term term : allTerms){
                         if(editName.getText().toString().equals(term.getTermName())){
                             termRepository.delete(term);
-                            isDeleted = true;
+                            Toast.makeText(getApplicationContext(), "ID: " + termToDelete.getTermId()
+                                            + " Name: " + termToDelete.getTermName() + " was deleted",
+                                    Toast.LENGTH_SHORT).show();
+
+                            HelperToTerm.termToUpdate = null;
+
+                            Intent intent = new Intent(TermDetails.this, TermDetails.class);
+                            startActivity(intent);
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Deletion Selection Not Valid",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
 
-                if (isDeleted) { // Replace with your condition for successful deletion
-                    Toast.makeText(getApplicationContext(), "ID: " + termToDelete.getTermId() + " Name: " + termToDelete.getTermName() + " was deleted", Toast.LENGTH_SHORT).show();
 
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Deletion failure", Toast.LENGTH_SHORT).show();
-                }
 
-                HelperToTerm.termToUpdate = null;
 
-                Intent intent = new Intent(TermDetails.this, TermDetails.class);
-                startActivity(intent);
+
             }
         });
-
-
 
     }
 
