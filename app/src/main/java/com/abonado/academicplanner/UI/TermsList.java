@@ -3,6 +3,8 @@ package com.abonado.academicplanner.UI;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +14,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.abonado.academicplanner.R;
+import com.abonado.academicplanner.database.TermRepository;
+import com.abonado.academicplanner.entities.Term;
+import com.abonado.academicplanner.utilities.HelperToTerm;
+import com.abonado.academicplanner.utilities.TermAdapter;
+
+import java.util.List;
 
 public class TermsList extends AppCompatActivity {
+
+    TermRepository termRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +43,8 @@ public class TermsList extends AppCompatActivity {
         addTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HelperToTerm.termToUpdate = null;
+
                 Intent intent = new Intent(TermsList.this, TermDetails.class);
                 startActivity(intent);
             }
@@ -46,6 +58,14 @@ public class TermsList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        RecyclerView recyclerView = findViewById(R.id.trmsLstRcyle);
+        termRepository = new TermRepository(getApplication());
+        List<Term> allTerms = termRepository.getAllTerms();
+        final TermAdapter termAdapter = new TermAdapter(this);
+        recyclerView.setAdapter(termAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        termAdapter.setTerms(allTerms);
 
     }
 
@@ -64,7 +84,8 @@ public class TermsList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Button menuChoice;
+
+
 
         if(id == R.id.homeMenuPop){
 

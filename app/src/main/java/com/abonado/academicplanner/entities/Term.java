@@ -15,9 +15,9 @@ public class Term {
     private String termEnd;
 
 
-    public Term(int termId, String termName, String termStart,
+    public Term(String termName, String termStart,
                 String termEnd) {
-        this.termId = termId;
+
         this.termName = termName;
         this.termStart = termStart;
         this.termEnd = termEnd;

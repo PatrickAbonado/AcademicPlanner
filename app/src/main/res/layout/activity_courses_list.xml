@@ -39,6 +39,7 @@
                 android:text="Terms List Text View Test"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+
         </LinearLayout>
     </ScrollView>
 

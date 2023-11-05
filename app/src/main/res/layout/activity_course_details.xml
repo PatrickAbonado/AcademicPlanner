@@ -57,7 +57,7 @@
 
 
         <Button
-            android:id="@+id/saveAsmntCourseDetails"
+            android:id="@+id/saveTermDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
