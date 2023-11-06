@@ -41,6 +41,7 @@
                     android:id="@+id/trmIdTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:textSize="20dp"
                     android:padding="10dp"></TextView>
 
 

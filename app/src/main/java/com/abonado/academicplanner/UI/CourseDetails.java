@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,22 +17,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.database.CourseRepository;
+import com.abonado.academicplanner.database.TermRepository;
 import com.abonado.academicplanner.entities.Course;
+import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToCourse;
 import com.abonado.academicplanner.utilities.HelperToTerm;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDetails extends AppCompatActivity {
 
 
     CourseRepository courseRepository;
+    TermRepository termRepository;
+    TextView mCourseId;
     EditText mCourseTitle;
     EditText mCourseStart;
     EditText mCourseEnd;
@@ -41,12 +46,14 @@ public class CourseDetails extends AppCompatActivity {
     EditText mCourseInstrName;
     EditText mCourseInstrPhone;
     EditText mCourseInstrEmail;
-    EditText mCourseTermId;
     String mStatusSelection;
     Spinner mCourseSpinner;
+    Spinner mCrsTrmIdSpin;
     List<Course> mAllCourses;
-
-
+    boolean isCourseUpdate = false;
+    int courseToUpdateId = 0;
+    boolean isFoundTermId = false;
+    String xTermId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +61,12 @@ public class CourseDetails extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         mCourseSpinner = findViewById(R.id.courseStatusSpinner);
+        mCrsTrmIdSpin = findViewById(R.id.courseTermIdSpinner);
 
-        ArrayAdapter<CharSequence> courseSpinnerAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> courseStatusSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.courseStatusSpinnerArray, android.R.layout.simple_spinner_item);
-        courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        mCourseSpinner.setAdapter(courseSpinnerAdapter);
+        courseStatusSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        mCourseSpinner.setAdapter(courseStatusSpinnerAdapter);
         mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -75,9 +83,97 @@ public class CourseDetails extends AppCompatActivity {
         });
 
 
-        RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
+        termRepository = new TermRepository(getApplication());
+        ArrayList<Term> allTerms = new ArrayList<>(termRepository.getAllTerms());
+        ArrayList<String> allTermIds = new ArrayList<>();
+        allTermIds.add("Select Term ID");
+
+        for(Term term : allTerms){
+            allTermIds.add(String.valueOf(term.getTermId()));
+        }
+
+        ArrayAdapter<String> courseTermIdSpnAdptr = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, allTermIds);
+        courseTermIdSpnAdptr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCrsTrmIdSpin.setAdapter(courseTermIdSpnAdptr);
+        mCrsTrmIdSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(mCrsTrmIdSpin.getSelectedItem().equals(allTermIds.get(0))){
+                    xTermId = "0";
+                }
+                else {
+                    xTermId = allTermIds.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                xTermId = "0";
+            }
+        });
+
         courseRepository = new CourseRepository(getApplication());
+        mAllCourses = courseRepository.getAllCourses();
         List<Course> allCourses = courseRepository.getAllCourses();
+
+        setElementIds();
+
+        Intent courseListIntent = getIntent();
+
+        courseToUpdateId = courseListIntent.getIntExtra("courseId",0);
+
+        if(courseToUpdateId == 0){
+
+            mCourseId.setText("New ID");
+        }
+        else {
+            mCourseId.setText(String.valueOf(courseToUpdateId));
+
+            isCourseUpdate = true;
+
+            for(Course course : mAllCourses){
+
+                if(course.getCourseId() == courseToUpdateId){
+
+                    mCourseTitle.setText(String.valueOf(course.getCourseTitle()));
+                    mCourseStart.setText(course.getCourseStart());
+                    mCourseEnd.setText(course.getCourseEnd());
+                    mCourseNotes.setText(course.getCourseNotes());
+                    mCourseInstrName.setText(course.getCourseInstrName());
+                    mCourseInstrPhone.setText(course.getCourseInstrPhone());
+                    mCourseInstrEmail.setText(course.getCourseInstrEmail());
+
+                    String statusSelection  = course.getCourseStatus();
+                    String[] spinnerOptions = getResources().getStringArray(
+                            R.array.courseStatusSpinnerArray);
+                    int positionCounter = 0;
+                    for(String option : spinnerOptions){
+                        if(option.equals(statusSelection)){
+                            break;
+                        }
+                        ++positionCounter;
+                    }
+                    mCourseSpinner.setSelection(positionCounter);
+
+                    int termIdSelection  = course.getCourseTermId();
+                    positionCounter = 0;
+                    for(String option : allTermIds){
+                        if(option.equals(String.valueOf(termIdSelection))){
+                            break;
+                        }
+                        ++positionCounter;
+                    }
+                    mCrsTrmIdSpin.setSelection(positionCounter);
+
+                }
+
+            }
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,40 +193,32 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                mCourseTitle = findViewById(R.id.courseTitleEdTxt);
-                mCourseStart = findViewById(R.id.courseStrtTxt);
-                mCourseEnd = findViewById(R.id.courseEndTxt);
-                mCourseTermId = findViewById(R.id.courseTermIdTxt);
-                mCourseInstrName = findViewById(R.id.courseInstrNameTxt);
-                mCourseInstrPhone = findViewById(R.id.courseInstrPhoneTxt);
-                mCourseInstrEmail = findViewById(R.id.courseInstrEmailTxt);
-                mCourseNotes = findViewById(R.id.courseNotesTxt);
-
-                String courseTitle = mCourseTitle.getText().toString();
-                String courseStart = mCourseStart.getText().toString();
-                String courseEnd = mCourseEnd.getText().toString();
-                String courseNotes = mCourseNotes.getText().toString();
-                String courseInstrName = mCourseInstrName.getText().toString();
-                String courseInstrPhone = mCourseInstrPhone.getText().toString();
-                String courseInstrEmail = mCourseInstrEmail.getText().toString();
-                int courseTermId = Integer.parseInt(mCourseTermId.getText().toString());
-
-                Course course = new Course(courseTermId, courseTitle, courseStart, courseEnd,
-                        mStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
-
+                setElementIds();
 
                 courseRepository = new CourseRepository(getApplication());
 
-                courseRepository.insert(course);
+                Course course = createCourse();
 
-                Toast.makeText(getApplicationContext(), "ID: " + course.getCourseId()
-                                + "-- Title: " + course.getCourseTitle() + " was saved",
-                        Toast.LENGTH_SHORT).show();
+                if(isCourseUpdate)
+                {
+                    courseRepository.update(course);
 
-                HelperToCourse.courseToUpdate = null;
+                    isCourseUpdate = false;
+                    Toast.makeText(getApplicationContext(), "SAVED",
+                            Toast.LENGTH_LONG).show();
+                }
+                else
+                {
 
-                Intent intent = new Intent(CourseDetails.this, CourseDetails.class);
+                    courseRepository.insert(course);
+
+                    Toast.makeText(getApplicationContext(), "SAVED",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                Intent intent = new Intent(CourseDetails.this, CoursesList.class);
                 startActivity(intent);
+
             }
         });
 
@@ -145,17 +233,13 @@ public class CourseDetails extends AppCompatActivity {
 
                 mAllCourses = courseRepository.getAllCourses();
 
-                for(Course course : mAllCourses){
-                    courseRepository.delete(course);
-                }
-
                 if(mAllCourses != null){
                     for(Course course : mAllCourses){
                         if(mCourseTitle.getText().toString().equals(course.getCourseTitle())){
                             courseRepository.delete(course);
                             Toast.makeText(getApplicationContext(), "ID: " + courseToDelete.getCourseId()
                                             + "-- Name: " + courseToDelete.getCourseTitle() + " was deleted",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
 
                             HelperToTerm.termToUpdate = null;
 
@@ -165,7 +249,7 @@ public class CourseDetails extends AppCompatActivity {
                         }
                         else{
                             Toast.makeText(getApplicationContext(), "Deletion Selection Not Valid",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -173,8 +257,60 @@ public class CourseDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    public Course createCourse(){
+
+        boolean found = false;
+
+        TermRepository termRepository = new TermRepository(getApplication());
+        List<Term> allTerms = termRepository.getAllTerms();
+
+        String courseTitle = mCourseTitle.getText().toString();
+        String courseStart = mCourseStart.getText().toString();
+        String courseEnd = mCourseEnd.getText().toString();
+        String courseNotes = mCourseNotes.getText().toString();
+        String courseInstrName = mCourseInstrName.getText().toString();
+        String courseInstrPhone = mCourseInstrPhone.getText().toString();
+        String courseInstrEmail = mCourseInstrEmail.getText().toString();
+
+        for(Term term : allTerms){
+            if(term.getTermId() == courseToUpdateId){
+                isFoundTermId = true;
+                break;
+            }
+        }
+
+        int termId = 0;
+
+        try {
+            termId = Integer.parseInt(xTermId);
+        }
+        catch (Exception e){
+            Toast.makeText(getApplicationContext(), "VALID TERM ID NOT SELECTED",
+                    Toast.LENGTH_LONG).show();
+            e.fillInStackTrace();
+
+            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+            startActivity(intent);
+        }
 
 
+        return new Course(courseToUpdateId, termId, courseTitle, courseStart, courseEnd,
+                mStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
+
+    }
+
+    public void setElementIds(){
+        mCourseId = findViewById(R.id.courseIdTxt);
+        mCourseTitle = findViewById(R.id.courseTitleEdTxt);
+        mCourseStart = findViewById(R.id.courseStrtTxt);
+        mCourseEnd = findViewById(R.id.courseEndTxt);
+
+        mCourseInstrName = findViewById(R.id.courseInstrNameTxt);
+        mCourseInstrPhone = findViewById(R.id.courseInstrPhoneTxt);
+        mCourseInstrEmail = findViewById(R.id.courseInstrEmailTxt);
+        mCourseNotes = findViewById(R.id.courseNotesTxt);
     }
 
     @Override

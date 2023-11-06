@@ -36,12 +36,13 @@ public class TermDetails extends AppCompatActivity {
     String mTermStart;
     String mTermEnd;
     String mTermName;
-    int mTermId;
+    int mTermId = 0;
     TermRepository termRepository;
     CourseRepository courseRepository;
     Term currentTerm;
     int numTerms;
     boolean isUpdate = false;
+    int xTermId = 0;
 
 
 
@@ -78,7 +79,7 @@ public class TermDetails extends AppCompatActivity {
         editEnd = findViewById(R.id.trmEndTxt);
 
 
-        int xTermId = intent.getIntExtra("term_id",-1);
+        xTermId = intent.getIntExtra("term_id",-1);
         if(xTermId == -1){
 
             nonEditId.setText("New ID");
@@ -134,6 +135,8 @@ public class TermDetails extends AppCompatActivity {
 
                     termRepository.update(term);
 
+                    isUpdate = false;
+
                     Intent intent = new Intent(TermDetails.this, TermsList.class);
                     startActivity(intent);
 
@@ -147,9 +150,8 @@ public class TermDetails extends AppCompatActivity {
                     mTermName = editName.getText().toString();
                     mTermStart = editStart.getText().toString();
                     mTermEnd = editEnd.getText().toString();
-                    int newTermId = 0;
 
-                    Term term = new Term(newTermId, mTermName, mTermStart, mTermEnd);
+                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
 
                     termRepository.insert(term);
 

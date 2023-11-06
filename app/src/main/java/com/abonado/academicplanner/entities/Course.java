@@ -21,10 +21,11 @@ public class Course {
     private String courseInstrEmail;
 
 
-    public Course( int courseTermId, String courseTitle, String courseStart,
+    public Course( int courseId, int courseTermId, String courseTitle, String courseStart,
                   String courseEnd, String courseStatus, String courseNotes,
                   String courseInstrName, String courseInstrPhone, String courseInstrEmail) {
 
+        this.courseId = courseId;
         this.courseTermId = courseTermId;
         this.courseTitle = courseTitle;
         this.courseStart = courseStart;

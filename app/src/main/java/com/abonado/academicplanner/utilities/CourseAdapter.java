@@ -73,20 +73,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
 
-        Course course = mCourses.get(position);
+        if(mCourses != null){
+            Course course = mCourses.get(position);
 
-        holder.courseId.setText(String.valueOf(course.getCourseId()));
-        holder.courseTitle.setText(course.getCourseTitle());
-        holder.courseStart.setText(course.getCourseStart());
-        holder.courseEnd.setText(course.getCourseEnd());
-
-        holder.itemView.setOnClickListener(v -> {
-
-            HelperToCourse.courseToUpdate = mCourses.get(position);
-
-            Intent intent = new Intent(context, CourseDetails.class);
-            context.startActivity(intent);
-        });
+            holder.courseId.setText(String.valueOf(course.getCourseId()));
+            holder.courseTitle.setText(course.getCourseTitle());
+            holder.courseStart.setText(course.getCourseStart());
+            holder.courseEnd.setText(course.getCourseEnd());
+        }
+        else {
+            System.out.println("blank");
+        }
 
     }
 

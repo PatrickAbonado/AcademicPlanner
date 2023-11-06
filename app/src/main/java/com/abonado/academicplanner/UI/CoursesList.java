@@ -39,6 +39,13 @@ public class CoursesList extends AppCompatActivity {
         courseAdapter.setCourses(allCourses);
 
 
+
+        for (Course course : allCourses){
+            if(course.getCourseId() == 12){
+                courseRepository.delete(course);
+            }
+        }
+
         Toolbar myToolbar = findViewById(R.id.courses_list_toolbar);
         setSupportActionBar(myToolbar);
 
