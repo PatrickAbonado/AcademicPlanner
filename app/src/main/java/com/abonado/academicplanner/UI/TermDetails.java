@@ -23,24 +23,25 @@ import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToTerm;
-import com.abonado.academicplanner.utilities.TermAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TermDetails extends AppCompatActivity {
 
-    EditText editId;
+    TextView nonEditId;
     EditText editName;
     EditText editStart;
     EditText editEnd;
-    String termName;
-    String termStart;
-    String termEnd;
+    String mTermStart;
+    String mTermEnd;
+    String mTermName;
+    int mTermId;
     TermRepository termRepository;
     CourseRepository courseRepository;
     Term currentTerm;
     int numTerms;
+    boolean isUpdate = false;
 
 
 
@@ -48,46 +49,6 @@ public class TermDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_details);
-
-        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
-        courseRepository = new CourseRepository(getApplication());
-
-        List<Course> associatedCourses = new ArrayList<>();
-        List<Course> allCourses = courseRepository.getAllCourses();
-
-        Term termToAssociate = HelperToTerm.termToUpdate;
-
-        for(Course course : allCourses){
-            if(termToAssociate.getTermId() == course.getCourseTermId()){
-                associatedCourses.add(course);
-            }
-        }
-
-
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
-        recyclerView.setAdapter(courseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.setCourses(associatedCourses);
-
-
-        editName = findViewById(R.id.trmNmEdTxt);
-        editStart = findViewById(R.id.trmStrtTxt);
-        editEnd = findViewById(R.id.trmEndTxt);
-
-        editName.setText("");
-        editStart.setText("");
-        editEnd.setText("");
-
-
-        if(HelperToTerm.termToUpdate != null){
-
-            Term termToPopulate = HelperToTerm.termToUpdate;
-
-            editName.setText(termToPopulate.getTermName());
-            editStart.setText(termToPopulate.getTermStart());
-            editEnd.setText(termToPopulate.getTermEnd());
-        }
-
 
         Toolbar myToolbar = findViewById(R.id.term_details_toolbar);
         setSupportActionBar(myToolbar);
@@ -98,6 +59,59 @@ public class TermDetails extends AppCompatActivity {
         }
 
 
+        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
+        courseRepository = new CourseRepository(getApplication());
+        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        recyclerView.setAdapter(courseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        List<Course> associatedCourses = new ArrayList<>();
+        List<Course> allCourses = courseRepository.getAllCourses();
+
+
+        Intent intent = getIntent();
+
+        nonEditId = findViewById(R.id.trmIdTxt);
+        editName = findViewById(R.id.trmNmEdTxt);
+        editStart = findViewById(R.id.trmStrtTxt);
+        editEnd = findViewById(R.id.trmEndTxt);
+
+
+        int xTermId = intent.getIntExtra("term_id",-1);
+        if(xTermId == -1){
+
+            nonEditId.setText("New ID");
+
+        }
+        else {
+
+            nonEditId.setText(String.valueOf(xTermId));
+            isUpdate = true;
+        }
+
+        if(isUpdate){
+            String xTermName = intent.getStringExtra("term_name");
+            String xTermStart = intent.getStringExtra("term_start");
+            String xTermEnd =  intent.getStringExtra("term_end");
+
+            editName.setText(xTermName);
+            editStart.setText(xTermStart);
+            editEnd.setText(xTermEnd);
+
+            for(Course course : allCourses){
+                int courseTermId = course.getCourseTermId();
+                if(xTermId == courseTermId){
+                    associatedCourses.add(course);
+                }
+            }
+            courseAdapter.setCourses(associatedCourses);
+        }
+
+
+
+
+
         Button termsSaveButton = findViewById(R.id.saveTermDetails);
         termsSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,19 +119,43 @@ public class TermDetails extends AppCompatActivity {
 
                 termRepository = new TermRepository(getApplication());
 
-                editName = findViewById(R.id.trmNmEdTxt);
-                editStart = findViewById(R.id.trmStrtTxt);
-                editEnd = findViewById(R.id.trmEndTxt);
-                termName = editName.getText().toString();
-                termStart = editStart.getText().toString();
-                termEnd = editEnd.getText().toString();
+                if(isUpdate){
 
-                Term term = new Term(termName,termStart,termEnd);
+                    nonEditId = findViewById(R.id.trmIdTxt);
+                    editName = findViewById(R.id.trmNmEdTxt);
+                    editStart = findViewById(R.id.trmStrtTxt);
+                    editEnd = findViewById(R.id.trmEndTxt);
+                    mTermId = xTermId;
+                    mTermName = editName.getText().toString();
+                    mTermStart = editStart.getText().toString();
+                    mTermEnd = editEnd.getText().toString();
 
-                termRepository.insert(term);
+                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
 
-                Intent intent = new Intent(TermDetails.this, TermDetails.class);
-                startActivity(intent);
+                    termRepository.update(term);
+
+                    Intent intent = new Intent(TermDetails.this, TermsList.class);
+                    startActivity(intent);
+
+
+                }
+                else {
+
+                    editName = findViewById(R.id.trmNmEdTxt);
+                    editStart = findViewById(R.id.trmStrtTxt);
+                    editEnd = findViewById(R.id.trmEndTxt);
+                    mTermName = editName.getText().toString();
+                    mTermStart = editStart.getText().toString();
+                    mTermEnd = editEnd.getText().toString();
+                    int newTermId = 0;
+
+                    Term term = new Term(newTermId, mTermName, mTermStart, mTermEnd);
+
+                    termRepository.insert(term);
+
+                    Intent intent = new Intent(TermDetails.this, TermsList.class);
+                    startActivity(intent);
+                }
             }
         });
 

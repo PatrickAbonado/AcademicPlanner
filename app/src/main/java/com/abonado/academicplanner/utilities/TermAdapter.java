@@ -32,10 +32,10 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     public class TermViewHolder extends RecyclerView.ViewHolder {
-        TextView termId;
-        TextView termName;
-        TextView termStart;
-        TextView termEnd;
+        private final TextView termId;
+        private final TextView termName;
+        private final TextView termStart;
+        private final TextView termEnd;
 
         public TermViewHolder(@NonNull View itemView){
 
@@ -74,20 +74,24 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
 
-        Term term = mTerms.get(position);
+        if(mTerms != null){
 
-        holder.termId.setText(String.valueOf(term.getTermId()));
-        holder.termName.setText(term.getTermName());
-        holder.termStart.setText(term.getTermStart());
-        holder.termEnd.setText(term.getTermEnd());
+        Term currTerm = mTerms.get(position);
 
-        holder.itemView.setOnClickListener(v -> {
+        /*int currTermId = currTerm.getTermId();
+        String currTermName = currTerm.getTermName();
+        String currTermStart = currTerm.getTermStart();
+        String currTermEnd = currTerm.getTermEnd();*/
 
-            HelperToTerm.termToUpdate = mTerms.get(position);
+        holder.termId.setText(String.valueOf(currTerm.getTermId()));
+        holder.termName.setText(currTerm.getTermName());
+        holder.termStart.setText(currTerm.getTermStart());
+        holder.termEnd.setText(currTerm.getTermEnd());
 
-            Intent intent = new Intent(context, TermDetails.class);
-            context.startActivity(intent);
-        });
+        }
+        else {
+            System.out.println("FUCK");
+        }
 
 
     }

@@ -3,6 +3,8 @@ package com.abonado.academicplanner.UI;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.entities.Course;
+import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToCourse;
 import com.abonado.academicplanner.utilities.HelperToTerm;
 
@@ -72,13 +75,13 @@ public class CourseDetails extends AppCompatActivity {
         });
 
 
-        /*RecyclerView recyclerView = findViewById(R.id.trmsLstRcyle);
+        RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
         courseRepository = new CourseRepository(getApplication());
         List<Course> allCourses = courseRepository.getAllCourses();
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.(allCourses);*/
+        courseAdapter.setCourses(allCourses);
 
 
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);

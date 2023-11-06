@@ -179,7 +179,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/courseLstRcyle"
+                android:id="@+id/courseDtlsLstRcyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/courseRcycleColLinLay">
