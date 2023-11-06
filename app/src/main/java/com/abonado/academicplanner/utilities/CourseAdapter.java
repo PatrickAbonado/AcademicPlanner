@@ -12,16 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.UI.CourseDetails;
-import com.abonado.academicplanner.UI.TermDetails;
-import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.entities.Course;
-import com.abonado.academicplanner.entities.Term;
+
 
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
-    CourseRepository courseRepository;
     private List<Course> mCourses;
     private Context context;
     private final LayoutInflater mInflater;

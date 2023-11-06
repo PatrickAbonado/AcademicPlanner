@@ -19,7 +19,7 @@
     <string name="share_noteButCrsDtls">SHARE NOTE</string>
     <string name="addAssessmentAsmntLst">+ASSESSMENT</string>
 
-    <string-array name="courseStatusSpinner">
+    <string-array name="courseStatusSpinnerArray">
         <item>Status Not Selected</item>
         <item>In Progress</item>
         <item>Completed</item>

@@ -3,15 +3,16 @@ package com.abonado.academicplanner.UI;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,13 +20,10 @@ import android.widget.Toast;
 
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.database.CourseRepository;
-import com.abonado.academicplanner.database.TermRepository;
 import com.abonado.academicplanner.entities.Course;
-import com.abonado.academicplanner.entities.Term;
-import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToCourse;
 import com.abonado.academicplanner.utilities.HelperToTerm;
-import com.abonado.academicplanner.utilities.TermAdapter;
+
 
 import java.util.List;
 
@@ -34,10 +32,8 @@ public class CourseDetails extends AppCompatActivity {
 
     CourseRepository courseRepository;
     EditText mCourseTitle;
-
     EditText mCourseStart;
     EditText mCourseEnd;
-    String mCourseStatus;
     EditText mCourseNotes;
     EditText mCourseInstrName;
     EditText mCourseInstrPhone;
@@ -54,6 +50,28 @@ public class CourseDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_details);
 
+        mCourseSpinner = findViewById(R.id.courseStatusSpinner);
+
+        ArrayAdapter<CharSequence> courseSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.courseStatusSpinnerArray, android.R.layout.simple_spinner_item);
+        courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        mCourseSpinner.setAdapter(courseSpinnerAdapter);
+        mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                mStatusSelection = getResources().getStringArray(
+                        R.array.courseStatusSpinnerArray)[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                mStatusSelection = "Status Not Selected";
+            }
+        });
+
+
         /*RecyclerView recyclerView = findViewById(R.id.trmsLstRcyle);
         courseRepository = new CourseRepository(getApplication());
         List<Course> allCourses = courseRepository.getAllCourses();
@@ -63,9 +81,6 @@ public class CourseDetails extends AppCompatActivity {
         courseAdapter.(allCourses);*/
 
 
-
-
-
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -73,22 +88,6 @@ public class CourseDetails extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        mCourseSpinner = findViewById(R.id.courseStatusSpinner);
-        mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                mStatusSelection = getResources().getStringArray(R.array.courseStatusSpinner)[position];
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-                mStatusSelection = "Status Not Selected";
-            }
-        });
 
         Button courseDtlsSaveBut = findViewById(R.id.saveCourseDetails);
         courseDtlsSaveBut.setOnClickListener(new View.OnClickListener() {
@@ -104,20 +103,6 @@ public class CourseDetails extends AppCompatActivity {
                 mCourseInstrEmail = findViewById(R.id.courseInstrEmailTxt);
                 mCourseNotes = findViewById(R.id.courseNotesTxt);
 
-                mCourseSpinner = findViewById(R.id.courseStatusSpinner);
-                mCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        mCourseStatus = mCourseSpinner.getSelectedItem().toString();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        mCourseStatus = "Status Not Selected";
-                    }
-                });
-
-
                 String courseTitle = mCourseTitle.getText().toString();
                 String courseStart = mCourseStart.getText().toString();
                 String courseEnd = mCourseEnd.getText().toString();
@@ -128,8 +113,7 @@ public class CourseDetails extends AppCompatActivity {
                 int courseTermId = Integer.parseInt(mCourseTermId.getText().toString());
 
                 Course course = new Course(courseTermId, courseTitle, courseStart, courseEnd,
-                        mCourseStatus, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
-
+                        mStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
 
 
                 courseRepository = new CourseRepository(getApplication());
