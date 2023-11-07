@@ -4,9 +4,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import java.sql.Timestamp;
 
-@Entity()
+@Entity(foreignKeys = @ForeignKey(entity = Course.class, parentColumns = "courseId",
+        childColumns = "asmntCourseId", onDelete = ForeignKey.RESTRICT))
 public class Assessment {
 
     @PrimaryKey(autoGenerate = true)

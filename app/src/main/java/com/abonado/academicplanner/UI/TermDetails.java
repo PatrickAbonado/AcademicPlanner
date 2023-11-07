@@ -166,7 +166,6 @@ public class TermDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Term termToDelete = HelperToTerm.termToUpdate;
 
                 termRepository = new TermRepository(getApplication());
 
@@ -176,12 +175,10 @@ public class TermDetails extends AppCompatActivity {
                     for(Term term : allTerms){
                         if(editName.getText().toString().equals(term.getTermName())){
                             termRepository.delete(term);
-                            Toast.makeText(getApplicationContext(), "ID: " + termToDelete.getTermId()
-                                            + "-- Name: " + termToDelete.getTermName() + " was deleted",
+                            Toast.makeText(getApplicationContext(), "ID: " + term.getTermId()
+                                            + "-- Name: " + term.getTermName() + " was deleted",
                                     Toast.LENGTH_SHORT).show();
-
-                            HelperToTerm.termToUpdate = null;
-
+                            
                             Intent intent = new Intent(TermDetails.this, TermDetails.class);
                             startActivity(intent);
 

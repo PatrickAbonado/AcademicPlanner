@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.UI.AssessmentDetails;
-import com.abonado.academicplanner.UI.TermDetails;
 import com.abonado.academicplanner.entities.Assessment;
-import com.abonado.academicplanner.entities.Term;
+
 
 import java.util.List;
 
@@ -82,14 +81,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         holder.assessmentStart.setText(assessment.getAssessmentStart());
         holder.assessmentEnd.setText(assessment.getAssessmentEnd());
 
-        holder.itemView.setOnClickListener(v -> {
 
-            HelperToAssessment.assessmentToUpdate = mAssessments.get(position);
-
-            Intent intent = new Intent(context, AssessmentDetails.class);
-            context.startActivity(intent);
-
-        });
 
     }
 

@@ -43,7 +43,7 @@ public class TermsList extends AppCompatActivity {
         addTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HelperToTerm.termToUpdate = null;
+
 
                 Intent intent = new Intent(TermsList.this, TermDetails.class);
                 startActivity(intent);

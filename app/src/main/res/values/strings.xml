@@ -27,4 +27,10 @@
         <item>Plan To Take</item>
     </string-array>
 
+    <string-array name="asmntTypeSpinArr">
+        <item>Select Type</item>
+        <item>Performance</item>
+        <item>Objective</item>
+    </string-array>
+
 </resources>

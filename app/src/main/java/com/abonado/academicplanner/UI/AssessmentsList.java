@@ -3,6 +3,8 @@ package com.abonado.academicplanner.UI;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +14,26 @@ import android.view.View;
 import android.widget.Button;
 
 import com.abonado.academicplanner.R;
+import com.abonado.academicplanner.database.AssessmentRepository;
+import com.abonado.academicplanner.entities.Assessment;
+import com.abonado.academicplanner.utilities.AssessmentAdapter;
+
+import java.util.List;
+
 
 public class AssessmentsList extends AppCompatActivity {
+
+    AssessmentRepository assessmentRepository;
+    List<Assessment> allAssessments;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessments_list);
+        assessmentRepository = new AssessmentRepository(getApplication());
+        allAssessments = assessmentRepository.getAllAssessments();
 
         Toolbar myToolbar = findViewById(R.id.ass_list_toolbar);
         setSupportActionBar(myToolbar);
@@ -27,6 +42,13 @@ public class AssessmentsList extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+        RecyclerView recyclerView = findViewById(R.id.asmntsLstRcyle);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        recyclerView.setAdapter(assessmentAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        assessmentAdapter.setAssessments(allAssessments);
 
 
 

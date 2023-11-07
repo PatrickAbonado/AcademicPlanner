@@ -21,10 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abonado.academicplanner.R;
+import com.abonado.academicplanner.database.AssessmentRepository;
 import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.database.TermRepository;
+import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
+import com.abonado.academicplanner.utilities.AssessmentAdapter;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToCourse;
 import com.abonado.academicplanner.utilities.HelperToTerm;
@@ -78,7 +81,7 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-                mStatusSelection = "Status Not Selected";
+                mStatusSelection = getResources().getStringArray(R.array.courseStatusSpinnerArray)[0];
             }
         });
 
@@ -87,7 +90,6 @@ public class CourseDetails extends AppCompatActivity {
         ArrayList<Term> allTerms = new ArrayList<>(termRepository.getAllTerms());
         ArrayList<String> allTermIds = new ArrayList<>();
         allTermIds.add("Select Term ID");
-
         for(Term term : allTerms){
             allTermIds.add(String.valueOf(term.getTermId()));
         }
@@ -100,12 +102,10 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if(mCrsTrmIdSpin.getSelectedItem().equals(allTermIds.get(0))){
-                    xTermId = "0";
-                }
-                else {
-                    xTermId = allTermIds.get(position);
-                }
+                xTermId =
+                        mCrsTrmIdSpin.getSelectedItem().equals(allTermIds.get(0)) ?  "0" : allTermIds.get(position);
+
+
             }
 
             @Override
@@ -130,15 +130,16 @@ public class CourseDetails extends AppCompatActivity {
             mCourseId.setText("New ID");
         }
         else {
-            mCourseId.setText(String.valueOf(courseToUpdateId));
 
             isCourseUpdate = true;
+
+            mCourseId.setText(String.valueOf(courseToUpdateId));
 
             for(Course course : mAllCourses){
 
                 if(course.getCourseId() == courseToUpdateId){
 
-                    mCourseTitle.setText(String.valueOf(course.getCourseTitle()));
+                    mCourseTitle.setText(course.getCourseTitle());
                     mCourseStart.setText(course.getCourseStart());
                     mCourseEnd.setText(course.getCourseEnd());
                     mCourseNotes.setText(course.getCourseNotes());
@@ -173,11 +174,23 @@ public class CourseDetails extends AppCompatActivity {
             }
         }
 
+        AssessmentRepository assessmentRepository = new AssessmentRepository(getApplication());
+        List<Assessment> allAsmnts = assessmentRepository.getAllAssessments();
+        List<Assessment> associatedAsmnts = new ArrayList<>();
+
+        for(Assessment assessment : allAsmnts){
+            for(Course course : allCourses){
+                if(course.getCourseId() == assessment.getAsmntCourseId()){
+                    associatedAsmnts.add(assessment);
+                }
+            }
+        }
+
         RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
-        recyclerView.setAdapter(courseAdapter);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.setCourses(allCourses);
+        assessmentAdapter.setAssessments(associatedAsmnts);
 
 
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);
@@ -192,8 +205,6 @@ public class CourseDetails extends AppCompatActivity {
         courseDtlsSaveBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                setElementIds();
 
                 courseRepository = new CourseRepository(getApplication());
 
@@ -241,7 +252,7 @@ public class CourseDetails extends AppCompatActivity {
                                             + "-- Name: " + courseToDelete.getCourseTitle() + " was deleted",
                                     Toast.LENGTH_LONG).show();
 
-                            HelperToTerm.termToUpdate = null;
+
 
                             Intent intent = new Intent(CourseDetails.this, CourseDetails.class);
                             startActivity(intent);
@@ -261,7 +272,7 @@ public class CourseDetails extends AppCompatActivity {
 
     public Course createCourse(){
 
-        boolean found = false;
+        setElementIds();
 
         TermRepository termRepository = new TermRepository(getApplication());
         List<Term> allTerms = termRepository.getAllTerms();
@@ -274,12 +285,6 @@ public class CourseDetails extends AppCompatActivity {
         String courseInstrPhone = mCourseInstrPhone.getText().toString();
         String courseInstrEmail = mCourseInstrEmail.getText().toString();
 
-        for(Term term : allTerms){
-            if(term.getTermId() == courseToUpdateId){
-                isFoundTermId = true;
-                break;
-            }
-        }
 
         int termId = 0;
 
