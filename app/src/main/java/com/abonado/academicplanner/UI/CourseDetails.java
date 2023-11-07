@@ -28,10 +28,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
-import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.HelperToCourse;
-import com.abonado.academicplanner.utilities.HelperToTerm;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +38,7 @@ public class CourseDetails extends AppCompatActivity {
 
     CourseRepository courseRepository;
     TermRepository termRepository;
+    AssessmentRepository assessmentRepository;
     TextView mCourseId;
     EditText mCourseTitle;
     EditText mCourseStart;
@@ -57,6 +55,9 @@ public class CourseDetails extends AppCompatActivity {
     int courseToUpdateId = 0;
     boolean isFoundTermId = false;
     String xTermId;
+    List<Assessment> associatedAsmnts = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,22 +170,21 @@ public class CourseDetails extends AppCompatActivity {
                     }
                     mCrsTrmIdSpin.setSelection(positionCounter);
 
+                    assessmentRepository = new AssessmentRepository(getApplication());
+                    List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
+                    for(Assessment assessment : allAssessments){
+
+                        if(assessment.getAsmntCourseId() == course.getCourseId()){
+
+                            associatedAsmnts.add(assessment);
+                        }
+                    }
+
                 }
 
             }
         }
 
-        AssessmentRepository assessmentRepository = new AssessmentRepository(getApplication());
-        List<Assessment> allAsmnts = assessmentRepository.getAllAssessments();
-        List<Assessment> associatedAsmnts = new ArrayList<>();
-
-        for(Assessment assessment : allAsmnts){
-            for(Course course : allCourses){
-                if(course.getCourseId() == assessment.getAsmntCourseId()){
-                    associatedAsmnts.add(assessment);
-                }
-            }
-        }
 
         RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);

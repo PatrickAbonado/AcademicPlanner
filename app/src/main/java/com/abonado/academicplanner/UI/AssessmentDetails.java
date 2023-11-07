@@ -52,6 +52,7 @@ public class AssessmentDetails extends AppCompatActivity {
     String mAsmntTypeSelction;
     String mAsmntCrsIdSelection;
     ArrayList<String> allCourseIds = new ArrayList<>();
+    List<Course> associatedCourse = new ArrayList<>();
 
 
     @Override
@@ -164,29 +165,30 @@ public class AssessmentDetails extends AppCompatActivity {
                     String asmntTstTypSlct = assessment.getAssessmentType();
                     String[] types = getResources().getStringArray(R.array.asmntTypeSpinArr);
                     for (String type : types){
-                        if(type.equals(assessment.getAssessmentType())){
+                        if(type.equals(asmntTstTypSlct)){
                             break;
                         }
                         positionCounter++;
                     }
                     mAsmntTypeSpin.setSelection(positionCounter);
+
+
+                    for(Course course : mAllCourses){
+
+                        if(course.getCourseId() == assessment.getAsmntCourseId()){
+
+                            associatedCourse.add(course);
+                        }
+                    }
                 }
 
             }
+
+
         }
 
 
-        List<Course> associatedCourse = new ArrayList<>();
-        for(Course course : mAllCourses){
-            for (Assessment assessment : mAllAsmnts){
-                if(course.getCourseId() == assessment.getAsmntCourseId()){
 
-                    associatedCourse.add(course);
-                }
-
-            }
-
-        }
 
         RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
