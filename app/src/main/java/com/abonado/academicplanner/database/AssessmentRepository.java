@@ -13,6 +13,7 @@ public class AssessmentRepository {
     private AssessmentDAO mAssessmentDAO;
     private List<Assessment> mAllAssessments;
     private Assessment mAssessment;
+    private List<Assessment> mAllAsscAsmnts;
 
     private static int NUMBER_OF_THREADS=4;
     static final ExecutorService databaseExecutor= Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -83,6 +84,19 @@ public class AssessmentRepository {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Assessment> getAsscAsmnts(int courseId){
+        databaseExecutor.execute(()->{
+            mAllAsscAsmnts = mAssessmentDAO.getAsscAsmntsByCrsId(courseId);
+        });
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mAllAsscAsmnts;
     }
 
 

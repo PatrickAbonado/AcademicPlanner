@@ -3,7 +3,6 @@ package com.abonado.academicplanner.database;
 import android.app.Application;
 
 import com.abonado.academicplanner.dao.CourseDAO;
-import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 
 import java.util.List;
@@ -14,7 +13,6 @@ public class CourseRepository {
 
     private CourseDAO mCourseDAO;
     private List<Course> mAllCourses;
-    private List<Assessment> mAllAsscAsmnts;
     private Course mCourse;
 
     private static int NUMBER_OF_THREADS=4;
@@ -87,16 +85,19 @@ public class CourseRepository {
         }
     }
 
-    public List<Assessment>getCrsAsmnts(int courseId){
+    public List<Course>getAllAsscCourses(int termId){
         databaseExecutor.execute(()->{
-            mAllAsscAsmnts = mCourseDAO.getAsmntByCrsId(courseId);
+            mAllCourses = mCourseDAO.getAsscCourses(termId);
         });
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return mAllAsscAsmnts;
+
+        return mAllCourses;
     }
+
+
 }

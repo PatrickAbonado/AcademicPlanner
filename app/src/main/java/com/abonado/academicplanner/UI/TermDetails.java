@@ -60,15 +60,9 @@ public class TermDetails extends AppCompatActivity {
         }
 
 
-        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
-        courseRepository = new CourseRepository(getApplication());
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
-        recyclerView.setAdapter(courseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        List<Course> associatedCourses = new ArrayList<>();
-        List<Course> allCourses = courseRepository.getAllCourses();
+
 
 
         Intent intent = getIntent();
@@ -79,8 +73,17 @@ public class TermDetails extends AppCompatActivity {
         editEnd = findViewById(R.id.trmEndTxt);
 
 
-        xTermId = intent.getIntExtra("term_id",-1);
-        if(xTermId == -1){
+        xTermId = intent.getIntExtra("term_id",0);
+
+        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
+        courseRepository = new CourseRepository(getApplication());
+        List<Course> associatedCourses = courseRepository.getAllAsscCourses(xTermId);
+        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        recyclerView.setAdapter(courseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        courseAdapter.setCourses(associatedCourses);
+
+        if(xTermId == 0){
 
             nonEditId.setText("New ID");
 
@@ -100,13 +103,6 @@ public class TermDetails extends AppCompatActivity {
             editStart.setText(xTermStart);
             editEnd.setText(xTermEnd);
 
-            for(Course course : allCourses){
-                int courseTermId = course.getCourseTermId();
-                if(xTermId == courseTermId){
-                    associatedCourses.add(course);
-                }
-            }
-            courseAdapter.setCourses(associatedCourses);
         }
 
 

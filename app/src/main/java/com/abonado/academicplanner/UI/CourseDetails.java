@@ -170,27 +170,18 @@ public class CourseDetails extends AppCompatActivity {
                     }
                     mCrsTrmIdSpin.setSelection(positionCounter);
 
-                    assessmentRepository = new AssessmentRepository(getApplication());
-                    List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
-                    for(Assessment assessment : allAssessments){
-
-                        if(assessment.getAsmntCourseId() == course.getCourseId()){
-
-                            associatedAsmnts.add(assessment);
-                        }
-                    }
-
                 }
 
             }
         }
 
-
+        assessmentRepository = new AssessmentRepository(getApplication());
+        List<Assessment> asscAsmnts = assessmentRepository.getAsscAsmnts(courseToUpdateId);
         RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        assessmentAdapter.setAssessments(associatedAsmnts);
+        assessmentAdapter.setAssessments(asscAsmnts);
 
 
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);

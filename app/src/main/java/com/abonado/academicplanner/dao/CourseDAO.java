@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 
 import java.util.List;
@@ -30,7 +29,9 @@ public interface CourseDAO {
     @Query("SELECT * FROM course ORDER BY courseId ASC")
     List<Course> getAllCourses();
 
-    @Query("SELECT * FROM assessment WHERE assessmentId = :asmntCrsId ORDER BY assessmentId ASC ")
-    List<Assessment> getAsmntByCrsId(int asmntCrsId);
+    @Query("SELECT * FROM course WHERE courseTermId=:termId ORDER BY courseId ASC ")
+    List<Course> getAsscCourses(int termId);
+
+
 
 }

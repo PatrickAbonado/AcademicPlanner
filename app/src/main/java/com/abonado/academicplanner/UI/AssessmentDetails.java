@@ -52,7 +52,8 @@ public class AssessmentDetails extends AppCompatActivity {
     String mAsmntTypeSelction;
     String mAsmntCrsIdSelection;
     ArrayList<String> allCourseIds = new ArrayList<>();
-    List<Course> associatedCourse = new ArrayList<>();
+    List<Course> associatedCourses;
+
 
 
     @Override
@@ -172,14 +173,8 @@ public class AssessmentDetails extends AppCompatActivity {
                     }
                     mAsmntTypeSpin.setSelection(positionCounter);
 
+                    associatedCourses = courseRepository.getAllAsscCourses(assessment.getAsmntCourseId());
 
-                    for(Course course : mAllCourses){
-
-                        if(course.getCourseId() == assessment.getAsmntCourseId()){
-
-                            associatedCourse.add(course);
-                        }
-                    }
                 }
 
             }
@@ -188,13 +183,11 @@ public class AssessmentDetails extends AppCompatActivity {
         }
 
 
-
-
         RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.setCourses(associatedCourse);
+        courseAdapter.setCourses(associatedCourses);
 
         asmntSave = findViewById(R.id.saveAsmntBut);
         asmntSave.setOnClickListener(new View.OnClickListener() {
