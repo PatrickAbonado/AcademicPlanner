@@ -33,24 +33,20 @@ import java.util.List;
 public class AssessmentDetails extends AppCompatActivity {
 
     Button asmntSave;
-    Button asmntDelete;
     TextView mAsmntId;
     EditText mAsmntTitle;
     EditText mAsmntStart;
     EditText mAsmntEnd;
     CourseRepository courseRepository;
     AssessmentRepository assessmentRepository;
-    String asmntCourseId;
     Spinner mAsmntCrsIdSpin;
     Spinner mAsmntTypeSpin;
     int asmntToUpdateId = 0;
     List<Assessment> mAllAsmnts;
     boolean isAsmntUpdate = false;
-    boolean isFoundCrsId = false;
     String xAssessmentId;
     String xAsmntCourseId;
     String mAsmntTypeSelction;
-    String mAsmntCrsIdSelection;
     ArrayList<String> allCourseIds = new ArrayList<>();
     List<Course> associatedCourses;
 
@@ -178,8 +174,6 @@ public class AssessmentDetails extends AppCompatActivity {
                 }
 
             }
-
-
         }
 
 

@@ -53,9 +53,8 @@ public class CourseDetails extends AppCompatActivity {
     List<Course> mAllCourses;
     boolean isCourseUpdate = false;
     int courseToUpdateId = 0;
-    boolean isFoundTermId = false;
     String xTermId;
-    List<Assessment> associatedAsmnts = new ArrayList<>();
+
 
 
 

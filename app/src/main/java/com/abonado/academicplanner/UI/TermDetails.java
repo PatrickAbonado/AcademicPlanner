@@ -22,9 +22,7 @@ import com.abonado.academicplanner.database.TermRepository;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
-import com.abonado.academicplanner.utilities.HelperToTerm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TermDetails extends AppCompatActivity {
@@ -39,10 +37,8 @@ public class TermDetails extends AppCompatActivity {
     int mTermId = 0;
     TermRepository termRepository;
     CourseRepository courseRepository;
-    Term currentTerm;
-    int numTerms;
     boolean isUpdate = false;
-    int xTermId = 0;
+    int termIdToUpdate = 0;
 
 
 
@@ -73,24 +69,24 @@ public class TermDetails extends AppCompatActivity {
         editEnd = findViewById(R.id.trmEndTxt);
 
 
-        xTermId = intent.getIntExtra("term_id",0);
+        termIdToUpdate = intent.getIntExtra("term_id",0);
 
         RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
         courseRepository = new CourseRepository(getApplication());
-        List<Course> associatedCourses = courseRepository.getAllAsscCourses(xTermId);
+        List<Course> associatedCourses = courseRepository.getAllAsscCourses(termIdToUpdate);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourses(associatedCourses);
 
-        if(xTermId == 0){
+        if(termIdToUpdate == 0){
 
             nonEditId.setText("New ID");
 
         }
         else {
 
-            nonEditId.setText(String.valueOf(xTermId));
+            nonEditId.setText(String.valueOf(termIdToUpdate));
             isUpdate = true;
         }
 
@@ -122,7 +118,7 @@ public class TermDetails extends AppCompatActivity {
                     editName = findViewById(R.id.trmNmEdTxt);
                     editStart = findViewById(R.id.trmStrtTxt);
                     editEnd = findViewById(R.id.trmEndTxt);
-                    mTermId = xTermId;
+                    mTermId = termIdToUpdate;
                     mTermName = editName.getText().toString();
                     mTermStart = editStart.getText().toString();
                     mTermEnd = editEnd.getText().toString();
