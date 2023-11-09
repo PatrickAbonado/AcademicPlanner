@@ -18,30 +18,37 @@
         <activity
             android:name=".UI.AssessmentDetails"
             android:label="Assessment Details"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.TermDetails"
             android:label= "Term Details"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.CourseDetails"
             android:label= "Course Details"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.AssessmentsList"
             android:label= "Assessment Lists"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.CoursesList"
             android:label= "Courses List"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.TermsList"
             android:label= "Terms List"
+            android:textStyle="bold"
             android:exported="false" />
         <activity
             android:name=".UI.Home"
             android:label= "Home"
+            android:textStyle="bold"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -30,7 +30,9 @@ public interface CourseDAO {
     List<Course> getAllCourses();
 
     @Query("SELECT * FROM course WHERE courseTermId=:termId ORDER BY courseId ASC ")
-    List<Course> getAsscCourses(int termId);
+    List<Course> getTermAsscCourses(int termId);
+
+
 
 
 

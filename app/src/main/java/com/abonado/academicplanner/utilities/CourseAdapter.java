@@ -20,6 +20,7 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private List<Course> mCourses;
+    private Course mAsscCourse;
     private Context context;
     private final LayoutInflater mInflater;
 
@@ -81,9 +82,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             holder.courseStart.setText(course.getCourseStart());
             holder.courseEnd.setText(course.getCourseEnd());
         }
-        else {
-            System.out.println("blank");
-        }
 
     }
 
@@ -100,5 +98,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         notifyDataSetChanged();
     }
 
+    public void setAsscCourse(Course course){
+        mAsscCourse = course;
+        notifyDataSetChanged();
+
+    }
 
 }

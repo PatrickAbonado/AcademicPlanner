@@ -1,11 +1,13 @@
 package com.abonado.academicplanner.UI;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +26,6 @@ import com.abonado.academicplanner.database.AssessmentRepository;
 import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
-import com.abonado.academicplanner.utilities.AssessmentAdapter;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import java.util.List;
 public class AssessmentDetails extends AppCompatActivity {
 
     Button asmntSave;
+    Button asmntDelete;
     TextView mAsmntId;
     EditText mAsmntTitle;
     EditText mAsmntStart;
@@ -48,7 +50,8 @@ public class AssessmentDetails extends AppCompatActivity {
     String xAsmntCourseId;
     String mAsmntTypeSelction;
     ArrayList<String> allCourseIds = new ArrayList<>();
-    List<Course> associatedCourses;
+    Course associatedCourse;
+
 
 
 
@@ -136,7 +139,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
             xAssessmentId = String.valueOf(asmntToUpdateId);
 
-            mAsmntId.setText(String.valueOf(asmntToUpdateId));
+            mAsmntId.setText(xAssessmentId);
 
             for(Assessment assessment : mAllAsmnts){
 
@@ -169,7 +172,11 @@ public class AssessmentDetails extends AppCompatActivity {
                     }
                     mAsmntTypeSpin.setSelection(positionCounter);
 
-                    associatedCourses = courseRepository.getAllAsscCourses(assessment.getAsmntCourseId());
+                    int asscCrsId = Integer.parseInt(String.valueOf(mAsmntCrsIdSpin.getSelectedItem()));
+
+                    courseRepository = new CourseRepository(getApplication());
+
+                    associatedCourse = courseRepository.getCourse(assessment.getAsmntCourseId());
 
                 }
 
@@ -177,11 +184,13 @@ public class AssessmentDetails extends AppCompatActivity {
         }
 
 
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(associatedCourse);
         RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.setCourses(associatedCourses);
+        courseAdapter.setCourses(courseList);
 
         asmntSave = findViewById(R.id.saveAsmntBut);
         asmntSave.setOnClickListener(new View.OnClickListener() {
@@ -214,9 +223,72 @@ public class AssessmentDetails extends AppCompatActivity {
             }
         });
 
+        asmntDelete = findViewById(R.id.deleteAsmntBut);
+        asmntDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isConfirmed = getDeleteConfirmation();
+
+                if(isConfirmed){
+
+                    assessmentRepository = new AssessmentRepository(getApplication());
+
+                    List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
+
+                    mAsmntId = findViewById(R.id.asmntIdTxt);
+                    int asmntToDeleteId = Integer.parseInt(String.valueOf(mAsmntId.getText()));
+
+                    for (Assessment assessment : allAssessments){
+
+                        if(assessment.getAssessmentId() == asmntToDeleteId){
+                            assessmentRepository.delete(assessment);
+                        }
+
+                    }
+
+                }
+            }
+        });
+
 
     }
 
+    public boolean getDeleteConfirmation(){
+
+        final boolean[] isAsmntToDelete = {false};
+
+        mAsmntId = findViewById(R.id.asmntIdTxt);
+        int asmntToDeleteId = Integer.parseInt(String.valueOf(mAsmntId.getText()));
+
+        assessmentRepository = new AssessmentRepository(getApplication());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("CONFIRMATION");
+        builder.setMessage("Delete ID: #" + asmntToDeleteId + "?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                isAsmntToDelete[0] = true;
+
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                isAsmntToDelete[0] = false;
+
+                dialog.dismiss();
+            }
+        });
+
+        return isAsmntToDelete[0];
+
+    }
 
     public Assessment createAssessment(){
 

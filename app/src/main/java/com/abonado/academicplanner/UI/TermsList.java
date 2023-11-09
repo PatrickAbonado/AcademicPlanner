@@ -16,7 +16,6 @@ import android.widget.Button;
 import com.abonado.academicplanner.R;
 import com.abonado.academicplanner.database.TermRepository;
 import com.abonado.academicplanner.entities.Term;
-import com.abonado.academicplanner.utilities.HelperToTerm;
 import com.abonado.academicplanner.utilities.TermAdapter;
 
 import java.util.List;

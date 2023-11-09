@@ -87,7 +87,7 @@ public class CourseRepository {
 
     public List<Course>getAllAsscCourses(int termId){
         databaseExecutor.execute(()->{
-            mAllCourses = mCourseDAO.getAsscCourses(termId);
+            mAllCourses = mCourseDAO.getTermAsscCourses(termId);
         });
 
         try {

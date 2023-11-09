@@ -28,7 +28,6 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
-import com.abonado.academicplanner.utilities.HelperToCourse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +116,6 @@ public class CourseDetails extends AppCompatActivity {
 
         courseRepository = new CourseRepository(getApplication());
         mAllCourses = courseRepository.getAllCourses();
-        List<Course> allCourses = courseRepository.getAllCourses();
 
         setElementIds();
 
@@ -182,7 +180,6 @@ public class CourseDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         assessmentAdapter.setAssessments(asscAsmnts);
 
-
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -228,7 +225,7 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Course courseToDelete = HelperToCourse.courseToUpdate;
+
 
                 courseRepository = new CourseRepository(getApplication());
 
@@ -238,10 +235,8 @@ public class CourseDetails extends AppCompatActivity {
                     for(Course course : mAllCourses){
                         if(mCourseTitle.getText().toString().equals(course.getCourseTitle())){
                             courseRepository.delete(course);
-                            Toast.makeText(getApplicationContext(), "ID: " + courseToDelete.getCourseId()
-                                            + "-- Name: " + courseToDelete.getCourseTitle() + " was deleted",
+                            Toast.makeText(getApplicationContext(), "Deleted",
                                     Toast.LENGTH_LONG).show();
-
 
 
                             Intent intent = new Intent(CourseDetails.this, CourseDetails.class);

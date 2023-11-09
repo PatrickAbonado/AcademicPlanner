@@ -56,11 +56,6 @@ public class TermDetails extends AppCompatActivity {
         }
 
 
-
-
-
-
-
         Intent intent = getIntent();
 
         nonEditId = findViewById(R.id.trmIdTxt);
