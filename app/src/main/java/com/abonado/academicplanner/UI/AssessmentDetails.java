@@ -28,6 +28,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,28 +202,84 @@ public class AssessmentDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 assessmentRepository = new AssessmentRepository(getApplication());
+                courseRepository = new CourseRepository(getApplication());
 
-                Assessment assessment = createAssessment();
+                Assessment createdAssessment = createAssessment();
+                Course checkCourse = courseRepository.getCourse(Integer.parseInt(xAsmntCourseId));
 
-                if(isAsmntUpdate){
+                if (checkCourse != null) {
 
-                    assessmentRepository.update(assessment);
+                    boolean isValidAsmntDate = true;
 
-                    isAsmntUpdate = false;
+                    if (isAsmntUpdate) {
 
-                    Toast.makeText(getApplicationContext(), "UPDATED",
-                            Toast.LENGTH_LONG).show();
+                        try{
+                            LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
+                            LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
+
+                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                isValidAsmntDate = false;
+
+                            }
+                        }
+                        catch (Exception e){
+
+                            isValidAsmntDate = false;
+                        }
+
+                        if(isValidAsmntDate){
+
+                            assessmentRepository.update(createdAssessment);
+
+                            isAsmntUpdate = false;
+
+                            Toast.makeText(getApplicationContext(), "UPDATED",
+                                    Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                            startActivity(intent);
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                    Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+
+                        try{
+                            LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
+                            LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
+
+                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                isValidAsmntDate = false;
+
+                            }
+                        }
+                        catch (Exception e){
+
+                            isValidAsmntDate = false;
+                        }
+
+                        if(isValidAsmntDate){
+                            assessmentRepository.insert(createdAssessment);
+
+                            Toast.makeText(getApplicationContext(), "SAVED",
+                                Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                            startActivity(intent);
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                    Toast.LENGTH_LONG).show();
+                    }
+
                 }
-                else {
-
-                    assessmentRepository.insert(assessment);
-
-                    Toast.makeText(getApplicationContext(), "SAVED",
+                else
+                    Toast.makeText(getApplicationContext(), "Select a valid COURSE ID",
                             Toast.LENGTH_LONG).show();
-                }
-
-                Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                startActivity(intent);
             }
         });
 

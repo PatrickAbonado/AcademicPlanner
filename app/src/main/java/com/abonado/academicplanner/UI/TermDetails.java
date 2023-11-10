@@ -29,6 +29,7 @@ import com.abonado.academicplanner.utilities.CourseAdapter;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TermDetails extends AppCompatActivity {
@@ -109,7 +110,7 @@ public class TermDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 termRepository = new TermRepository(getApplication());
-                boolean isTermTimeValid = false;
+                boolean isTermTimeValid = true;
 
                 if(isUpdate){
 
@@ -122,6 +123,8 @@ public class TermDetails extends AppCompatActivity {
 
                     mTermStart = editStart.getText().toString();
                     mTermEnd = editEnd.getText().toString();
+
+                    DateTimeFormatter dateFormatPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                     try{
                         LocalDate checkStart = LocalDate.parse(mTermStart);

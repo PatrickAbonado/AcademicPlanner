@@ -31,8 +31,11 @@ import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.time.format.DateTimeFormatter;
 
 public class CourseDetails extends AppCompatActivity {
 
@@ -106,7 +109,6 @@ public class CourseDetails extends AppCompatActivity {
 
                 xTermId =
                         mCrsTrmIdSpin.getSelectedItem().equals(allTermIds.get(0)) ?  "0" : allTermIds.get(position);
-
 
             }
 
@@ -197,28 +199,86 @@ public class CourseDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 courseRepository = new CourseRepository(getApplication());
+                termRepository = new TermRepository(getApplication());
 
                 Course course = createCourse();
 
-                if(isCourseUpdate)
-                {
-                    courseRepository.update(course);
+                Term checkTerm = termRepository.getTerm(Integer.parseInt(xTermId));
 
-                    isCourseUpdate = false;
-                    Toast.makeText(getApplicationContext(), "SAVED",
-                            Toast.LENGTH_LONG).show();
+                if(checkTerm != null){
+
+                    boolean isValidCourseTimeEntries = true;
+
+                    if (isCourseUpdate) {
+
+                        try{
+                            LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
+                            LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
+
+                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                isValidCourseTimeEntries = false;
+
+                            }
+                        }
+                        catch (Exception e){
+
+                            isValidCourseTimeEntries = false;
+                        }
+
+                        if(isValidCourseTimeEntries) {
+                            courseRepository.update(course);
+
+                            isCourseUpdate = false;
+                            Toast.makeText(getApplicationContext(), "SAVED",
+                                    Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                            startActivity(intent);
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                    Toast.LENGTH_LONG).show();
+
+                    }
+                    else
+                    {
+
+                        try{
+                            LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
+                            LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
+
+                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                isValidCourseTimeEntries = false;
+                            }
+                        }
+                        catch (Exception e){
+
+                            isValidCourseTimeEntries = false;
+                        }
+
+                        if (isValidCourseTimeEntries) {
+                            courseRepository.insert(course);
+
+                            Toast.makeText(getApplicationContext(), "SAVED",
+                                    Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                            startActivity(intent);
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                    Toast.LENGTH_LONG).show();
+                    }
+
                 }
-                else
-                {
-
-                    courseRepository.insert(course);
-
-                    Toast.makeText(getApplicationContext(), "SAVED",
-                            Toast.LENGTH_LONG).show();
+                else {
+                    Toast.makeText(getApplicationContext(),"Select a TERM ID", Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent = new Intent(CourseDetails.this, CoursesList.class);
-                startActivity(intent);
+
+
 
             }
         });
@@ -357,7 +417,6 @@ public class CourseDetails extends AppCompatActivity {
         mCourseTitle = findViewById(R.id.courseTitleEdTxt);
         mCourseStart = findViewById(R.id.courseStrtTxt);
         mCourseEnd = findViewById(R.id.courseEndTxt);
-
         mCourseInstrName = findViewById(R.id.courseInstrNameTxt);
         mCourseInstrPhone = findViewById(R.id.courseInstrPhoneTxt);
         mCourseInstrEmail = findViewById(R.id.courseInstrEmailTxt);
