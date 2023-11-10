@@ -234,7 +234,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
                             isAsmntUpdate = false;
 
-                            Toast.makeText(getApplicationContext(), "UPDATED",
+                            Toast.makeText(getApplicationContext(), "ASSESSMENT updated",
                                     Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
@@ -265,7 +265,7 @@ public class AssessmentDetails extends AppCompatActivity {
                         if(isValidAsmntDate){
                             assessmentRepository.insert(createdAssessment);
 
-                            Toast.makeText(getApplicationContext(), "SAVED",
+                            Toast.makeText(getApplicationContext(), " ASSESSMENT saved",
                                 Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);

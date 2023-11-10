@@ -230,7 +230,7 @@ public class CourseDetails extends AppCompatActivity {
                             courseRepository.update(course);
 
                             isCourseUpdate = false;
-                            Toast.makeText(getApplicationContext(), "SAVED",
+                            Toast.makeText(getApplicationContext(), "COURSE saved",
                                     Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(CourseDetails.this, CoursesList.class);
@@ -261,7 +261,7 @@ public class CourseDetails extends AppCompatActivity {
                         if (isValidCourseTimeEntries) {
                             courseRepository.insert(course);
 
-                            Toast.makeText(getApplicationContext(), "SAVED",
+                            Toast.makeText(getApplicationContext(), "COURSE saved",
                                     Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(CourseDetails.this, CoursesList.class);
