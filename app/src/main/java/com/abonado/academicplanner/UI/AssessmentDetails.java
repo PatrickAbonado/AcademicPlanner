@@ -51,6 +51,7 @@ public class AssessmentDetails extends AppCompatActivity {
     String mAsmntTypeSelction;
     ArrayList<String> allCourseIds = new ArrayList<>();
     Course associatedCourse;
+    boolean isAsmntToDelete = false;
 
 
 
@@ -172,8 +173,6 @@ public class AssessmentDetails extends AppCompatActivity {
                     }
                     mAsmntTypeSpin.setSelection(positionCounter);
 
-                    int asscCrsId = Integer.parseInt(String.valueOf(mAsmntCrsIdSpin.getSelectedItem()));
-
                     courseRepository = new CourseRepository(getApplication());
 
                     associatedCourse = courseRepository.getCourse(assessment.getAsmntCourseId());
@@ -184,13 +183,17 @@ public class AssessmentDetails extends AppCompatActivity {
         }
 
 
-        List<Course> courseList = new ArrayList<>();
-        courseList.add(associatedCourse);
-        RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
-        recyclerView.setAdapter(courseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        courseAdapter.setCourses(courseList);
+        if(isAsmntUpdate){
+
+            List<Course> courseList = new ArrayList<>();
+            courseList.add(associatedCourse);
+            RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
+            final CourseAdapter courseAdapter = new CourseAdapter(this);
+            recyclerView.setAdapter(courseAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            courseAdapter.setCourses(courseList);
+        }
+
 
         asmntSave = findViewById(R.id.saveAsmntBut);
         asmntSave.setOnClickListener(new View.OnClickListener() {
@@ -228,35 +231,15 @@ public class AssessmentDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                boolean isConfirmed = getDeleteConfirmation();
+               getDeleteConfirmation();
 
-                if(isConfirmed){
-
-                    assessmentRepository = new AssessmentRepository(getApplication());
-
-                    List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
-
-                    mAsmntId = findViewById(R.id.asmntIdTxt);
-                    int asmntToDeleteId = Integer.parseInt(String.valueOf(mAsmntId.getText()));
-
-                    for (Assessment assessment : allAssessments){
-
-                        if(assessment.getAssessmentId() == asmntToDeleteId){
-                            assessmentRepository.delete(assessment);
-                        }
-
-                    }
-
-                }
             }
         });
 
 
     }
 
-    public boolean getDeleteConfirmation(){
-
-        final boolean[] isAsmntToDelete = {false};
+    public void getDeleteConfirmation(){
 
         mAsmntId = findViewById(R.id.asmntIdTxt);
         int asmntToDeleteId = Integer.parseInt(String.valueOf(mAsmntId.getText()));
@@ -266,27 +249,40 @@ public class AssessmentDetails extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("CONFIRMATION");
-        builder.setMessage("Delete ID: #" + asmntToDeleteId + "?");
+        builder.setMessage("Delete Assessment ID #" + asmntToDeleteId + "?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                isAsmntToDelete[0] = true;
+                assessmentRepository = new AssessmentRepository(getApplication());
+
+                //List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
+
+                mAsmntId = findViewById(R.id.asmntIdTxt);
+                int asmntToDeleteId = Integer.parseInt(String.valueOf(mAsmntId.getText()));
+
+                assessmentRepository.delete(assessmentRepository.getAsmntByAsmntId(asmntToDeleteId));
+
+                Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                startActivity(intent);
 
                 dialog.dismiss();
+
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                isAsmntToDelete[0] = false;
+
 
                 dialog.dismiss();
+
             }
         });
 
-        return isAsmntToDelete[0];
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
     }
 

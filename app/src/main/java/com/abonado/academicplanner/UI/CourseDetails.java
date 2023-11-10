@@ -1,12 +1,14 @@
 package com.abonado.academicplanner.UI;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -53,6 +55,7 @@ public class CourseDetails extends AppCompatActivity {
     boolean isCourseUpdate = false;
     int courseToUpdateId = 0;
     String xTermId;
+    Button courseDeleteButton;
 
 
 
@@ -225,42 +228,110 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-                courseRepository = new CourseRepository(getApplication());
-
-                mAllCourses = courseRepository.getAllCourses();
-
-                if(mAllCourses != null){
-                    for(Course course : mAllCourses){
-                        if(mCourseTitle.getText().toString().equals(course.getCourseTitle())){
-                            courseRepository.delete(course);
-                            Toast.makeText(getApplicationContext(), "Deleted",
-                                    Toast.LENGTH_LONG).show();
-
-
-                            Intent intent = new Intent(CourseDetails.this, CourseDetails.class);
-                            startActivity(intent);
-
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Deletion Selection Not Valid",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
+                getCourseDeleteConfirmation();
 
             }
         });
 
     }
 
+    public void getCourseDeleteConfirmation(){
+
+        mCourseId = findViewById(R.id.courseIdTxt);
+        int courseToDeleteId = Integer.parseInt(String.valueOf(mCourseId.getText()));
+
+        courseRepository = new CourseRepository(getApplication());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("CONFIRMATION");
+        builder.setMessage("Delete Course ID #" + courseToDeleteId + "?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                boolean isAsmntsFound = isAsmntCrsIdFound(courseToDeleteId);
+
+                if(isAsmntsFound){
+
+                    AlertDialog.Builder asmntsBuilder = new AlertDialog.Builder(CourseDetails.this);
+                    asmntsBuilder.setTitle("CONFIRMATION");
+                    asmntsBuilder.setMessage("Delete all associated assessments to course ID #" + courseToDeleteId + "?");
+                    asmntsBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            assessmentRepository = new AssessmentRepository(getApplication());
+                            List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
+
+                            for (Assessment assessment : assessmentList){
+                                if(assessment.getAsmntCourseId() == courseToDeleteId){
+                                    assessmentRepository.delete(assessment);
+                                }
+                            }
+
+                            Course courseToDelete = courseRepository.getCourse(courseToDeleteId);
+                            courseRepository.delete(courseToDelete);
+                            Toast.makeText(getApplicationContext(), "Course Deleted",
+                                    Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                            startActivity(intent);
+
+                            dialog.dismiss();
+                        }
+                    });
+                    asmntsBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog asmntsAlertDialog = asmntsBuilder.create();
+                    asmntsAlertDialog.show();
+
+                }
+                else {
+                    courseRepository.delete(courseRepository.getCourse(courseToDeleteId));
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+
+    public boolean isAsmntCrsIdFound(int courseId){
+
+        AssessmentRepository assessmentRepository;
+
+        assessmentRepository = new AssessmentRepository(getApplication());
+        List<Assessment> allAssessments = assessmentRepository.getAllAssessments();
+
+        boolean isFound = false;
+        for (Assessment assessment : allAssessments){
+
+            if(assessment.getAsmntCourseId() == courseId){
+
+                return true;
+
+            }
+        }
+
+        return isFound;
+    }
+
     public Course createCourse(){
 
         setElementIds();
-
-        TermRepository termRepository = new TermRepository(getApplication());
-        List<Term> allTerms = termRepository.getAllTerms();
 
         String courseTitle = mCourseTitle.getText().toString();
         String courseStart = mCourseStart.getText().toString();
@@ -270,21 +341,7 @@ public class CourseDetails extends AppCompatActivity {
         String courseInstrPhone = mCourseInstrPhone.getText().toString();
         String courseInstrEmail = mCourseInstrEmail.getText().toString();
 
-
-        int termId = 0;
-
-        try {
-            termId = Integer.parseInt(xTermId);
-        }
-        catch (Exception e){
-            Toast.makeText(getApplicationContext(), "VALID TERM ID NOT SELECTED",
-                    Toast.LENGTH_LONG).show();
-            e.fillInStackTrace();
-
-            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
-            startActivity(intent);
-        }
-
+        int termId = Integer.parseInt(xTermId);
 
         return new Course(courseToUpdateId, termId, courseTitle, courseStart, courseEnd,
                 mStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
