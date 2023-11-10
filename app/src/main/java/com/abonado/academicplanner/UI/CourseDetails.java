@@ -176,7 +176,7 @@ public class CourseDetails extends AppCompatActivity {
         }
 
         assessmentRepository = new AssessmentRepository(getApplication());
-        List<Assessment> asscAsmnts = assessmentRepository.getAsscAsmnts(courseToUpdateId);
+        List<Assessment> asscAsmnts = assessmentRepository.getCourseAsscAsmnts(courseToUpdateId);
         RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
@@ -244,7 +244,7 @@ public class CourseDetails extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("CONFIRMATION");
-        builder.setMessage("Delete Course ID #" + courseToDeleteId + "?");
+        builder.setMessage("Delete COURSE ID #" + courseToDeleteId + "?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -255,7 +255,7 @@ public class CourseDetails extends AppCompatActivity {
 
                     AlertDialog.Builder asmntsBuilder = new AlertDialog.Builder(CourseDetails.this);
                     asmntsBuilder.setTitle("CONFIRMATION");
-                    asmntsBuilder.setMessage("Delete all associated assessments to course ID #" + courseToDeleteId + "?");
+                    asmntsBuilder.setMessage("Delete all ASSOCIATED ASSESSMENTS to course ID #" + courseToDeleteId + "?");
                     asmntsBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

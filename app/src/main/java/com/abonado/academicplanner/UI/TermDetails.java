@@ -1,11 +1,13 @@
 package com.abonado.academicplanner.UI;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,12 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abonado.academicplanner.R;
+import com.abonado.academicplanner.database.AssessmentRepository;
 import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.database.TermRepository;
+import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class TermDetails extends AppCompatActivity {
@@ -97,15 +103,13 @@ public class TermDetails extends AppCompatActivity {
         }
 
 
-
-
-
         Button termsSaveButton = findViewById(R.id.saveTermDetails);
         termsSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 termRepository = new TermRepository(getApplication());
+                boolean isTermTimeValid = false;
 
                 if(isUpdate){
 
@@ -115,18 +119,40 @@ public class TermDetails extends AppCompatActivity {
                     editEnd = findViewById(R.id.trmEndTxt);
                     mTermId = termIdToUpdate;
                     mTermName = editName.getText().toString();
+
                     mTermStart = editStart.getText().toString();
                     mTermEnd = editEnd.getText().toString();
 
-                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
+                    try{
+                        LocalDate checkStart = LocalDate.parse(mTermStart);
+                        LocalDate checkEnd = LocalDate.parse(mTermEnd);
 
-                    termRepository.update(term);
+                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                            isTermTimeValid = false;
+                        }
+                    }
+                    catch (Exception e){
+                        isTermTimeValid = false;
+                    }
 
-                    isUpdate = false;
 
-                    Intent intent = new Intent(TermDetails.this, TermsList.class);
-                    startActivity(intent);
+                    if(isTermTimeValid){
 
+                        Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
+
+                        termRepository.update(term);
+
+                        isUpdate = false;
+
+                        Toast.makeText(getApplicationContext(), "TERM saved",
+                                Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(TermDetails.this, TermsList.class);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                Toast.LENGTH_LONG).show();
 
                 }
                 else {
@@ -135,15 +161,41 @@ public class TermDetails extends AppCompatActivity {
                     editStart = findViewById(R.id.trmStrtTxt);
                     editEnd = findViewById(R.id.trmEndTxt);
                     mTermName = editName.getText().toString();
+
                     mTermStart = editStart.getText().toString();
                     mTermEnd = editEnd.getText().toString();
 
-                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
 
-                    termRepository.insert(term);
+                    try{
 
-                    Intent intent = new Intent(TermDetails.this, TermsList.class);
-                    startActivity(intent);
+                        LocalDate checkStart = LocalDate.parse(mTermStart);
+                        LocalDate checkEnd = LocalDate.parse(mTermEnd);
+
+                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                            isTermTimeValid = false;
+                        }
+                    }
+                    catch (Exception e){
+                        isTermTimeValid = false;
+                    }
+
+
+                    if(isTermTimeValid){
+
+                        Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
+
+                        termRepository.insert(term);
+
+                        Toast.makeText(getApplicationContext(), "TERM saved",
+                                Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(TermDetails.this, TermsList.class);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid DATE entry",
+                                Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -153,32 +205,104 @@ public class TermDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                getTermDeleteConfirmation();
 
-                termRepository = new TermRepository(getApplication());
+            }
+        });
 
-                List<Term> allTerms = termRepository.getAllTerms();
+    }
 
-                if(allTerms != null){
-                    for(Term term : allTerms){
-                        if(editName.getText().toString().equals(term.getTermName())){
+
+
+    public void getTermDeleteConfirmation(){
+
+        AssessmentRepository assessmentRepository = new AssessmentRepository(getApplication());
+        termRepository = new TermRepository(getApplication());
+        courseRepository = new CourseRepository(getApplication());
+
+        AlertDialog.Builder termConfirmBuilder = new AlertDialog.Builder(this);
+        termConfirmBuilder.setTitle("CONFIRMATION");
+        termConfirmBuilder.setMessage("Delete TERM ID #" + termIdToUpdate + "?");
+        termConfirmBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                List<Course> coursesAsscToTrmList = courseRepository.getAllAsscCourses(termIdToUpdate);
+
+                if(!coursesAsscToTrmList.isEmpty()){
+
+                    AlertDialog.Builder termAsscCrsesConfirmBuilder = new AlertDialog.Builder(TermDetails.this);
+                    termAsscCrsesConfirmBuilder.setTitle("CONFIRMATION");
+                    termAsscCrsesConfirmBuilder.setMessage("Delete all ASSOCIATED COURSES to term ID #"
+                            + termIdToUpdate + "?");
+                    termAsscCrsesConfirmBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            for(Course course : coursesAsscToTrmList){
+
+                                List<Assessment> allAsscAsmnts = assessmentRepository.getCourseAsscAsmnts(course.getCourseId());
+
+                                if(!allAsscAsmnts.isEmpty()){
+
+                                    for (Assessment assessment : allAsscAsmnts){
+
+                                        assessmentRepository.delete(assessment);
+                                    }
+                                }
+
+                                courseRepository.delete(course);
+                            }
+
+                            Term term = termRepository.getTerm(termIdToUpdate);
                             termRepository.delete(term);
-                            Toast.makeText(getApplicationContext(), "ID: " + term.getTermId()
-                                            + "-- Name: " + term.getTermName() + " was deleted",
-                                    Toast.LENGTH_SHORT).show();
-                            
-                            Intent intent = new Intent(TermDetails.this, TermDetails.class);
+                            Toast.makeText(getApplicationContext(), "TERM ID #" + termIdToUpdate + " Deleted",
+                                    Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(TermDetails.this, TermsList.class);
                             startActivity(intent);
 
+                            dialog.dismiss();
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Deletion Selection Not Valid",
-                                    Toast.LENGTH_SHORT).show();
+                    });
+
+
+
+                    termAsscCrsesConfirmBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
                         }
-                    }
+                    });
+
+                    AlertDialog alertDialog = termAsscCrsesConfirmBuilder.create();
+                    alertDialog.show();
+
+                }
+                else {
+
+                    termRepository.delete(termRepository.getTerm(termIdToUpdate));
+                    Toast.makeText(getApplicationContext(), "TERM ID #" + termIdToUpdate + " Deleted",
+                            Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(TermDetails.this, TermsList.class);
+                    startActivity(intent);
+                    dialog.dismiss();
                 }
 
             }
         });
+        termConfirmBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alertDialog = termConfirmBuilder.create();
+        alertDialog.show();
 
     }
 
