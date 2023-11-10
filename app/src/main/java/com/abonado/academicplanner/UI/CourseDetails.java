@@ -273,6 +273,7 @@ public class CourseDetails extends AppCompatActivity {
                             courseRepository.delete(courseToDelete);
                             Toast.makeText(getApplicationContext(), "Course Deleted",
                                     Toast.LENGTH_LONG).show();
+
                             Intent intent = new Intent(CourseDetails.this, CoursesList.class);
                             startActivity(intent);
 
@@ -291,7 +292,10 @@ public class CourseDetails extends AppCompatActivity {
 
                 }
                 else {
+
                     courseRepository.delete(courseRepository.getCourse(courseToDeleteId));
+                    Toast.makeText(getApplicationContext(), "Course Deleted",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
