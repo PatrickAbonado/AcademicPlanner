@@ -188,6 +188,14 @@
 
 
         <Button
+            android:id = "@+id/asmntNtfyBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="NOTIFY"
+            app:layout_constraintBottom_toTopOf="@+id/deleteAsmntBut"/>
+
+        <Button
             android:id="@+id/deleteAsmntBut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

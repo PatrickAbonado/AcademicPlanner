@@ -15,6 +15,9 @@ import com.abonado.academicplanner.R;
 
 public class Home extends AppCompatActivity {
 
+    public static int asmntStartAlertNum = 0;
+    public static int asmntEndAlertNum = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -18,6 +18,8 @@
     <string name="saveButCourseDtls">SAVE</string>
     <string name="share_noteButCrsDtls">SHARE NOTE</string>
     <string name="addAssessmentAsmntLst">+ASSESSMENT</string>
+    <string name="channel_name">First Channel NAME</string>
+    <string name="channel_description">First Channel DESCRIPTION</string>
 
     <string-array name="courseStatusSpinnerArray">
         <item>Status Not Selected</item>

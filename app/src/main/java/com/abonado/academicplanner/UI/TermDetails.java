@@ -154,8 +154,9 @@ public class TermDetails extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else
-                        Toast.makeText(getApplicationContext(), "Invalid DATE entry",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                "\nStart date must be before end date." +
+                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
 
                 }
                 else {
@@ -196,8 +197,9 @@ public class TermDetails extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else
-                        Toast.makeText(getApplicationContext(), "Invalid DATE entry",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                "\nStart date must be before end date." +
+                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
 
                 }
             }
