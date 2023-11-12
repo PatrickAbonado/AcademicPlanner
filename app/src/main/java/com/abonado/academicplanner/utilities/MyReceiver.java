@@ -15,7 +15,8 @@ import com.abonado.academicplanner.R;
 public class MyReceiver extends BroadcastReceiver {
 
     String channel_id = "test";
-    static int notificationId;
+    String channel_id2 = "test2";
+    static int notification;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,28 +24,45 @@ public class MyReceiver extends BroadcastReceiver {
         // an Intent broadcast.
         //throw new UnsupportedOperationException("Not yet implemented");
 
-        Toast.makeText(context, intent.getStringExtra("startAsmntKey"),
-                Toast.LENGTH_LONG).show();
-        createNotificationChannel(context, channel_id);
-        Notification n = new NotificationCompat.Builder(context,channel_id)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentText(intent.getStringExtra("startAsmntKey"))
-                .setContentTitle("NotificationTest").build();
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationId++, n);
+        if(intent.getAction() != null) {
+
+            String action = intent.getAction();
 
 
-        Toast.makeText(context, intent.getStringExtra("endAsmntKey"),
-                Toast.LENGTH_LONG).show();
-        createNotificationChannel(context, channel_id);
-        n = new NotificationCompat.Builder(context,channel_id)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentText(intent.getStringExtra("endAsmntKey"))
-                .setContentTitle("NotificationTest").build();
-        notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationId++, n);
+            if (action.equals("startDateNotify")){
+
+                Toast.makeText(context, intent.getStringExtra("startAsmntKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, channel_id);
+                Notification n = new NotificationCompat.Builder(context, channel_id)
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentText(intent.getStringExtra("startAsmntKey"))
+                        .setContentTitle("Start Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+            }
+
+            if (action.equals("endDateNotify")) {
+                Toast.makeText(context, intent.getStringExtra("endAsmntKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, channel_id2);
+                Notification n = new NotificationCompat.Builder(context, channel_id2)
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentText(intent.getStringExtra("endAsmntKey"))
+                        .setContentTitle("End Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+
+            }
+
+
+
+
+
+
+        }
 
     }
 

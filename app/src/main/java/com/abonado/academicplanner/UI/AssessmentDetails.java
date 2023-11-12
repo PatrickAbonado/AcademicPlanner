@@ -56,7 +56,7 @@ public class AssessmentDetails extends AppCompatActivity {
     List<Assessment> mAllAsmnts;
     boolean isAsmntUpdate = false;
     String xAssessmentId;
-    String xAsmntCourseId;
+    String selectedAsmntCourseId;
     String mAsmntTypeSelction;
     ArrayList<String> allCourseIds = new ArrayList<>();
     Course associatedCourse;
@@ -93,7 +93,7 @@ public class AssessmentDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                xAsmntCourseId =
+                selectedAsmntCourseId =
                         mAsmntCrsIdSpin.getSelectedItem().equals(allCourseIds.get(0)) ?  "0" : allCourseIds.get(position);
 
             }
@@ -101,7 +101,7 @@ public class AssessmentDetails extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-                xAsmntCourseId = "0";
+                selectedAsmntCourseId = "0";
 
             }
         });
@@ -213,7 +213,7 @@ public class AssessmentDetails extends AppCompatActivity {
                 courseRepository = new CourseRepository(getApplication());
 
                 Assessment createdAssessment = createAssessment();
-                Course checkCourse = courseRepository.getCourse(Integer.parseInt(xAsmntCourseId));
+                Course checkCourse = courseRepository.getCourse(Integer.parseInt(selectedAsmntCourseId));
 
                 if (checkCourse != null) {
 
@@ -311,6 +311,8 @@ public class AssessmentDetails extends AppCompatActivity {
                 if (isAsmntUpdate) {
 
                     boolean isDatesValid = true;
+                    LocalDate checkStart = LocalDate.now().minusDays(1);
+                    LocalDate checkEnd = LocalDate.now().minusDays(1);
 
                     setElementIds();
                     String startDateEntry = mAsmntStart.getText().toString();
@@ -324,8 +326,8 @@ public class AssessmentDetails extends AppCompatActivity {
                     Date endDate = null;
                     try {
 
-                        LocalDate checkStart = LocalDate.parse(startDateEntry);
-                        LocalDate checkEnd = LocalDate.parse(endDateEntry);
+                        checkStart = LocalDate.parse(startDateEntry);
+                        checkEnd = LocalDate.parse(endDateEntry);
                         startDate = sdf.parse(checkStart.toString());
                         endDate = sdf.parse(checkEnd.toString());
 
@@ -339,11 +341,34 @@ public class AssessmentDetails extends AppCompatActivity {
                         isDatesValid = false;
                     }
 
+                    assessmentRepository = new AssessmentRepository(getApplication());
+                    List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
+                    int counter = assessmentList.size();
+
+                    for(Assessment assessment : assessmentList){
+                        if(assessment.getAssessmentStart().equals(startDateEntry) &&
+                                assessment.getAssessmentEnd().equals(endDateEntry)
+                        && assessment.getAssessmentTitle().equals(asmntTitle)
+                        && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
+                        && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
+
+                            --counter;
+                        }
+                    }
+
+                    if(counter != assessmentList.size()-1){
+                        isDatesValid = false;
+
+                    }
+
                     if (isDatesValid) {
+
+                        LocalDate nowDate = LocalDate.now();
 
                         Long startTrigger = startDate.getTime();
                         Intent startIntent = new Intent(AssessmentDetails.this,
                                 MyReceiver.class);
+                        startIntent.setAction("startDateNotify");
                         startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
                         + "\tAssessment Title: " + asmntTitle +"\n STARTS: " + startDateEntry);
                         PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
@@ -354,6 +379,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
                         Long endTrigger = endDate.getTime();
                         Intent endIntent = new Intent(AssessmentDetails.this, MyReceiver.class);
+                        endIntent.setAction("endDateNotify");
                         endIntent.putExtra("endAsmntKey", "Assessment ID: " + asmntId
                         + "\tAssessment Title: " + asmntTitle + "\n ENDS: " + endDateEntry);
                         PendingIntent asmntEndSender = PendingIntent.getBroadcast(AssessmentDetails.this,
@@ -363,7 +389,7 @@ public class AssessmentDetails extends AppCompatActivity {
                         asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, asmntEndSender);
 
 
-                        Toast.makeText(getApplicationContext(), "Notifications Set" +
+                        Toast.makeText(getApplicationContext(), "Notify ASSESSMENT" +
                                         "\nID: " + asmntId + "\tTitle: " + asmntTitle + "\nStart Date: " + startDateEntry
                                 + "\nEnd Date: " + endDateEntry,
                                 Toast.LENGTH_LONG).show();
@@ -371,9 +397,10 @@ public class AssessmentDetails extends AppCompatActivity {
 
 
                     } else
-                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                "\nData changes must be saved before setting a notification." +
                                 "\nStart date must be before end date." +
-                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getApplicationContext(), "Assessment must be saved to database" +
@@ -451,7 +478,7 @@ public class AssessmentDetails extends AppCompatActivity {
         setElementIds();
 
         int asmntId = Integer.parseInt(xAssessmentId);
-        int asmntCrsId = Integer.parseInt(xAsmntCourseId);
+        int asmntCrsId = Integer.parseInt(selectedAsmntCourseId);
         String asmntTitle = mAsmntTitle.getText().toString();
         String asmntType = mAsmntTypeSelction;
         String asmntStart = mAsmntStart.getText().toString();
