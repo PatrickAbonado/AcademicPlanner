@@ -14,8 +14,9 @@ import com.abonado.academicplanner.R;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    String channel_id = "test";
-    String channel_id2 = "test2";
+    String assessments_channel_id = "assessments";
+    String course_channel_id = "courses";
+    String term_channel_id = "terms";
     static int notification;
 
     @Override
@@ -29,31 +30,91 @@ public class MyReceiver extends BroadcastReceiver {
             String action = intent.getAction();
 
 
-            if (action.equals("startDateNotify")){
+            if (action.equals("asmntStartDateNotify")){
 
                 Toast.makeText(context, intent.getStringExtra("startAsmntKey"),
                         Toast.LENGTH_LONG).show();
-                createNotificationChannel(context, channel_id);
-                Notification n = new NotificationCompat.Builder(context, channel_id)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
+                createNotificationChannel(context, assessments_channel_id);
+                Notification n = new NotificationCompat.Builder(context, assessments_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
                         .setContentText(intent.getStringExtra("startAsmntKey"))
-                        .setContentTitle("Start Date").build();
+                        .setContentTitle("ASSESSMENT START Date").build();
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(notification++, n);
             }
 
-            if (action.equals("endDateNotify")) {
+            if (action.equals("asmntEndDateNotify")) {
                 Toast.makeText(context, intent.getStringExtra("endAsmntKey"),
                         Toast.LENGTH_LONG).show();
-                createNotificationChannel(context, channel_id2);
-                Notification n = new NotificationCompat.Builder(context, channel_id2)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
+                createNotificationChannel(context, assessments_channel_id);
+                Notification n = new NotificationCompat.Builder(context, assessments_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
                         .setContentText(intent.getStringExtra("endAsmntKey"))
-                        .setContentTitle("End Date").build();
+                        .setContentTitle("ASSESSMENT END Date").build();
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(notification++, n);
+
+            }
+
+            if (action.equals("courseStartDateNotify")){
+
+                Toast.makeText(context, intent.getStringExtra("startCourseKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, course_channel_id);
+                Notification n = new NotificationCompat.Builder(context, course_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setContentText(intent.getStringExtra("startCourseKey"))
+                        .setContentTitle("COURSE START Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+            }
+
+            if(action.equals("courseEndDateNotify")){
+
+                Toast.makeText(context, intent.getStringExtra("courseEndKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, course_channel_id);
+                Notification n = new NotificationCompat.Builder(context, course_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setContentText(intent.getStringExtra("courseEndKey"))
+                        .setContentTitle("COURSE END Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+
+            }
+
+            if(action.equals("termStartDateNotify")){
+
+                Toast.makeText(context, intent.getStringExtra("startTermKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, term_channel_id);
+                Notification n = new NotificationCompat.Builder(context, term_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setContentText(intent.getStringExtra("startTermKey"))
+                        .setContentTitle("TERM START Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+
+            }
+
+            if(action.equals("termEndDateNotify")){
+
+                Toast.makeText(context, intent.getStringExtra("termEndKey"),
+                        Toast.LENGTH_LONG).show();
+                createNotificationChannel(context, term_channel_id);
+                Notification n = new NotificationCompat.Builder(context, term_channel_id)
+                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setContentText(intent.getStringExtra("termEndKey"))
+                        .setContentTitle("TERM END Date").build();
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(notification++, n);
+
 
             }
 

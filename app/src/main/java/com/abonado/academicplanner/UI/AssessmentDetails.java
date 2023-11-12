@@ -363,14 +363,13 @@ public class AssessmentDetails extends AppCompatActivity {
 
                     if (isDatesValid) {
 
-                        LocalDate nowDate = LocalDate.now();
 
                         Long startTrigger = startDate.getTime();
                         Intent startIntent = new Intent(AssessmentDetails.this,
                                 MyReceiver.class);
-                        startIntent.setAction("startDateNotify");
+                        startIntent.setAction("asmntStartDateNotify");
                         startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
-                        + "\tAssessment Title: " + asmntTitle +"\n STARTS: " + startDateEntry);
+                        + "\nAssessment Title: " + asmntTitle +"\nSTARTS: " + startDateEntry);
                         PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
                                 ++Home.asmntStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
                         AlarmManager asmntStartAlarmManager =
@@ -379,7 +378,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
                         Long endTrigger = endDate.getTime();
                         Intent endIntent = new Intent(AssessmentDetails.this, MyReceiver.class);
-                        endIntent.setAction("endDateNotify");
+                        endIntent.setAction("asmntEndDateNotify");
                         endIntent.putExtra("endAsmntKey", "Assessment ID: " + asmntId
                         + "\tAssessment Title: " + asmntTitle + "\n ENDS: " + endDateEntry);
                         PendingIntent asmntEndSender = PendingIntent.getBroadcast(AssessmentDetails.this,

@@ -17,6 +17,10 @@ public class Home extends AppCompatActivity {
 
     public static int asmntStartAlertNum = 0;
     public static int asmntEndAlertNum = 0;
+    public static int courseStartAlertNum = 0;
+    public static int courseEndAlertNum = 0;
+    public static int termStartAlertNum = 0;
+    public static int termEndAlertNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

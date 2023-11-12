@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,12 +33,14 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
+import com.abonado.academicplanner.utilities.MyReceiver;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.time.format.DateTimeFormatter;
 
 public class CourseDetails extends AppCompatActivity {
 
@@ -51,14 +56,13 @@ public class CourseDetails extends AppCompatActivity {
     EditText mCourseInstrName;
     EditText mCourseInstrPhone;
     EditText mCourseInstrEmail;
-    String mStatusSelection;
+    String courseStatusSelection;
     Spinner mCourseSpinner;
     Spinner mCrsTrmIdSpin;
     List<Course> mAllCourses;
     boolean isCourseUpdate = false;
     int courseToUpdateId = 0;
-    String xTermId;
-    Button courseDeleteButton;
+    String selectedCrseTrmId;
 
 
 
@@ -79,14 +83,14 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                mStatusSelection = getResources().getStringArray(
+                courseStatusSelection = getResources().getStringArray(
                         R.array.courseStatusSpinnerArray)[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-                mStatusSelection = getResources().getStringArray(R.array.courseStatusSpinnerArray)[0];
+                courseStatusSelection = getResources().getStringArray(R.array.courseStatusSpinnerArray)[0];
             }
         });
 
@@ -107,7 +111,7 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                xTermId =
+                selectedCrseTrmId =
                         mCrsTrmIdSpin.getSelectedItem().equals(allTermIds.get(0)) ?  "0" : allTermIds.get(position);
 
             }
@@ -115,7 +119,7 @@ public class CourseDetails extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-                xTermId = "0";
+                selectedCrseTrmId = "0";
             }
         });
 
@@ -203,7 +207,7 @@ public class CourseDetails extends AppCompatActivity {
 
                 Course course = createCourse();
 
-                Term checkTerm = termRepository.getTerm(Integer.parseInt(xTermId));
+                Term checkTerm = termRepository.getTerm(Integer.parseInt(selectedCrseTrmId));
 
                 if(checkTerm != null){
 
@@ -291,6 +295,125 @@ public class CourseDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 getCourseDeleteConfirmation();
+
+            }
+        });
+
+        Button courseNotify = findViewById(R.id.courseNotifyBut);
+        courseNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isValidNotifyData = true;
+
+                setElementIds();
+
+                if(isCourseUpdate) {
+
+                    String courseId = mCourseId.getText().toString();
+                    String courseTermId = selectedCrseTrmId;
+                    String courseTitle = mCourseTitle.getText().toString();
+                    String courseStart = mCourseStart.getText().toString();
+                    String courseEnd = mCourseEnd.getText().toString();
+                    String courseStatus = courseStatusSelection;
+                    String courseNotes = mCourseNotes.getText().toString();
+                    String courseInstrNm = mCourseInstrName.getText().toString();
+                    String courseInstrPhn = mCourseInstrPhone.getText().toString();
+                    String courseInstrEml = mCourseInstrEmail.getText().toString();
+
+                    courseRepository = new CourseRepository(getApplication());
+                    List<Course> courseList = courseRepository.getAllCourses();
+                    int counter = courseList.size();
+
+                    for(Course course : courseList){
+                        if(course.getCourseId() == Integer.parseInt(courseId) &&
+                        course.getCourseTermId() == Integer.parseInt(courseTermId) &&
+                        course.getCourseTitle().equals(courseTitle) &&
+                        course.getCourseStart().equals(courseStart) &&
+                        course.getCourseEnd().equals(courseEnd) &&
+                        course.getCourseStatus().equals(courseStatus) &&
+                        course.getCourseNotes().equals(courseNotes) &&
+                        course.getCourseInstrName().equals(courseInstrNm) &&
+                        course.getCourseInstrPhone().equals(courseInstrPhn) &&
+                        course.getCourseInstrEmail().equals(courseInstrEml)){
+
+                            --counter;
+                        }
+                    }
+
+                    if(counter != courseList.size()-1){
+
+                        isValidNotifyData = false;
+                    }
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    Date startDate = null;
+                    Date endDate = null;
+                    try{
+
+                        LocalDate start = LocalDate.parse(courseStart);
+                        LocalDate end = LocalDate.parse(courseEnd);
+
+                        if(!start.isBefore(end) || !end.isAfter(start)){
+
+                            isValidNotifyData = false;
+                        }
+
+                        startDate = sdf.parse(courseStart);
+                        endDate = sdf.parse(courseEnd);
+
+                    }
+                    catch (Exception e){
+
+                        isValidNotifyData = false;
+                        e.fillInStackTrace();
+                    }
+
+
+
+
+                    if (isValidNotifyData) {
+
+                        Long startTrigger = startDate.getTime();
+                        Intent startIntent = new Intent(CourseDetails.this,
+                                MyReceiver.class);
+                        startIntent.setAction("courseStartDateNotify");
+                        startIntent.putExtra("startCourseKey", "Course ID: " + courseId
+                                + "\nCourse Title: " + courseTitle +"\nSTARTS: " + courseStart);
+                        PendingIntent courseStartSender = PendingIntent.getBroadcast(CourseDetails.this,
+                                ++Home.courseStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager asmntStartAlarmManager =
+                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, courseStartSender);
+
+                        Long endTrigger = endDate.getTime();
+                        Intent endIntent = new Intent(CourseDetails.this, MyReceiver.class);
+                        endIntent.setAction("courseEndDateNotify");
+                        endIntent.putExtra("courseEndKey", "Course ID: " + courseId
+                                + "\tCourse Title: " + courseTitle + "\n ENDS: " + courseEnd);
+                        PendingIntent courseEndSender = PendingIntent.getBroadcast(CourseDetails.this,
+                                ++Home.courseEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager asmntEndAlarmManager =
+                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, courseEndSender);
+
+
+                        Toast.makeText(getApplicationContext(), "Notify COURSE" +
+                                        "\nID: " + courseId + "\tTitle: " + courseTitle + "\nStart Date: " + courseStart
+                                        + "\nEnd Date: " + courseEnd,
+                                Toast.LENGTH_LONG).show();
+
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                "\nData changes must be saved before setting a notification." +
+                                "\nStart date must be before end date." +
+                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Course must be saved to database" +
+                            " before notifications can be set.", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -407,10 +530,10 @@ public class CourseDetails extends AppCompatActivity {
         String courseInstrPhone = mCourseInstrPhone.getText().toString();
         String courseInstrEmail = mCourseInstrEmail.getText().toString();
 
-        int termId = Integer.parseInt(xTermId);
+        int termId = Integer.parseInt(selectedCrseTrmId);
 
         return new Course(courseToUpdateId, termId, courseTitle, courseStart, courseEnd,
-                mStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
+                courseStatusSelection, courseNotes, courseInstrName, courseInstrPhone, courseInstrEmail);
 
     }
 

@@ -167,14 +167,21 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/termsNotifyBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="NOTIFY"
+            android:textSize="18sp"></Button>
+
+
+        <Button
             android:id="@+id/deleteTrmTrmDtls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="DELETE"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textSize="18sp"/>
 
         <Button
             android:id="@+id/saveTermDetails"

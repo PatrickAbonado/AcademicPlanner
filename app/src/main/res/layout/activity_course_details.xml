@@ -211,37 +211,65 @@
 
 
         <Button
+            android:id = "@+id/courseNotifyBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="NOTIFY"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"></Button>
+
+
+
+        <Button
             android:id="@+id/shareCourseNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/share_noteButCrsDtls"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/addAsmntCourseDetails"
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
-        <Button
-            android:id="@+id/deleteCourseDtls"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="DELETE"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
 
-        <Button
-            android:id="@+id/saveCourseDetails"
+        <LinearLayout
+            android:id="@+id/saveAndDeleteLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:textSize="18sp"
-            android:text="@string/saveButCourseDtls"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+
+
+            <Button
+                android:id="@+id/deleteCourseDtls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="DELETE"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+            <Button
+                android:id="@+id/saveCourseDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textSize="18sp"
+                android:text="@string/saveButCourseDtls"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        </LinearLayout>
+
+
 
 
     </LinearLayout>

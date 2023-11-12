@@ -7,6 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +29,15 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
+import com.abonado.academicplanner.utilities.MyReceiver;
 
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TermDetails extends AppCompatActivity {
 
@@ -214,6 +221,120 @@ public class TermDetails extends AppCompatActivity {
 
             }
         });
+
+
+        Button termNotifyButton = findViewById(R.id.termsNotifyBut);
+        termNotifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isValidNotifyData = true;
+
+                if(isUpdate){
+
+                    editName = findViewById(R.id.trmNmEdTxt);
+                    editStart = findViewById(R.id.trmStrtTxt);
+                    editEnd = findViewById(R.id.trmEndTxt);
+                    nonEditId = findViewById(R.id.trmIdTxt);
+                    String termId = nonEditId.getText().toString();
+                    String termName = editName.getText().toString();
+                    String termStart = editStart.getText().toString();
+                    String termEnd = editEnd.getText().toString();
+
+                    termRepository = new TermRepository(getApplication());
+                    List<Term> termList = termRepository.getAllTerms();
+                    int counter = termList.size();
+
+                    for(Term term : termList){
+                        if(term.getTermId() == Integer.parseInt(termId) &&
+                        term.getTermName().equals(termName) &&
+                        term.getTermStart().equals(termStart) &&
+                        term.getTermEnd().equals(termEnd)){
+
+                            --counter;
+                        }
+                    }
+
+                    if(counter != termList.size()-1){
+
+                        isValidNotifyData = false;
+                    }
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    Date startDate = null;
+                    Date endDate = null;
+                    try {
+                        LocalDate start = LocalDate.parse(termStart);
+                        LocalDate end = LocalDate.parse(termEnd);
+
+                        if(!start.isBefore(end) || !end.isAfter(start)){
+
+                            isValidNotifyData = false;
+                        }
+
+                        startDate = sdf.parse(termStart);
+                        endDate = sdf.parse(termEnd);
+                    }
+                    catch (Exception e){
+
+                        isValidNotifyData = false;
+                        e.fillInStackTrace();
+                    }
+
+
+                    if(isValidNotifyData){
+
+                        Long startTrigger = startDate.getTime();
+                        Intent startIntent = new Intent(TermDetails.this,
+                                MyReceiver.class);
+                        startIntent.setAction("termStartDateNotify");
+                        startIntent.putExtra("startTermKey", "Term ID: " + termId
+                                + "\nTerm Name: " + termName +"\nSTARTS: " + termStart);
+                        PendingIntent termStartSender = PendingIntent.getBroadcast(TermDetails.this,
+                                ++Home.termStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager asmntStartAlarmManager =
+                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, termStartSender);
+
+
+                        Long endTrigger = endDate.getTime();
+                        Intent endIntent = new Intent(TermDetails.this, MyReceiver.class);
+                        endIntent.setAction("termEndDateNotify");
+                        endIntent.putExtra("termEndKey", "Term ID: " + termId
+                                + "\tTerm Name: " + termName + "\n ENDS: " + termEnd);
+                        PendingIntent termEndSender = PendingIntent.getBroadcast(TermDetails.this,
+                                ++Home.termEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager asmntEndAlarmManager =
+                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, termEndSender);
+
+
+                        Toast.makeText(getApplicationContext(), "Notify COURSE" +
+                                        "\nID: " + termId + "\tName: " + termName + "\nStart Date: " + termStart
+                                        + "\nEnd Date: " + termEnd,
+                                Toast.LENGTH_LONG).show();
+
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                "\nData changes must be saved before setting a notification." +
+                                "\nStart date must be before end date." +
+                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+
+
+
+
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Term must be saved to database" +
+                            " before notifications can be set.", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+
 
     }
 
