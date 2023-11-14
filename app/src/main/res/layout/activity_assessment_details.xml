@@ -175,44 +175,22 @@
     </ScrollView>
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/asmntPlusMenuFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <LinearLayout
         android:id="@+id/asmntButtonLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-
-        <Button
-            android:id = "@+id/asmntNtfyBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="NOTIFY"
-            app:layout_constraintBottom_toTopOf="@+id/deleteAsmntBut"/>
-
-        <Button
-            android:id="@+id/deleteAsmntBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DELETE"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/saveAsmntBut"/>
-
-
-        <Button
-            android:id="@+id/saveAsmntBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SAVE"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
     </LinearLayout>

@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.utilities.CourseAdapter;
 import com.abonado.academicplanner.utilities.MyReceiver;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -41,6 +43,7 @@ import java.util.Locale;
 
 public class AssessmentDetails extends AppCompatActivity {
 
+    FloatingActionButton asmntPlusMenuFab;
     Button asmntNotify;
     Button asmntSave;
     Button asmntDelete;
@@ -204,208 +207,241 @@ public class AssessmentDetails extends AppCompatActivity {
         }
 
 
-        asmntSave = findViewById(R.id.saveAsmntBut);
-        asmntSave.setOnClickListener(new View.OnClickListener() {
+        asmntPlusMenuFab = findViewById(R.id.asmntPlusMenuFab);
+        asmntPlusMenuFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                assessmentRepository = new AssessmentRepository(getApplication());
-                courseRepository = new CourseRepository(getApplication());
+                PopupMenu popupMenu = new PopupMenu(AssessmentDetails.this,asmntPlusMenuFab);
+                popupMenu.getMenuInflater().inflate(R.menu.assessment_plus_button_menu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
-                Assessment createdAssessment = createAssessment();
-                Course checkCourse = courseRepository.getCourse(Integer.parseInt(selectedAsmntCourseId));
+                        if (item.getItemId() == R.id.asmntNotifyOpt){
 
-                if (checkCourse != null) {
+                            if (isAsmntUpdate) {
 
-                    boolean isValidAsmntDate = true;
+                                boolean isDatesValid = true;
+                                LocalDate checkStart = LocalDate.now().minusDays(1);
+                                LocalDate checkEnd = LocalDate.now().minusDays(1);
 
-                    if (isAsmntUpdate) {
+                                setElementIds();
+                                String startDateEntry = mAsmntStart.getText().toString();
+                                String endDateEntry = mAsmntEnd.getText().toString();
+                                String asmntTitle = mAsmntTitle.getText().toString();
+                                String asmntId = mAsmntId.getText().toString();
 
-                        try{
-                            LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
-                            LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
 
-                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                                Date startDate = null;
+                                Date endDate = null;
+                                try {
 
-                                isValidAsmntDate = false;
+                                    checkStart = LocalDate.parse(startDateEntry);
+                                    checkEnd = LocalDate.parse(endDateEntry);
+                                    startDate = sdf.parse(checkStart.toString());
+                                    endDate = sdf.parse(checkEnd.toString());
+
+                                    if (!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)) {
+
+                                        isDatesValid = false;
+                                    }
+                                } catch (Exception e) {
+
+                                    e.fillInStackTrace();
+                                    isDatesValid = false;
+                                }
+
+                                assessmentRepository = new AssessmentRepository(getApplication());
+                                List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
+                                int counter = assessmentList.size();
+
+                                for(Assessment assessment : assessmentList){
+                                    if(assessment.getAssessmentStart().equals(startDateEntry) &&
+                                            assessment.getAssessmentEnd().equals(endDateEntry)
+                                            && assessment.getAssessmentTitle().equals(asmntTitle)
+                                            && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
+                                            && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
+
+                                        --counter;
+                                    }
+                                }
+
+                                if(counter != assessmentList.size()-1){
+                                    isDatesValid = false;
+
+                                }
+
+                                if (isDatesValid) {
+
+
+                                    Long startTrigger = startDate.getTime();
+                                    Intent startIntent = new Intent(AssessmentDetails.this,
+                                            MyReceiver.class);
+                                    startIntent.setAction("asmntStartDateNotify");
+                                    startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
+                                            + "\nAssessment Title: " + asmntTitle +"\nSTARTS: " + startDateEntry);
+                                    PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
+                                            ++Home.asmntStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                                    AlarmManager asmntStartAlarmManager =
+                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                    asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, asmntStartSender);
+
+                                    Long endTrigger = endDate.getTime();
+                                    Intent endIntent = new Intent(AssessmentDetails.this, MyReceiver.class);
+                                    endIntent.setAction("asmntEndDateNotify");
+                                    endIntent.putExtra("endAsmntKey", "Assessment ID: " + asmntId
+                                            + "\tAssessment Title: " + asmntTitle + "\n ENDS: " + endDateEntry);
+                                    PendingIntent asmntEndSender = PendingIntent.getBroadcast(AssessmentDetails.this,
+                                            ++Home.asmntEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
+                                    AlarmManager asmntEndAlarmManager =
+                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                    asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, asmntEndSender);
+
+
+                                    Toast.makeText(getApplicationContext(), "Notify ASSESSMENT" +
+                                                    "\nID: " + asmntId + "\tTitle: " + asmntTitle + "\nStart Date: " + startDateEntry
+                                                    + "\nEnd Date: " + endDateEntry,
+                                            Toast.LENGTH_LONG).show();
+
+
+
+                                } else
+                                    Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                            "\nData changes must be saved before setting a notification." +
+                                            "\nStart date must be before end date." +
+                                            "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(), "Assessment must be saved to database" +
+                                        " before notifications can be set.", Toast.LENGTH_LONG).show();
+
+                            return true;
+                        }
+
+                        if(item.getItemId() == R.id.asmntDeleteOpt){
+
+                            if(isAsmntUpdate){
+
+                                getDeleteConfirmation();
+
+                                Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                                startActivity(intent);
+
+                                return true;
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(),"Select an assessment " +
+                                        "from the all assessments list for deletion.", Toast.LENGTH_LONG).show();
+
+
+
+                        }
+
+                        if(item.getItemId() == R.id.asmntSaveOpt){
+
+                            assessmentRepository = new AssessmentRepository(getApplication());
+                            courseRepository = new CourseRepository(getApplication());
+
+                            Assessment createdAssessment = createAssessment();
+                            Course checkCourse = courseRepository.getCourse(Integer.parseInt(selectedAsmntCourseId));
+
+                            if (checkCourse != null) {
+
+                                boolean isValidAsmntDate = true;
+
+                                if (isAsmntUpdate) {
+
+                                    try{
+                                        LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
+                                        LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
+
+                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                            isValidAsmntDate = false;
+
+                                        }
+                                    }
+                                    catch (Exception e){
+
+                                        isValidAsmntDate = false;
+                                    }
+
+                                    if(isValidAsmntDate){
+
+                                        assessmentRepository.update(createdAssessment);
+
+                                        isAsmntUpdate = false;
+
+                                        Toast.makeText(getApplicationContext(), "ASSESSMENT updated",
+                                                Toast.LENGTH_LONG).show();
+
+                                        Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                                        startActivity(intent);
+                                    }
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                                "\nStart date must be before end date." +
+                                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                                }
+                                else
+                                {
+
+                                    try{
+                                        LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
+                                        LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
+
+                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                            isValidAsmntDate = false;
+
+                                        }
+                                    }
+                                    catch (Exception e){
+
+                                        isValidAsmntDate = false;
+                                    }
+
+                                    if(isValidAsmntDate){
+                                        assessmentRepository.insert(createdAssessment);
+
+                                        Toast.makeText(getApplicationContext(), " ASSESSMENT saved",
+                                                Toast.LENGTH_LONG).show();
+
+                                        Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
+                                        startActivity(intent);
+                                    }
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                                "\nStart date must be before end date." +
+                                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                                }
 
                             }
+                            else
+                                Toast.makeText(getApplicationContext(), "Select a valid COURSE ID",
+                                        Toast.LENGTH_LONG).show();
                         }
-                        catch (Exception e){
 
-                            isValidAsmntDate = false;
-                        }
-
-                        if(isValidAsmntDate){
-
-                            assessmentRepository.update(createdAssessment);
-
-                            isAsmntUpdate = false;
-
-                            Toast.makeText(getApplicationContext(), "ASSESSMENT updated",
-                                    Toast.LENGTH_LONG).show();
+                        if(item.getItemId() == R.id.asmntAllAsmntsOpt){
 
                             Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
                             startActivity(intent);
+                            return true;
+
                         }
-                        else
-                            Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                    "\nStart date must be before end date." +
-                                    "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+
+
+
+                        return  false;
                     }
-                    else
-                    {
+                });
 
-                        try{
-                            LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
-                            LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
-
-                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
-
-                                isValidAsmntDate = false;
-
-                            }
-                        }
-                        catch (Exception e){
-
-                            isValidAsmntDate = false;
-                        }
-
-                        if(isValidAsmntDate){
-                            assessmentRepository.insert(createdAssessment);
-
-                            Toast.makeText(getApplicationContext(), " ASSESSMENT saved",
-                                Toast.LENGTH_LONG).show();
-
-                            Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                            startActivity(intent);
-                        }
-                        else
-                            Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                    "\nStart date must be before end date." +
-                                    "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-                    }
-
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Select a valid COURSE ID",
-                            Toast.LENGTH_LONG).show();
+                popupMenu.show();
             }
         });
 
-        asmntDelete = findViewById(R.id.deleteAsmntBut);
-        asmntDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               getDeleteConfirmation();
-
-            }
-        });
-
-        asmntNotify = findViewById(R.id.asmntNtfyBut);
-        asmntNotify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (isAsmntUpdate) {
-
-                    boolean isDatesValid = true;
-                    LocalDate checkStart = LocalDate.now().minusDays(1);
-                    LocalDate checkEnd = LocalDate.now().minusDays(1);
-
-                    setElementIds();
-                    String startDateEntry = mAsmntStart.getText().toString();
-                    String endDateEntry = mAsmntEnd.getText().toString();
-                    String asmntTitle = mAsmntTitle.getText().toString();
-                    String asmntId = mAsmntId.getText().toString();
-
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    Date startDate = null;
-                    Date endDate = null;
-                    try {
-
-                        checkStart = LocalDate.parse(startDateEntry);
-                        checkEnd = LocalDate.parse(endDateEntry);
-                        startDate = sdf.parse(checkStart.toString());
-                        endDate = sdf.parse(checkEnd.toString());
-
-                        if (!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)) {
-
-                            isDatesValid = false;
-                        }
-                    } catch (Exception e) {
-
-                        e.fillInStackTrace();
-                        isDatesValid = false;
-                    }
-
-                    assessmentRepository = new AssessmentRepository(getApplication());
-                    List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
-                    int counter = assessmentList.size();
-
-                    for(Assessment assessment : assessmentList){
-                        if(assessment.getAssessmentStart().equals(startDateEntry) &&
-                                assessment.getAssessmentEnd().equals(endDateEntry)
-                        && assessment.getAssessmentTitle().equals(asmntTitle)
-                        && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
-                        && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
-
-                            --counter;
-                        }
-                    }
-
-                    if(counter != assessmentList.size()-1){
-                        isDatesValid = false;
-
-                    }
-
-                    if (isDatesValid) {
-
-
-                        Long startTrigger = startDate.getTime();
-                        Intent startIntent = new Intent(AssessmentDetails.this,
-                                MyReceiver.class);
-                        startIntent.setAction("asmntStartDateNotify");
-                        startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
-                        + "\nAssessment Title: " + asmntTitle +"\nSTARTS: " + startDateEntry);
-                        PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
-                                ++Home.asmntStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntStartAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, asmntStartSender);
-
-                        Long endTrigger = endDate.getTime();
-                        Intent endIntent = new Intent(AssessmentDetails.this, MyReceiver.class);
-                        endIntent.setAction("asmntEndDateNotify");
-                        endIntent.putExtra("endAsmntKey", "Assessment ID: " + asmntId
-                        + "\tAssessment Title: " + asmntTitle + "\n ENDS: " + endDateEntry);
-                        PendingIntent asmntEndSender = PendingIntent.getBroadcast(AssessmentDetails.this,
-                                ++Home.asmntEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntEndAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, asmntEndSender);
-
-
-                        Toast.makeText(getApplicationContext(), "Notify ASSESSMENT" +
-                                        "\nID: " + asmntId + "\tTitle: " + asmntTitle + "\nStart Date: " + startDateEntry
-                                + "\nEnd Date: " + endDateEntry,
-                                Toast.LENGTH_LONG).show();
-
-
-
-                    } else
-                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
-                                "\nData changes must be saved before setting a notification." +
-                                "\nStart date must be before end date." +
-                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Assessment must be saved to database" +
-                            " before notifications can be set.", Toast.LENGTH_LONG).show();
-            }
-        });
 
 
     }

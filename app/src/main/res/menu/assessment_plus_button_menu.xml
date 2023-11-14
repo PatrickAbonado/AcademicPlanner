@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/asmntAllAsmntsOpt"
+        android:title="ALL ASSESSMENTS"/>
+
+    <item
+        android:id="@+id/asmntNotifyOpt"
+        android:title="NOTIFY"/>
+
+    <item
+        android:id="@+id/asmntDeleteOpt"
+        android:title="DELETE"/>
+
+    <item
+        android:id="@+id/asmntSaveOpt"
+        android:title="SAVE"/>
+
+
+</menu>

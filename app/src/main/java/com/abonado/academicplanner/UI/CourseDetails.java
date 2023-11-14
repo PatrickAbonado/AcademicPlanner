@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
 import com.abonado.academicplanner.utilities.MyReceiver;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -63,6 +65,7 @@ public class CourseDetails extends AppCompatActivity {
     boolean isCourseUpdate = false;
     int courseToUpdateId = 0;
     String selectedCrseTrmId;
+    FloatingActionButton coursePlusButtonMenuFab;
 
 
 
@@ -197,223 +200,275 @@ public class CourseDetails extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Button courseDtlsSaveBut = findViewById(R.id.saveCourseDetails);
-        courseDtlsSaveBut.setOnClickListener(new View.OnClickListener() {
+
+        coursePlusButtonMenuFab = findViewById(R.id.coursePlusButFab);
+        coursePlusButtonMenuFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                courseRepository = new CourseRepository(getApplication());
-                termRepository = new TermRepository(getApplication());
+                PopupMenu popupMenu = new PopupMenu(CourseDetails.this,coursePlusButtonMenuFab);
+                popupMenu.getMenuInflater().inflate(R.menu.course_plus_button_menu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
-                Course course = createCourse();
-
-                Term checkTerm = termRepository.getTerm(Integer.parseInt(selectedCrseTrmId));
-
-                if(checkTerm != null){
-
-                    boolean isValidCourseTimeEntries = true;
-
-                    if (isCourseUpdate) {
-
-                        try{
-                            LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
-                            LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
-
-                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
-
-                                isValidCourseTimeEntries = false;
-
-                            }
-                        }
-                        catch (Exception e){
-
-                            isValidCourseTimeEntries = false;
-                        }
-
-                        if(isValidCourseTimeEntries) {
-                            courseRepository.update(course);
-
-                            isCourseUpdate = false;
-                            Toast.makeText(getApplicationContext(), "COURSE saved",
-                                    Toast.LENGTH_LONG).show();
+                        if(item.getItemId() == R.id.courseAllCoursesOpt){
 
                             Intent intent = new Intent(CourseDetails.this, CoursesList.class);
                             startActivity(intent);
+
+                            return true;
+
                         }
-                        else
-                            Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                    "\nStart date must be before end date." +
-                                    "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
 
-                    }
-                    else
-                    {
+                        if(item.getItemId() == R.id.courseNotifyOpt){
 
-                        try{
-                            LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
-                            LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
+                            boolean isValidNotifyData = true;
 
-                            if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                            setElementIds();
 
-                                isValidCourseTimeEntries = false;
+                            if(isCourseUpdate) {
+
+                                String courseId = mCourseId.getText().toString();
+                                String courseTermId = selectedCrseTrmId;
+                                String courseTitle = mCourseTitle.getText().toString();
+                                String courseStart = mCourseStart.getText().toString();
+                                String courseEnd = mCourseEnd.getText().toString();
+                                String courseStatus = courseStatusSelection;
+                                String courseNotes = mCourseNotes.getText().toString();
+                                String courseInstrNm = mCourseInstrName.getText().toString();
+                                String courseInstrPhn = mCourseInstrPhone.getText().toString();
+                                String courseInstrEml = mCourseInstrEmail.getText().toString();
+
+                                courseRepository = new CourseRepository(getApplication());
+                                List<Course> courseList = courseRepository.getAllCourses();
+                                int counter = courseList.size();
+
+                                for(Course course : courseList){
+                                    if(course.getCourseId() == Integer.parseInt(courseId) &&
+                                            course.getCourseTermId() == Integer.parseInt(courseTermId) &&
+                                            course.getCourseTitle().equals(courseTitle) &&
+                                            course.getCourseStart().equals(courseStart) &&
+                                            course.getCourseEnd().equals(courseEnd) &&
+                                            course.getCourseStatus().equals(courseStatus) &&
+                                            course.getCourseNotes().equals(courseNotes) &&
+                                            course.getCourseInstrName().equals(courseInstrNm) &&
+                                            course.getCourseInstrPhone().equals(courseInstrPhn) &&
+                                            course.getCourseInstrEmail().equals(courseInstrEml)){
+
+                                        --counter;
+                                    }
+                                }
+
+                                if(counter != courseList.size()-1){
+
+                                    isValidNotifyData = false;
+                                }
+
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                                Date startDate = null;
+                                Date endDate = null;
+                                try{
+
+                                    LocalDate start = LocalDate.parse(courseStart);
+                                    LocalDate end = LocalDate.parse(courseEnd);
+
+                                    if(!start.isBefore(end) || !end.isAfter(start)){
+
+                                        isValidNotifyData = false;
+                                    }
+
+                                    startDate = sdf.parse(courseStart);
+                                    endDate = sdf.parse(courseEnd);
+
+                                }
+                                catch (Exception e){
+
+                                    isValidNotifyData = false;
+                                    e.fillInStackTrace();
+                                }
+
+
+
+
+                                if (isValidNotifyData) {
+
+                                    Long startTrigger = startDate.getTime();
+                                    Intent startIntent = new Intent(CourseDetails.this,
+                                            MyReceiver.class);
+                                    startIntent.setAction("courseStartDateNotify");
+                                    startIntent.putExtra("startCourseKey", "Course ID: " + courseId
+                                            + "\nCourse Title: " + courseTitle +"\nSTARTS: " + courseStart);
+                                    PendingIntent courseStartSender = PendingIntent.getBroadcast(CourseDetails.this,
+                                            ++Home.courseStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                                    AlarmManager asmntStartAlarmManager =
+                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                    asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, courseStartSender);
+
+                                    Long endTrigger = endDate.getTime();
+                                    Intent endIntent = new Intent(CourseDetails.this, MyReceiver.class);
+                                    endIntent.setAction("courseEndDateNotify");
+                                    endIntent.putExtra("courseEndKey", "Course ID: " + courseId
+                                            + "\tCourse Title: " + courseTitle + "\n ENDS: " + courseEnd);
+                                    PendingIntent courseEndSender = PendingIntent.getBroadcast(CourseDetails.this,
+                                            ++Home.courseEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
+                                    AlarmManager asmntEndAlarmManager =
+                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                    asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, courseEndSender);
+
+
+                                    Toast.makeText(getApplicationContext(), "Notify COURSE" +
+                                                    "\nID: " + courseId + "\tTitle: " + courseTitle + "\nStart Date: " + courseStart
+                                                    + "\nEnd Date: " + courseEnd,
+                                            Toast.LENGTH_LONG).show();
+
+                                }
+                                else
+                                    Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                            "\nData changes must be saved before setting a notification." +
+                                            "\nStart date must be before end date." +
+                                            "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
                             }
-                        }
-                        catch (Exception e){
-
-                            isValidCourseTimeEntries = false;
-                        }
-
-                        if (isValidCourseTimeEntries) {
-                            courseRepository.insert(course);
-
-                            Toast.makeText(getApplicationContext(), "COURSE saved",
-                                    Toast.LENGTH_LONG).show();
-
-                            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
-                            startActivity(intent);
-                        }
-                        else
-                            Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                    "\nStart date must be before end date." +
-                                    "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-                    }
-
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Select a TERM ID", Toast.LENGTH_LONG).show();
-                }
+                            else
+                                Toast.makeText(getApplicationContext(), "Course must be saved to database" +
+                                        " before notifications can be set.", Toast.LENGTH_LONG).show();
 
 
-
-
-            }
-        });
-
-        Button delete = findViewById(R.id.deleteCourseDtls);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getCourseDeleteConfirmation();
-
-            }
-        });
-
-        Button courseNotify = findViewById(R.id.courseNotifyBut);
-        courseNotify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                boolean isValidNotifyData = true;
-
-                setElementIds();
-
-                if(isCourseUpdate) {
-
-                    String courseId = mCourseId.getText().toString();
-                    String courseTermId = selectedCrseTrmId;
-                    String courseTitle = mCourseTitle.getText().toString();
-                    String courseStart = mCourseStart.getText().toString();
-                    String courseEnd = mCourseEnd.getText().toString();
-                    String courseStatus = courseStatusSelection;
-                    String courseNotes = mCourseNotes.getText().toString();
-                    String courseInstrNm = mCourseInstrName.getText().toString();
-                    String courseInstrPhn = mCourseInstrPhone.getText().toString();
-                    String courseInstrEml = mCourseInstrEmail.getText().toString();
-
-                    courseRepository = new CourseRepository(getApplication());
-                    List<Course> courseList = courseRepository.getAllCourses();
-                    int counter = courseList.size();
-
-                    for(Course course : courseList){
-                        if(course.getCourseId() == Integer.parseInt(courseId) &&
-                        course.getCourseTermId() == Integer.parseInt(courseTermId) &&
-                        course.getCourseTitle().equals(courseTitle) &&
-                        course.getCourseStart().equals(courseStart) &&
-                        course.getCourseEnd().equals(courseEnd) &&
-                        course.getCourseStatus().equals(courseStatus) &&
-                        course.getCourseNotes().equals(courseNotes) &&
-                        course.getCourseInstrName().equals(courseInstrNm) &&
-                        course.getCourseInstrPhone().equals(courseInstrPhn) &&
-                        course.getCourseInstrEmail().equals(courseInstrEml)){
-
-                            --counter;
-                        }
-                    }
-
-                    if(counter != courseList.size()-1){
-
-                        isValidNotifyData = false;
-                    }
-
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    Date startDate = null;
-                    Date endDate = null;
-                    try{
-
-                        LocalDate start = LocalDate.parse(courseStart);
-                        LocalDate end = LocalDate.parse(courseEnd);
-
-                        if(!start.isBefore(end) || !end.isAfter(start)){
-
-                            isValidNotifyData = false;
+                            return true;
                         }
 
-                        startDate = sdf.parse(courseStart);
-                        endDate = sdf.parse(courseEnd);
+                        if(item.getItemId() == R.id.courseShareNoteOpt){
 
+                            mCourseNotes = findViewById(R.id.courseNotesTxt);
+                            String notes = mCourseNotes.getText().toString();
+
+                            Intent sendIntent = new Intent();
+                            sendIntent.setAction(Intent.ACTION_SEND);
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, notes);
+                            sendIntent.putExtra(Intent.EXTRA_TITLE, "Course Notes");
+                            sendIntent.setType("text/plain");
+                            Intent shareIntent = Intent.createChooser(sendIntent, null);
+                            startActivity(shareIntent);
+
+                            return true;
+                        }
+
+                        if(item.getItemId() == R.id.courseDeleteOpt){
+
+                            if(isCourseUpdate){
+
+                                getCourseDeleteConfirmation();
+
+                                Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                                startActivity(intent);
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(),"Select a course " +
+                                        "from the all courses list for deletion.", Toast.LENGTH_LONG).show();
+
+                            return  true;
+                        }
+
+                        if(item.getItemId() == R.id.courseSaveOpt){
+
+                            courseRepository = new CourseRepository(getApplication());
+                            termRepository = new TermRepository(getApplication());
+
+                            Course course = createCourse();
+
+                            Term checkTerm = termRepository.getTerm(Integer.parseInt(selectedCrseTrmId));
+
+                            if(checkTerm != null){
+
+                                boolean isValidCourseTimeEntries = true;
+
+                                if (isCourseUpdate) {
+
+                                    try{
+                                        LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
+                                        LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
+
+                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                            isValidCourseTimeEntries = false;
+
+                                        }
+                                    }
+                                    catch (Exception e){
+
+                                        isValidCourseTimeEntries = false;
+                                    }
+
+                                    if(isValidCourseTimeEntries) {
+                                        courseRepository.update(course);
+
+                                        isCourseUpdate = false;
+                                        Toast.makeText(getApplicationContext(), "COURSE UPDATED",
+                                                Toast.LENGTH_LONG).show();
+
+                                        Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                                        startActivity(intent);
+
+                                        return true;
+                                    }
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                                "\nStart date must be before end date." +
+                                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+
+                                }
+                                else
+                                {
+
+                                    try{
+                                        LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
+                                        LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
+
+                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+
+                                            isValidCourseTimeEntries = false;
+                                        }
+                                    }
+                                    catch (Exception e){
+
+                                        isValidCourseTimeEntries = false;
+                                    }
+
+                                    if (isValidCourseTimeEntries) {
+                                        courseRepository.insert(course);
+
+                                        Toast.makeText(getApplicationContext(), "COURSE SAVED",
+                                                Toast.LENGTH_LONG).show();
+
+                                        Intent intent = new Intent(CourseDetails.this, CoursesList.class);
+                                        startActivity(intent);
+
+                                        return true;
+                                    }
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                                "\nStart date must be before end date." +
+                                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(),"Select a TERM ID", Toast.LENGTH_LONG).show();
+                            }
+
+
+
+
+                        }
+
+
+
+                        return false;
                     }
-                    catch (Exception e){
+                });
 
-                        isValidNotifyData = false;
-                        e.fillInStackTrace();
-                    }
-
-
-
-
-                    if (isValidNotifyData) {
-
-                        Long startTrigger = startDate.getTime();
-                        Intent startIntent = new Intent(CourseDetails.this,
-                                MyReceiver.class);
-                        startIntent.setAction("courseStartDateNotify");
-                        startIntent.putExtra("startCourseKey", "Course ID: " + courseId
-                                + "\nCourse Title: " + courseTitle +"\nSTARTS: " + courseStart);
-                        PendingIntent courseStartSender = PendingIntent.getBroadcast(CourseDetails.this,
-                                ++Home.courseStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntStartAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, courseStartSender);
-
-                        Long endTrigger = endDate.getTime();
-                        Intent endIntent = new Intent(CourseDetails.this, MyReceiver.class);
-                        endIntent.setAction("courseEndDateNotify");
-                        endIntent.putExtra("courseEndKey", "Course ID: " + courseId
-                                + "\tCourse Title: " + courseTitle + "\n ENDS: " + courseEnd);
-                        PendingIntent courseEndSender = PendingIntent.getBroadcast(CourseDetails.this,
-                                ++Home.courseEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntEndAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, courseEndSender);
-
-
-                        Toast.makeText(getApplicationContext(), "Notify COURSE" +
-                                        "\nID: " + courseId + "\tTitle: " + courseTitle + "\nStart Date: " + courseStart
-                                        + "\nEnd Date: " + courseEnd,
-                                Toast.LENGTH_LONG).show();
-
-                    }
-                    else
-                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
-                                "\nData changes must be saved before setting a notification." +
-                                "\nStart date must be before end date." +
-                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Course must be saved to database" +
-                            " before notifications can be set.", Toast.LENGTH_LONG).show();
+                popupMenu.show();
 
             }
         });

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/courseAllCoursesOpt"
+        android:title="ALL COURSES"/>
+
+    <item
+        android:id = "@+id/courseNotifyOpt"
+        android:title="NOTIFY"/>
+
+    <item
+        android:id="@+id/courseShareNoteOpt"
+        android:title="SHARE NOTE"/>
+
+    <item
+        android:id="@+id/courseDeleteOpt"
+        android:title="DELETE"/>
+
+    <item
+        android:id="@+id/courseSaveOpt"
+        android:title="SAVE"/>
+
+
+
+</menu>

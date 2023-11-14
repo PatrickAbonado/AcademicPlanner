@@ -166,6 +166,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/asmntFloatButMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/baseline_add_24" />
+
         <Button
             android:id="@+id/termsNotifyBut"
             android:layout_width="wrap_content"
@@ -173,7 +181,6 @@
             android:clickable="true"
             android:text="NOTIFY"
             android:textSize="18sp"></Button>
-
 
         <Button
             android:id="@+id/deleteTrmTrmDtls"
