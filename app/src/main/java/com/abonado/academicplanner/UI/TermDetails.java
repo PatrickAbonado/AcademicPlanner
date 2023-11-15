@@ -40,7 +40,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeoutException;
 
 public class TermDetails extends AppCompatActivity {
 
@@ -54,7 +53,7 @@ public class TermDetails extends AppCompatActivity {
     int mTermId = 0;
     TermRepository termRepository;
     CourseRepository courseRepository;
-    boolean isUpdate = false;
+    boolean isTermUpdate = false;
     int termIdToUpdate = 0;
     FloatingActionButton termFloatButtonMenu;
 
@@ -100,10 +99,10 @@ public class TermDetails extends AppCompatActivity {
         else {
 
             nonEditId.setText(String.valueOf(termIdToUpdate));
-            isUpdate = true;
+            isTermUpdate = true;
         }
 
-        if(isUpdate){
+        if(isTermUpdate){
             String xTermName = intent.getStringExtra("term_name");
             String xTermStart = intent.getStringExtra("term_start");
             String xTermEnd =  intent.getStringExtra("term_end");
@@ -114,227 +113,6 @@ public class TermDetails extends AppCompatActivity {
 
         }
 
-
-        Button termsSaveButton = findViewById(R.id.saveTermDetails);
-        termsSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                termRepository = new TermRepository(getApplication());
-                boolean isTermTimeValid = true;
-
-                if(isUpdate){
-
-                    nonEditId = findViewById(R.id.trmIdTxt);
-                    editName = findViewById(R.id.trmNmEdTxt);
-                    editStart = findViewById(R.id.trmStrtTxt);
-                    editEnd = findViewById(R.id.trmEndTxt);
-                    mTermId = termIdToUpdate;
-                    mTermName = editName.getText().toString();
-
-                    mTermStart = editStart.getText().toString();
-                    mTermEnd = editEnd.getText().toString();
-
-                    DateTimeFormatter dateFormatPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-                    try{
-                        LocalDate checkStart = LocalDate.parse(mTermStart);
-                        LocalDate checkEnd = LocalDate.parse(mTermEnd);
-
-                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
-                            isTermTimeValid = false;
-                        }
-                    }
-                    catch (Exception e){
-                        isTermTimeValid = false;
-                    }
-
-
-                    if(isTermTimeValid){
-
-                        Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
-
-                        termRepository.update(term);
-
-                        isUpdate = false;
-
-                        Toast.makeText(getApplicationContext(), "TERM SAVED",
-                                Toast.LENGTH_LONG).show();
-
-                        finish();
-                    }
-                    else
-                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                "\nStart date must be before end date." +
-                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-
-                }
-                else {
-
-                    editName = findViewById(R.id.trmNmEdTxt);
-                    editStart = findViewById(R.id.trmStrtTxt);
-                    editEnd = findViewById(R.id.trmEndTxt);
-                    mTermName = editName.getText().toString();
-
-                    mTermStart = editStart.getText().toString();
-                    mTermEnd = editEnd.getText().toString();
-
-
-                    try{
-
-                        LocalDate checkStart = LocalDate.parse(mTermStart);
-                        LocalDate checkEnd = LocalDate.parse(mTermEnd);
-
-                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
-                            isTermTimeValid = false;
-                        }
-                    }
-                    catch (Exception e){
-                        isTermTimeValid = false;
-                    }
-
-
-                    if(isTermTimeValid){
-
-                        Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
-
-                        termRepository.insert(term);
-
-                        Toast.makeText(getApplicationContext(), "TERM SAVED",
-                                Toast.LENGTH_LONG).show();
-
-                        finish();
-                    }
-                    else
-                        Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
-                                "\nStart date must be before end date." +
-                                "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-
-                }
-            }
-        });
-
-        Button delete = findViewById(R.id.deleteTrmTrmDtls);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getTermDeleteConfirmation();
-
-            }
-        });
-
-
-        Button termNotifyButton = findViewById(R.id.termsNotifyBut);
-        termNotifyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                boolean isValidNotifyData = true;
-
-                if(isUpdate){
-
-                    editName = findViewById(R.id.trmNmEdTxt);
-                    editStart = findViewById(R.id.trmStrtTxt);
-                    editEnd = findViewById(R.id.trmEndTxt);
-                    nonEditId = findViewById(R.id.trmIdTxt);
-                    String termId = nonEditId.getText().toString();
-                    String termName = editName.getText().toString();
-                    String termStart = editStart.getText().toString();
-                    String termEnd = editEnd.getText().toString();
-
-                    termRepository = new TermRepository(getApplication());
-                    List<Term> termList = termRepository.getAllTerms();
-                    int counter = termList.size();
-
-                    for(Term term : termList){
-                        if(term.getTermId() == Integer.parseInt(termId) &&
-                        term.getTermName().equals(termName) &&
-                        term.getTermStart().equals(termStart) &&
-                        term.getTermEnd().equals(termEnd)){
-
-                            --counter;
-                        }
-                    }
-
-                    if(counter != termList.size()-1){
-
-                        isValidNotifyData = false;
-                    }
-
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                    Date startDate = null;
-                    Date endDate = null;
-                    try {
-                        LocalDate start = LocalDate.parse(termStart);
-                        LocalDate end = LocalDate.parse(termEnd);
-
-                        if(!start.isBefore(end) || !end.isAfter(start)){
-
-                            isValidNotifyData = false;
-                        }
-
-                        startDate = sdf.parse(termStart);
-                        endDate = sdf.parse(termEnd);
-                    }
-                    catch (Exception e){
-
-                        isValidNotifyData = false;
-                        e.fillInStackTrace();
-                    }
-
-
-                    if(isValidNotifyData){
-
-                        Long startTrigger = startDate.getTime();
-                        Intent startIntent = new Intent(TermDetails.this,
-                                MyReceiver.class);
-                        startIntent.setAction("termStartDateNotify");
-                        startIntent.putExtra("startTermKey", "Term ID: " + termId
-                                + "\nTerm Name: " + termName +"\nSTARTS: " + termStart);
-                        PendingIntent termStartSender = PendingIntent.getBroadcast(TermDetails.this,
-                                ++Home.termStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntStartAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, termStartSender);
-
-
-                        Long endTrigger = endDate.getTime();
-                        Intent endIntent = new Intent(TermDetails.this, MyReceiver.class);
-                        endIntent.setAction("termEndDateNotify");
-                        endIntent.putExtra("termEndKey", "Term ID: " + termId
-                                + "\tTerm Name: " + termName + "\n ENDS: " + termEnd);
-                        PendingIntent termEndSender = PendingIntent.getBroadcast(TermDetails.this,
-                                ++Home.termEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager asmntEndAlarmManager =
-                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, termEndSender);
-
-
-                        Toast.makeText(getApplicationContext(), "Notify COURSE" +
-                                        "\nID: " + termId + "\tName: " + termName + "\nStart Date: " + termStart
-                                        + "\nEnd Date: " + termEnd,
-                                Toast.LENGTH_LONG).show();
-
-                    }
-                    else
-                        Toast.makeText(getApplicationContext(), "Invalid Selection." +
-                                "\nData changes must be saved before setting a notification." +
-                                "\nStart date must be before end date." +
-                                "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
-
-
-
-
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Term must be saved to database" +
-                            " before notifications can be set.", Toast.LENGTH_LONG).show();
-
-
-            }
-        });
 
         termFloatButtonMenu = findViewById(R.id.termFloatButMenu);
         termFloatButtonMenu.setOnClickListener(new View.OnClickListener() {
@@ -351,7 +129,7 @@ public class TermDetails extends AppCompatActivity {
 
                             boolean isValidNotifyData = true;
 
-                            if(isUpdate){
+                            if(isTermUpdate){
 
                                 editName = findViewById(R.id.trmNmEdTxt);
                                 editStart = findViewById(R.id.trmStrtTxt);
@@ -446,7 +224,7 @@ public class TermDetails extends AppCompatActivity {
 
                             boolean isValidNotifyData = true;
 
-                            if(isUpdate){
+                            if(isTermUpdate){
 
                                 editName = findViewById(R.id.trmNmEdTxt);
                                 editStart = findViewById(R.id.trmStrtTxt);
@@ -533,6 +311,120 @@ public class TermDetails extends AppCompatActivity {
 
                         }
 
+                        if(item.getItemId() == R.id.termDeleteOpt){
+
+                            if(isTermUpdate){
+
+                                getTermDeleteConfirmation();
+
+                                return true;
+
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(),"Select a term " +
+                                        "from the all terms list for deletion.", Toast.LENGTH_LONG).show();
+                        }
+
+                        if(item.getItemId() == R.id.termSaveOpt){
+
+                            termRepository = new TermRepository(getApplication());
+                            boolean isTermTimeValid = true;
+
+                            if(isTermUpdate){
+
+                                nonEditId = findViewById(R.id.trmIdTxt);
+                                editName = findViewById(R.id.trmNmEdTxt);
+                                editStart = findViewById(R.id.trmStrtTxt);
+                                editEnd = findViewById(R.id.trmEndTxt);
+                                mTermId = termIdToUpdate;
+                                mTermName = editName.getText().toString();
+
+                                mTermStart = editStart.getText().toString();
+                                mTermEnd = editEnd.getText().toString();
+
+                                DateTimeFormatter dateFormatPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                                try{
+                                    LocalDate checkStart = LocalDate.parse(mTermStart);
+                                    LocalDate checkEnd = LocalDate.parse(mTermEnd);
+
+                                    if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        isTermTimeValid = false;
+                                    }
+                                }
+                                catch (Exception e){
+                                    isTermTimeValid = false;
+                                }
+
+
+                                if(isTermTimeValid){
+
+                                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
+
+                                    termRepository.update(term);
+
+                                    isTermUpdate = false;
+
+                                    Toast.makeText(getApplicationContext(), "TERM SAVED",
+                                            Toast.LENGTH_LONG).show();
+
+                                    finish();
+
+                                    return true;
+                                }
+                                else
+                                    Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                            "\nStart date must be before end date." +
+                                            "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+
+                            }
+                            else {
+
+                                editName = findViewById(R.id.trmNmEdTxt);
+                                editStart = findViewById(R.id.trmStrtTxt);
+                                editEnd = findViewById(R.id.trmEndTxt);
+                                mTermName = editName.getText().toString();
+
+                                mTermStart = editStart.getText().toString();
+                                mTermEnd = editEnd.getText().toString();
+
+
+                                try{
+
+                                    LocalDate checkStart = LocalDate.parse(mTermStart);
+                                    LocalDate checkEnd = LocalDate.parse(mTermEnd);
+
+                                    if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        isTermTimeValid = false;
+                                    }
+                                }
+                                catch (Exception e){
+                                    isTermTimeValid = false;
+                                }
+
+
+                                if(isTermTimeValid){
+
+                                    Term term = new Term(mTermId, mTermName, mTermStart, mTermEnd);
+
+                                    termRepository.insert(term);
+
+                                    Toast.makeText(getApplicationContext(), "TERM SAVED",
+                                            Toast.LENGTH_LONG).show();
+
+                                    finish();
+
+                                    return true;
+                                }
+                                else
+                                    Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
+                                            "\nStart date must be before end date." +
+                                            "\nFormat: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+
+
                         return false;
                     }
                 });
@@ -584,15 +476,16 @@ public class TermDetails extends AppCompatActivity {
                                 }
 
                                 courseRepository.delete(course);
+
+
                             }
 
                             Term term = termRepository.getTerm(termIdToUpdate);
                             termRepository.delete(term);
-                            Toast.makeText(getApplicationContext(), "TERM ID #" + termIdToUpdate + " Deleted",
+                            Toast.makeText(getApplicationContext(), "TERM ID #" + termIdToUpdate + " DELETED",
                                     Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(TermDetails.this, TermsList.class);
-                            startActivity(intent);
+                            finish();
 
                             dialog.dismiss();
                         }

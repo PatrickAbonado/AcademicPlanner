@@ -158,13 +158,12 @@
 
     <LinearLayout
         android:id="@+id/buttonTrmDetlsLayt"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -174,32 +173,6 @@
             android:clickable="true"
             app:srcCompat="@drawable/baseline_add_24" />
 
-        <Button
-            android:id="@+id/termsNotifyBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="NOTIFY"
-            android:textSize="18sp"></Button>
-
-        <Button
-            android:id="@+id/deleteTrmTrmDtls"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="DELETE"
-            android:textSize="18sp"/>
-
-        <Button
-            android:id="@+id/saveTermDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:textSize="18sp"
-            android:text="SAVE"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
 
     </LinearLayout>
 

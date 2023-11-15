@@ -36,7 +36,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, assessments_channel_id);
                 Notification n = new NotificationCompat.Builder(context, assessments_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("startAsmntKey"))
                         .setContentTitle("ASSESSMENT START Date").build();
                 NotificationManager notificationManager =
@@ -49,7 +49,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, assessments_channel_id);
                 Notification n = new NotificationCompat.Builder(context, assessments_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("endAsmntKey"))
                         .setContentTitle("ASSESSMENT END Date").build();
                 NotificationManager notificationManager =
@@ -64,7 +64,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, course_channel_id);
                 Notification n = new NotificationCompat.Builder(context, course_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("startCourseKey"))
                         .setContentTitle("COURSE START Date").build();
                 NotificationManager notificationManager =
@@ -78,7 +78,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, course_channel_id);
                 Notification n = new NotificationCompat.Builder(context, course_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("courseEndKey"))
                         .setContentTitle("COURSE END Date").build();
                 NotificationManager notificationManager =
@@ -93,7 +93,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, term_channel_id);
                 Notification n = new NotificationCompat.Builder(context, term_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("startTermKey"))
                         .setContentTitle("TERM START Date").build();
                 NotificationManager notificationManager =
@@ -108,7 +108,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Toast.LENGTH_LONG).show();
                 createNotificationChannel(context, term_channel_id);
                 Notification n = new NotificationCompat.Builder(context, term_channel_id)
-                        .setSmallIcon(R.drawable.baseline_school_24)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentText(intent.getStringExtra("termEndKey"))
                         .setContentTitle("TERM END Date").build();
                 NotificationManager notificationManager =

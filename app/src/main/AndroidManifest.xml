@@ -54,7 +54,7 @@
         <activity
             android:name=".UI.Home"
             android:exported="true"
-            android:label="Home"
+            android:label="Academic Planner"
             android:textStyle="bold">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
