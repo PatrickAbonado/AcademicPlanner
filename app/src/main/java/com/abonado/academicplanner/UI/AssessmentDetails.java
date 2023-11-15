@@ -374,11 +374,10 @@ public class AssessmentDetails extends AppCompatActivity {
 
                                         isAsmntUpdate = false;
 
-                                        Toast.makeText(getApplicationContext(), "ASSESSMENT updated",
+                                        Toast.makeText(getApplicationContext(), "ASSESSMENT UPDATED",
                                                 Toast.LENGTH_LONG).show();
 
-                                        Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                                        startActivity(intent);
+                                        finish();
                                     }
                                     else
                                         Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
@@ -406,11 +405,10 @@ public class AssessmentDetails extends AppCompatActivity {
                                     if(isValidAsmntDate){
                                         assessmentRepository.insert(createdAssessment);
 
-                                        Toast.makeText(getApplicationContext(), " ASSESSMENT saved",
+                                        Toast.makeText(getApplicationContext(), " ASSESSMENT SAVED",
                                                 Toast.LENGTH_LONG).show();
 
-                                        Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                                        startActivity(intent);
+                                        finish();
                                     }
                                     else
                                         Toast.makeText(getApplicationContext(), "Invalid DATE entry." +
@@ -431,8 +429,6 @@ public class AssessmentDetails extends AppCompatActivity {
                             return true;
 
                         }
-
-
 
                         return  false;
                     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/termStartNotifyOpt"
+        android:title="NOTIFY START"/>
+
+    <item
+        android:id="@+id/termEndNotifyOpt"
+        android:title="NOTIFY END"/>
+
+    <item
+        android:id="@+id/termDeleteOpt"
+        android:title="DELETE"/>
+
+    <item
+        android:id="@+id/termSaveOpt"
+        android:title="SAVE"/>
+
+</menu>

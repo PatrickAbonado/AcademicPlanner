@@ -23,6 +23,9 @@ import java.util.List;
 public class CoursesList extends AppCompatActivity {
 
     CourseRepository courseRepository;
+    List<Course> allCourses;
+    CourseAdapter courseAdapter;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -30,10 +33,10 @@ public class CoursesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses_list);
 
-        RecyclerView recyclerView = findViewById(R.id.coursesLstRcyle);
+        recyclerView = findViewById(R.id.coursesLstRcyle);
         courseRepository = new CourseRepository(getApplication());
-        List<Course> allCourses = courseRepository.getAllCourses();
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        allCourses = courseRepository.getAllCourses();
+        courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourses(allCourses);
@@ -74,6 +77,17 @@ public class CoursesList extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        allCourses = courseRepository.getAllCourses();
+        courseAdapter.setCourses(allCourses);
+
+    }
+
+
 
     @Override
     public boolean onSupportNavigateUp(){

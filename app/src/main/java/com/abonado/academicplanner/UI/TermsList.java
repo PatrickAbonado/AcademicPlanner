@@ -23,6 +23,9 @@ import java.util.List;
 public class TermsList extends AppCompatActivity {
 
     TermRepository termRepository;
+    RecyclerView recyclerView;
+    List<Term> allTerms;
+    TermAdapter termAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +61,28 @@ public class TermsList extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.trmsLstRcyle);
+        recyclerView = findViewById(R.id.trmsLstRcyle);
         termRepository = new TermRepository(getApplication());
-        List<Term> allTerms = termRepository.getAllTerms();
-        final TermAdapter termAdapter = new TermAdapter(this);
+        allTerms = termRepository.getAllTerms();
+        termAdapter = new TermAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         termAdapter.setTerms(allTerms);
 
     }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        allTerms = termRepository.getAllTerms();
+        termAdapter.setTerms(allTerms);
+
+    }
+
+
+
 
     @Override
     public boolean onSupportNavigateUp(){

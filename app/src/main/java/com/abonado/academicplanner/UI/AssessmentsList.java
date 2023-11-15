@@ -25,6 +25,8 @@ public class AssessmentsList extends AppCompatActivity {
 
     AssessmentRepository assessmentRepository;
     List<Assessment> allAssessments;
+    RecyclerView recyclerView;
+    AssessmentAdapter assessmentAdapter;
 
 
 
@@ -44,8 +46,8 @@ public class AssessmentsList extends AppCompatActivity {
         }
 
 
-        RecyclerView recyclerView = findViewById(R.id.asmntsLstRcyle);
-        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        recyclerView = findViewById(R.id.asmntsLstRcyle);
+        assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         assessmentAdapter.setAssessments(allAssessments);
@@ -62,6 +64,17 @@ public class AssessmentsList extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        allAssessments = assessmentRepository.getAllAssessments();
+        assessmentAdapter.setAssessments(allAssessments);
+
+    }
+
 
     @Override
     public boolean onSupportNavigateUp(){

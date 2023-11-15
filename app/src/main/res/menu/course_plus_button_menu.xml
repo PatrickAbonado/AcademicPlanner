@@ -7,8 +7,11 @@
         android:title="ALL COURSES"/>
 
     <item
-        android:id = "@+id/courseNotifyOpt"
-        android:title="NOTIFY"/>
+        android:id = "@+id/courseStartNotifyOpt"
+        android:title="NOTIFY COURSE START"/>
+    <item
+        android:id = "@+id/courseEndNotifyOpt"
+        android:title="NOTIFY COURSE END"/>
 
     <item
         android:id="@+id/courseShareNoteOpt"
