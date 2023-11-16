@@ -411,7 +411,8 @@ public class CourseDetails extends AppCompatActivity {
                                             (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                                     try{
 
-                                        asmntStartAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startTrigger, courseStartSender);
+                                        asmntStartAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                                                startTrigger, courseStartSender);
 
                                     }
                                     catch (SecurityException e){
