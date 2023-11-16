@@ -239,7 +239,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                     if(assessment.getAssessmentStart().equals(startDateEntry) &&
                                             assessment.getAssessmentEnd().equals(endDateEntry)
                                             && assessment.getAssessmentTitle().equals(asmntTitle)
-                                            && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
+                                            && assessment.getAsmntCourseId() == Integer.parseInt(selectedAsmntCourseId)
                                             && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
 
                                         --counter;
@@ -248,7 +248,9 @@ public class AssessmentDetails extends AppCompatActivity {
 
 
                                 if(counter != assessmentList.size()-1){
+
                                     isValidNotifyData = false;
+
                                 }
 
 
@@ -326,7 +328,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                     if(assessment.getAssessmentStart().equals(startDateEntry) &&
                                             assessment.getAssessmentEnd().equals(endDateEntry)
                                             && assessment.getAssessmentTitle().equals(asmntTitle)
-                                            && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
+                                            && assessment.getAsmntCourseId()== Integer.parseInt(selectedAsmntCourseId)
                                             && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
 
                                         --counter;
@@ -334,6 +336,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                 }
 
                                 if(counter != assessmentList.size()-1){
+
                                     isValidNotifyData = false;
 
                                 }
