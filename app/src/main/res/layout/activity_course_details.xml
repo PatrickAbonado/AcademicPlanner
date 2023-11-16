@@ -36,62 +36,188 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/courseIdTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:textSize="20dp"
-                android:padding="10dp"></TextView>
 
-            <EditText
-                android:id="@+id/courseTitleEdTxt"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Title"></EditText>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/courseStrtTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course Start Date YYYY-MM-DD"></EditText>
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course ID#"></TextView>
 
-            <EditText
-                android:id="@+id/courseEndTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course End Date YYYY-MM-DD"></EditText>
+                <TextView
+                    android:id="@+id/courseIdTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"></TextView>
+
+            </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/courseInstrNameTxt"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course Instructor Name"></EditText>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/courseInstrPhoneTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course Instructor Phone#"></EditText>
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Title"></TextView>
 
-            <EditText
-                android:id="@+id/courseInstrEmailTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course Instructor Email"></EditText>
 
-            <EditText
-                android:id="@+id/courseNotesTxt"
+                <EditText
+                    android:id="@+id/courseTitleEdTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:padding="10dp"
-                android:hint="Course Notes"></EditText>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Name"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseInstrNameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Phone"></TextView>
+
+                <EditText
+                    android:id="@+id/courseInstrPhoneTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Email"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseInstrEmailTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Notes"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseNotesTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Start Date"></TextView>
+
+                <EditText
+                    android:id="@+id/courseStrtTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:hint="YYYY-MM-DD"></EditText>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course End Date"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseEndTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:hint="YYYY-MM-DD"></EditText>
+
+            </LinearLayout>
+
 
             <Spinner
                 android:id="@+id/courseStatusSpinner"
@@ -206,7 +332,6 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:srcCompat="@drawable/baseline_add_24" />
 
 
@@ -221,9 +346,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-
-
-
         <LinearLayout
             android:id="@+id/saveAndDeleteLayout"
             android:layout_width="wrap_content"
@@ -234,9 +356,6 @@
 
 
         </LinearLayout>
-
-
-
 
     </LinearLayout>
 

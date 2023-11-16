@@ -19,8 +19,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
     <ScrollView
         android:id="@+id/asmntsDetailsScrollView"
         android:layout_height="0dp"
@@ -28,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ass_details_toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/asmntButtonLayout">
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
         <LinearLayout
@@ -37,38 +35,105 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/asmntIdTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:textSize="20dp"
-                    android:padding="10dp"></TextView>
 
-                <EditText
-                    android:id="@+id/asmntTitleEdTxt"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Title"></EditText>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/asmntStrtTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Course Start Date YYYY-MM-DD"></EditText>
+                    <TextView
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Assessment ID#"></TextView>
 
-                <EditText
-                    android:id="@+id/asmntEndTxt"
+                    <TextView
+                        android:id="@+id/asmntIdTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"></TextView>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Course End Date YYYY-MM-DD"></EditText>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Assessment Title"></TextView>
+
+
+
+                    <EditText
+                        android:id="@+id/asmntTitleEdTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"></EditText>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Assessment Start Date"></TextView>
+
+
+                    <EditText
+                        android:id="@+id/asmntStrtTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:hint="YYYY-MM-DD"></EditText>
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Assessment End Date"></TextView>
+
+
+                    <EditText
+                        android:id="@+id/asmntEndTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:hint="YYYY-MM-DD"></EditText>
+
+                </LinearLayout>
 
 
                 <Spinner
@@ -85,27 +150,17 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id = "@+id/asmntDtsRcylTitle"
+
+            <TextView
+                android:id = "@+id/asmntDtsColTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
                 android:padding="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf = "@+id/courseEndTxt">
-
-                <TextView
-                    android:id = "@+id/asmntDtsColTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:paddingEnd="8dp"
-                    android:text= "ASSOCIATED COURSE"></TextView>
-
-            </LinearLayout>
+                android:text= "ASSOCIATED COURSE"></TextView>
 
 
             <LinearLayout
@@ -164,7 +219,7 @@
                 android:id="@+id/asmntDtlsLstRcyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/asmntButtonLayout">
+                app:layout_constraintBottom_toBottomOf="parent">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -183,19 +238,6 @@
         app:srcCompat="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/asmntButtonLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-
-    </LinearLayout>
-
-
 
 
 

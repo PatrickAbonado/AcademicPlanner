@@ -225,6 +225,7 @@ public class AssessmentDetails extends AppCompatActivity {
                             if (isAsmntUpdate) {
 
                                 setElementIds();
+
                                 String startDateEntry = mAsmntStart.getText().toString();
                                 String endDateEntry = mAsmntEnd.getText().toString();
                                 String asmntTitle = mAsmntTitle.getText().toString();
@@ -246,7 +247,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                 }
 
 
-                                if(counter == assessmentList.size()-1){
+                                if(counter != assessmentList.size()-1){
                                     isValidNotifyData = false;
                                 }
 
@@ -406,8 +407,6 @@ public class AssessmentDetails extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),"Select an assessment " +
                                         "from the all assessments list for deletion.", Toast.LENGTH_LONG).show();
 
-
-
                         }
 
                         if(item.getItemId() == R.id.asmntSaveOpt){
@@ -428,7 +427,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                         LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
                                         LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
 
-                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        if(checkEnd.isBefore(checkStart)){
 
                                             isValidAsmntDate = false;
 
@@ -462,7 +461,7 @@ public class AssessmentDetails extends AppCompatActivity {
                                         LocalDate checkStart = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentStart()));
                                         LocalDate checkEnd = LocalDate.parse(String.valueOf(createdAssessment.getAssessmentEnd()));
 
-                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        if(checkEnd.isBefore(checkStart)){
 
                                             isValidAsmntDate = false;
 

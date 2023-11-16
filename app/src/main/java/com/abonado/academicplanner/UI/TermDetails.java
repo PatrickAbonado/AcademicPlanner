@@ -220,6 +220,14 @@ public class TermDetails extends AppCompatActivity {
                                         " before notifications can be set.", Toast.LENGTH_LONG).show();
                         }
 
+                        if(item.getItemId() == R.id.termAllTermsOpt){
+
+                            Intent intent = new Intent(TermDetails.this, TermsList.class);
+                            startActivity(intent);
+
+                        }
+
+
                         if(item.getItemId() == R.id.termEndNotifyOpt){
 
                             boolean isValidNotifyData = true;
@@ -348,7 +356,7 @@ public class TermDetails extends AppCompatActivity {
                                     LocalDate checkStart = LocalDate.parse(mTermStart);
                                     LocalDate checkEnd = LocalDate.parse(mTermEnd);
 
-                                    if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                    if(checkEnd.isBefore(checkStart)){
                                         isTermTimeValid = false;
                                     }
                                 }
@@ -394,7 +402,7 @@ public class TermDetails extends AppCompatActivity {
                                     LocalDate checkStart = LocalDate.parse(mTermStart);
                                     LocalDate checkEnd = LocalDate.parse(mTermEnd);
 
-                                    if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                    if(checkEnd.isBefore(checkStart)){
                                         isTermTimeValid = false;
                                     }
                                 }

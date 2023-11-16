@@ -24,8 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/term_details_toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonTrmDetlsLayt"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,34 +36,102 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/trmIdTxt"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:textSize="20dp"
-                    android:padding="10dp"></TextView>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
-                <EditText
-                    android:id="@+id/trmNmEdTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Term Name"></EditText>
+                    <TextView
+                        android:layout_width="175dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Term ID#"></TextView>
 
-                <EditText
-                    android:id="@+id/trmStrtTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Term Start Date YYYY-MM-DD"></EditText>
 
-                <EditText
-                    android:id="@+id/trmEndTxt"
+                    <TextView
+                        android:id="@+id/trmIdTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"></TextView>
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:hint="Term End Date YYYY-MM-DD"></EditText>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="175dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Term Name"></TextView>
+
+
+                    <EditText
+                        android:id="@+id/trmNmEdTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"></EditText>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="175dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Term Start Date"></TextView>
+
+
+                    <EditText
+                        android:id="@+id/trmStrtTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:hint="YYYY-MM-DD"></EditText>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="175dp"
+                        android:layout_height="50dp"
+                        android:textSize="20dp"
+                        android:padding="10dp"
+                        android:text="Term End Date"></TextView>
+
+
+                    <EditText
+                        android:id="@+id/trmEndTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:hint="YYYY-MM-DD"></EditText>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -156,25 +223,14 @@
     </ScrollView>
 
 
-    <LinearLayout
-        android:id="@+id/buttonTrmDetlsLayt"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/termFloatButMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/termFloatButMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:srcCompat="@drawable/baseline_add_24" />
-
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -480,7 +480,7 @@ public class CourseDetails extends AppCompatActivity {
                                         LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
                                         LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
 
-                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        if(checkEnd.isBefore(checkStart)){
 
                                             isValidCourseTimeEntries = false;
 
@@ -515,7 +515,7 @@ public class CourseDetails extends AppCompatActivity {
                                         LocalDate checkStart = LocalDate.parse(String.valueOf(course.getCourseStart()));
                                         LocalDate checkEnd = LocalDate.parse(String.valueOf(course.getCourseEnd()));
 
-                                        if(!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)){
+                                        if(checkEnd.isBefore(checkStart)){
 
                                             isValidCourseTimeEntries = false;
                                         }
