@@ -240,28 +240,34 @@ public class CourseDetails extends AppCompatActivity {
                                 String courseInstrPhn = mCourseInstrPhone.getText().toString();
                                 String courseInstrEml = mCourseInstrEmail.getText().toString();
 
-                                courseRepository = new CourseRepository(getApplication());
-                                List<Course> courseList = courseRepository.getAllCourses();
-                                int counter = courseList.size();
 
-                                for(Course course : courseList){
-                                    if(course.getCourseId() == Integer.parseInt(courseId) &&
-                                            course.getCourseTermId() == Integer.parseInt(courseTermId) &&
-                                            course.getCourseTitle().equals(courseTitle) &&
-                                            course.getCourseStart().equals(courseStart) &&
-                                            course.getCourseEnd().equals(courseEnd) &&
-                                            course.getCourseStatus().equals(courseStatus) &&
-                                            course.getCourseNotes().equals(courseNotes) &&
-                                            course.getCourseInstrName().equals(courseInstrNm) &&
-                                            course.getCourseInstrPhone().equals(courseInstrPhn) &&
-                                            course.getCourseInstrEmail().equals(courseInstrEml)){
-
-                                        --counter;
-                                    }
+                                Course courseToCheck =
+                                        courseRepository.getCourse(Integer.parseInt(courseId));
+                                if(!(courseToCheck.getCourseTermId() == Integer.parseInt(courseTermId))){
+                                    isValidNotifyData = false;
                                 }
-
-                                if(counter != courseList.size()-1){
-
+                                if(!courseToCheck.getCourseTitle().equals(courseTitle)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseStart().equals(courseStart)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseEnd().equals(courseEnd)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseStatus().equals(courseStatus)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseNotes().equals(courseNotes)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrName().equals(courseInstrNm)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrPhone().equals(courseInstrPhn)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrEmail().equals(courseInstrEml)){
                                     isValidNotifyData = false;
                                 }
 
@@ -346,28 +352,33 @@ public class CourseDetails extends AppCompatActivity {
                                 String courseInstrPhn = mCourseInstrPhone.getText().toString();
                                 String courseInstrEml = mCourseInstrEmail.getText().toString();
 
-                                courseRepository = new CourseRepository(getApplication());
-                                List<Course> courseList = courseRepository.getAllCourses();
-                                int counter = courseList.size();
-
-                                for(Course course : courseList){
-                                    if(course.getCourseId() == Integer.parseInt(courseId) &&
-                                            course.getCourseTermId() == Integer.parseInt(courseTermId) &&
-                                            course.getCourseTitle().equals(courseTitle) &&
-                                            course.getCourseStart().equals(courseStart) &&
-                                            course.getCourseEnd().equals(courseEnd) &&
-                                            course.getCourseStatus().equals(courseStatus) &&
-                                            course.getCourseNotes().equals(courseNotes) &&
-                                            course.getCourseInstrName().equals(courseInstrNm) &&
-                                            course.getCourseInstrPhone().equals(courseInstrPhn) &&
-                                            course.getCourseInstrEmail().equals(courseInstrEml)){
-
-                                        --counter;
-                                    }
+                                Course courseToCheck =
+                                        courseRepository.getCourse(Integer.parseInt(courseId));
+                                if(!(courseToCheck.getCourseTermId() == Integer.parseInt(courseTermId))){
+                                    isValidNotifyData = false;
                                 }
-
-                                if(counter != courseList.size()-1){
-
+                                if(!courseToCheck.getCourseTitle().equals(courseTitle)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseStart().equals(courseStart)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseEnd().equals(courseEnd)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseStatus().equals(courseStatus)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseNotes().equals(courseNotes)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrName().equals(courseInstrNm)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrPhone().equals(courseInstrPhn)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!courseToCheck.getCourseInstrEmail().equals(courseInstrEml)){
                                     isValidNotifyData = false;
                                 }
 

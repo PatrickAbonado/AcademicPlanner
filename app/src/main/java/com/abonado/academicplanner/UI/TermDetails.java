@@ -125,6 +125,8 @@ public class TermDetails extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
+                        termRepository = new TermRepository(getApplication());
+
                         if(item.getItemId() == R.id.termStartNotifyOpt){
 
                             boolean isValidNotifyData = true;
@@ -140,25 +142,17 @@ public class TermDetails extends AppCompatActivity {
                                 String termStart = editStart.getText().toString();
                                 String termEnd = editEnd.getText().toString();
 
-                                termRepository = new TermRepository(getApplication());
-                                List<Term> termList = termRepository.getAllTerms();
-                                int counter = termList.size();
 
-                                for(Term term : termList){
-                                    if(term.getTermId() == Integer.parseInt(termId) &&
-                                            term.getTermName().equals(termName) &&
-                                            term.getTermStart().equals(termStart) &&
-                                            term.getTermEnd().equals(termEnd)){
-
-                                        --counter;
-                                    }
-                                }
-
-                                if(counter != termList.size()-1){
-
+                                Term termToCheck = termRepository.getTerm(Integer.parseInt(termId));
+                                if(!termToCheck.getTermName().equals(termName)){
                                     isValidNotifyData = false;
                                 }
-
+                                if(!termToCheck.getTermStart().equals(termStart)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!termToCheck.getTermEnd().equals(termEnd)){
+                                    isValidNotifyData = false;
+                                }
 
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                                 Date startDate = null;
@@ -173,7 +167,6 @@ public class TermDetails extends AppCompatActivity {
                                     isValidNotifyData = false;
                                     e.fillInStackTrace();
                                 }
-
 
                                 if(isValidNotifyData){
 
@@ -243,22 +236,14 @@ public class TermDetails extends AppCompatActivity {
                                 String termStart = editStart.getText().toString();
                                 String termEnd = editEnd.getText().toString();
 
-                                termRepository = new TermRepository(getApplication());
-                                List<Term> termList = termRepository.getAllTerms();
-                                int counter = termList.size();
-
-                                for(Term term : termList){
-                                    if(term.getTermId() == Integer.parseInt(termId) &&
-                                            term.getTermName().equals(termName) &&
-                                            term.getTermStart().equals(termStart) &&
-                                            term.getTermEnd().equals(termEnd)){
-
-                                        --counter;
-                                    }
+                                Term termToCheck = termRepository.getTerm(Integer.parseInt(termId));
+                                if(!termToCheck.getTermName().equals(termName)){
+                                    isValidNotifyData = false;
                                 }
-
-                                if(counter != termList.size()-1){
-
+                                if(!termToCheck.getTermStart().equals(termStart)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!termToCheck.getTermEnd().equals(termEnd)){
                                     isValidNotifyData = false;
                                 }
 
@@ -350,7 +335,6 @@ public class TermDetails extends AppCompatActivity {
                                 mTermStart = editStart.getText().toString();
                                 mTermEnd = editEnd.getText().toString();
 
-                                DateTimeFormatter dateFormatPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                                 try{
                                     LocalDate checkStart = LocalDate.parse(mTermStart);

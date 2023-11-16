@@ -231,26 +231,22 @@ public class AssessmentDetails extends AppCompatActivity {
                                 String asmntTitle = mAsmntTitle.getText().toString();
                                 String asmntId = mAsmntId.getText().toString();
 
-                                assessmentRepository = new AssessmentRepository(getApplication());
-                                List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
-                                int counter = assessmentList.size();
-
-                                for(Assessment assessment : assessmentList){
-                                    if(assessment.getAssessmentStart().equals(startDateEntry) &&
-                                            assessment.getAssessmentEnd().equals(endDateEntry)
-                                            && assessment.getAssessmentTitle().equals(asmntTitle)
-                                            && assessment.getAsmntCourseId() == Integer.parseInt(selectedAsmntCourseId)
-                                            && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
-
-                                        --counter;
-                                    }
-                                }
-
-
-                                if(counter != assessmentList.size()-1){
-
+                                Assessment assessmentToCheck =
+                                        assessmentRepository.getAsmntByAsmntId(Integer.parseInt(asmntId));
+                                if(!assessmentToCheck.getAssessmentStart().equals(startDateEntry)){
                                     isValidNotifyData = false;
-
+                                }
+                                if(!assessmentToCheck.getAssessmentEnd().equals(endDateEntry)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!assessmentToCheck.getAssessmentTitle().equals(asmntTitle)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!(assessmentToCheck.getAsmntCourseId() == Integer.parseInt(selectedAsmntCourseId))){
+                                    isValidNotifyData = false;
+                                }
+                                if(!assessmentToCheck.getAssessmentType().equals(mAsmntTypeSelction)){
+                                    isValidNotifyData = false;
                                 }
 
 
@@ -320,26 +316,25 @@ public class AssessmentDetails extends AppCompatActivity {
                                 String asmntTitle = mAsmntTitle.getText().toString();
                                 String asmntId = mAsmntId.getText().toString();
 
-                                assessmentRepository = new AssessmentRepository(getApplication());
-                                List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
-                                int counter = assessmentList.size();
 
-                                for(Assessment assessment : assessmentList){
-                                    if(assessment.getAssessmentStart().equals(startDateEntry) &&
-                                            assessment.getAssessmentEnd().equals(endDateEntry)
-                                            && assessment.getAssessmentTitle().equals(asmntTitle)
-                                            && assessment.getAsmntCourseId()== Integer.parseInt(selectedAsmntCourseId)
-                                            && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
-
-                                        --counter;
-                                    }
-                                }
-
-                                if(counter != assessmentList.size()-1){
-
+                                Assessment assessmentToCheck =
+                                        assessmentRepository.getAsmntByAsmntId(Integer.parseInt(asmntId));
+                                if(!assessmentToCheck.getAssessmentStart().equals(startDateEntry)){
                                     isValidNotifyData = false;
-
                                 }
+                                if(!assessmentToCheck.getAssessmentEnd().equals(endDateEntry)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!assessmentToCheck.getAssessmentTitle().equals(asmntTitle)){
+                                    isValidNotifyData = false;
+                                }
+                                if(!(assessmentToCheck.getAsmntCourseId() == Integer.parseInt(selectedAsmntCourseId))){
+                                    isValidNotifyData = false;
+                                }
+                                if(!assessmentToCheck.getAssessmentType().equals(mAsmntTypeSelction)){
+                                    isValidNotifyData = false;
+                                }
+
 
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                                 Date endDate = null;
