@@ -6,8 +6,12 @@
         android:title="ALL ASSESSMENTS"/>
 
     <item
-        android:id="@+id/asmntNotifyOpt"
-        android:title="NOTIFY"/>
+        android:id="@+id/asmntStartNotifyOpt"
+        android:title="NOTIFY START"/>
+
+    <item
+        android:id="@+id/asmntEndNotifyOpt"
+        android:title="NOTIFY END"/>
 
     <item
         android:id="@+id/asmntDeleteOpt"

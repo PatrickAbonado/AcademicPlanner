@@ -30,7 +30,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.CourseAdapter;
-import com.abonado.academicplanner.utilities.MyReceiver;
+import com.abonado.academicplanner.utilities.Receiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -179,7 +179,7 @@ public class TermDetails extends AppCompatActivity {
 
                                     Long startTrigger = startDate.getTime();
                                     Intent startIntent = new Intent(TermDetails.this,
-                                            MyReceiver.class);
+                                            Receiver.class);
                                     startIntent.setAction("termStartDateNotify");
                                     startIntent.putExtra("startTermKey", "Term ID: " + termId
                                             + "\nTerm Name: " + termName +"\nSTARTS: " + termStart);
@@ -270,7 +270,7 @@ public class TermDetails extends AppCompatActivity {
 
 
                                     Long endTrigger = endDate.getTime();
-                                    Intent endIntent = new Intent(TermDetails.this, MyReceiver.class);
+                                    Intent endIntent = new Intent(TermDetails.this, Receiver.class);
                                     endIntent.setAction("termEndDateNotify");
                                     endIntent.putExtra("termEndKey", "Term ID: " + termId
                                             + "\tTerm Name: " + termName + "\n ENDS: " + termEnd);

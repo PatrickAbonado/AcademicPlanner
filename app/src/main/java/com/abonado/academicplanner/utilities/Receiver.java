@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.abonado.academicplanner.R;
 
-public class MyReceiver extends BroadcastReceiver {
+public class Receiver extends BroadcastReceiver {
 
     String assessments_channel_id = "assessments";
     String course_channel_id = "courses";

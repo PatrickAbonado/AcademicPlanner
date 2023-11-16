@@ -34,7 +34,7 @@ import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.entities.Term;
 import com.abonado.academicplanner.utilities.AssessmentAdapter;
-import com.abonado.academicplanner.utilities.MyReceiver;
+import com.abonado.academicplanner.utilities.Receiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -283,7 +283,7 @@ public class CourseDetails extends AppCompatActivity {
                                 if (isValidNotifyData) {
 
                                     Long endTrigger = endDate.getTime();
-                                    Intent endIntent = new Intent(CourseDetails.this, MyReceiver.class);
+                                    Intent endIntent = new Intent(CourseDetails.this, Receiver.class);
                                     endIntent.setAction("courseEndDateNotify");
                                     endIntent.putExtra("courseEndKey", "Course ID: " + courseId
                                             + "\tCourse Title: " + courseTitle + "\n ENDS: " + courseEnd);
@@ -390,7 +390,7 @@ public class CourseDetails extends AppCompatActivity {
 
                                     Long startTrigger = startDate.getTime();
                                     Intent startIntent = new Intent(CourseDetails.this,
-                                            MyReceiver.class);
+                                            Receiver.class);
                                     startIntent.setAction("courseStartDateNotify");
                                     startIntent.putExtra("startCourseKey", "Course ID: " + courseId
                                             + "\nCourse Title: " + courseTitle +"\nSTARTS: " + courseStart);
@@ -451,8 +451,6 @@ public class CourseDetails extends AppCompatActivity {
                             if(isCourseUpdate){
 
                                 getCourseDeleteConfirmation();
-
-                                finish();
 
                                 return true;
                             }
@@ -601,10 +599,9 @@ public class CourseDetails extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Course Deleted",
                                     Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(CourseDetails.this, CoursesList.class);
-                            startActivity(intent);
-
                             dialog.dismiss();
+
+                            finish();
                         }
                     });
                     asmntsBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -623,6 +620,8 @@ public class CourseDetails extends AppCompatActivity {
                     courseRepository.delete(courseRepository.getCourse(courseToDeleteId));
                     Toast.makeText(getApplicationContext(), "Course Deleted",
                             Toast.LENGTH_LONG).show();
+
+                    finish();
                 }
             }
         });

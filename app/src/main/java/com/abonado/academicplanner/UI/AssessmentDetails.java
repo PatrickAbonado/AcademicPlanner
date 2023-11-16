@@ -31,7 +31,7 @@ import com.abonado.academicplanner.database.CourseRepository;
 import com.abonado.academicplanner.entities.Assessment;
 import com.abonado.academicplanner.entities.Course;
 import com.abonado.academicplanner.utilities.CourseAdapter;
-import com.abonado.academicplanner.utilities.MyReceiver;
+import com.abonado.academicplanner.utilities.Receiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -218,13 +218,11 @@ public class AssessmentDetails extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        if (item.getItemId() == R.id.asmntNotifyOpt){
+                        if (item.getItemId() == R.id.asmntStartNotifyOpt){
+
+                            boolean isValidNotifyData = true;
 
                             if (isAsmntUpdate) {
-
-                                boolean isDatesValid = true;
-                                LocalDate checkStart = LocalDate.now().minusDays(1);
-                                LocalDate checkEnd = LocalDate.now().minusDays(1);
 
                                 setElementIds();
                                 String startDateEntry = mAsmntStart.getText().toString();
@@ -232,26 +230,92 @@ public class AssessmentDetails extends AppCompatActivity {
                                 String asmntTitle = mAsmntTitle.getText().toString();
                                 String asmntId = mAsmntId.getText().toString();
 
+                                assessmentRepository = new AssessmentRepository(getApplication());
+                                List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
+                                int counter = assessmentList.size();
+
+                                for(Assessment assessment : assessmentList){
+                                    if(assessment.getAssessmentStart().equals(startDateEntry) &&
+                                            assessment.getAssessmentEnd().equals(endDateEntry)
+                                            && assessment.getAssessmentTitle().equals(asmntTitle)
+                                            && assessment.getAssessmentId() == Integer.parseInt(selectedAsmntCourseId)
+                                            && assessment.getAssessmentType().equals(mAsmntTypeSelction)){
+
+                                        --counter;
+                                    }
+                                }
+
+
+                                if(counter == assessmentList.size()-1){
+                                    isValidNotifyData = false;
+                                }
+
 
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                                 Date startDate = null;
-                                Date endDate = null;
                                 try {
 
-                                    checkStart = LocalDate.parse(startDateEntry);
-                                    checkEnd = LocalDate.parse(endDateEntry);
-                                    startDate = sdf.parse(checkStart.toString());
-                                    endDate = sdf.parse(checkEnd.toString());
+                                    startDate = sdf.parse(startDateEntry);
 
-                                    if (!checkStart.isBefore(checkEnd) || !checkEnd.isAfter(checkStart)) {
-
-                                        isDatesValid = false;
-                                    }
                                 } catch (Exception e) {
 
                                     e.fillInStackTrace();
-                                    isDatesValid = false;
+                                    isValidNotifyData = false;
                                 }
+
+                                if (isValidNotifyData) {
+
+                                    Long startTrigger = startDate.getTime();
+                                    Intent startIntent = new Intent(AssessmentDetails.this,
+                                            Receiver.class);
+                                    startIntent.setAction("asmntStartDateNotify");
+                                    startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
+                                            + "\nAssessment Title: " + asmntTitle +"\nSTARTS: " + startDateEntry);
+                                    PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
+                                            ++Home.asmntStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                                    AlarmManager asmntStartAlarmManager =
+                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                    try {
+
+                                        asmntStartAlarmManager.setExactAndAllowWhileIdle (AlarmManager.RTC_WAKEUP, startTrigger, asmntStartSender);
+
+                                    }catch (SecurityException e){
+
+                                        Toast.makeText(getApplicationContext(),"There is a problem with " +
+                                                "setting the ASSESSMENT START alarm.", Toast.LENGTH_LONG).show();
+                                        e.fillInStackTrace();
+                                    }
+
+                                    Toast.makeText(getApplicationContext(), "NOTIFY ASSESSMENT START" +
+                                                    "\nID: " + asmntId + "\tTitle: " + asmntTitle + "\nStart Date: " + startDateEntry,
+                                            Toast.LENGTH_LONG).show();
+
+                                    return true;
+
+                                } else
+                                    Toast.makeText(getApplicationContext(), "Invalid Selection." +
+                                            "\nData changes must be saved before setting a notification." +
+                                            "\nStart date must be before end date." +
+                                            "\nDate Format: YYYY-MM-DD", Toast.LENGTH_LONG).show();
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(), "Assessment must be saved to database" +
+                                        " before notifications can be set.", Toast.LENGTH_LONG).show();
+
+
+                        }
+
+                        if(item.getItemId() == R.id.asmntEndNotifyOpt){
+
+                            boolean isValidNotifyData = true;
+
+                            if (isAsmntUpdate) {
+
+                                setElementIds();
+                                String startDateEntry = mAsmntStart.getText().toString();
+                                String endDateEntry = mAsmntEnd.getText().toString();
+                                String asmntTitle = mAsmntTitle.getText().toString();
+                                String asmntId = mAsmntId.getText().toString();
 
                                 assessmentRepository = new AssessmentRepository(getApplication());
                                 List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
@@ -269,27 +333,27 @@ public class AssessmentDetails extends AppCompatActivity {
                                 }
 
                                 if(counter != assessmentList.size()-1){
-                                    isDatesValid = false;
+                                    isValidNotifyData = false;
 
                                 }
 
-                                if (isDatesValid) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                                Date endDate = null;
+                                try {
 
+                                    endDate = sdf.parse(endDateEntry);
 
-                                    Long startTrigger = startDate.getTime();
-                                    Intent startIntent = new Intent(AssessmentDetails.this,
-                                            MyReceiver.class);
-                                    startIntent.setAction("asmntStartDateNotify");
-                                    startIntent.putExtra("startAsmntKey", "Assessment ID: " + asmntId
-                                            + "\nAssessment Title: " + asmntTitle +"\nSTARTS: " + startDateEntry);
-                                    PendingIntent asmntStartSender = PendingIntent.getBroadcast(AssessmentDetails.this,
-                                            ++Home.asmntStartAlertNum, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                                    AlarmManager asmntStartAlarmManager =
-                                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                                    asmntStartAlarmManager.set(AlarmManager.RTC_WAKEUP, startTrigger, asmntStartSender);
+                                } catch (Exception e) {
+
+                                    e.fillInStackTrace();
+                                    isValidNotifyData = false;
+                                }
+
+                                if (isValidNotifyData) {
+
 
                                     Long endTrigger = endDate.getTime();
-                                    Intent endIntent = new Intent(AssessmentDetails.this, MyReceiver.class);
+                                    Intent endIntent = new Intent(AssessmentDetails.this, Receiver.class);
                                     endIntent.setAction("asmntEndDateNotify");
                                     endIntent.putExtra("endAsmntKey", "Assessment ID: " + asmntId
                                             + "\tAssessment Title: " + asmntTitle + "\n ENDS: " + endDateEntry);
@@ -297,14 +361,26 @@ public class AssessmentDetails extends AppCompatActivity {
                                             ++Home.asmntEndAlertNum, endIntent, PendingIntent.FLAG_IMMUTABLE);
                                     AlarmManager asmntEndAlarmManager =
                                             (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                                    asmntEndAlarmManager.set(AlarmManager.RTC_WAKEUP, endTrigger, asmntEndSender);
+
+                                    try{
+                                        asmntEndAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endTrigger, asmntEndSender);
 
 
-                                    Toast.makeText(getApplicationContext(), "Notify ASSESSMENT" +
-                                                    "\nID: " + asmntId + "\tTitle: " + asmntTitle + "\nStart Date: " + startDateEntry
+                                    }
+                                    catch (SecurityException e){
+
+                                        Toast.makeText(getApplicationContext(),"There is a problem with " +
+                                                "setting the ASSESSMENT END alarm.", Toast.LENGTH_LONG).show();
+                                        e.fillInStackTrace();
+                                    }
+
+
+                                    Toast.makeText(getApplicationContext(), "NOTIFY ASSESSMENT END" +
+                                                    "\nID: " + asmntId + "\tTitle: " + asmntTitle
                                                     + "\nEnd Date: " + endDateEntry,
                                             Toast.LENGTH_LONG).show();
 
+                                    return true;
 
 
                                 } else
@@ -316,8 +392,6 @@ public class AssessmentDetails extends AppCompatActivity {
                             else
                                 Toast.makeText(getApplicationContext(), "Assessment must be saved to database" +
                                         " before notifications can be set.", Toast.LENGTH_LONG).show();
-
-                            return true;
                         }
 
                         if(item.getItemId() == R.id.asmntDeleteOpt){
@@ -325,9 +399,6 @@ public class AssessmentDetails extends AppCompatActivity {
                             if(isAsmntUpdate){
 
                                 getDeleteConfirmation();
-
-                                Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                                startActivity(intent);
 
                                 return true;
                             }
@@ -481,8 +552,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
                 assessmentRepository.delete(assessmentRepository.getAsmntByAsmntId(asmntToDeleteId));
 
-                Intent intent = new Intent(AssessmentDetails.this, AssessmentsList.class);
-                startActivity(intent);
+                finish();
 
                 dialog.dismiss();
 
@@ -491,8 +561,6 @@ public class AssessmentDetails extends AppCompatActivity {
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-
 
                 dialog.dismiss();
 
