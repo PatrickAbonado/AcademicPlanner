@@ -443,18 +443,42 @@ public class CourseDetails extends AppCompatActivity {
 
                         if(item.getItemId() == R.id.courseShareNoteOpt){
 
+                            boolean isSavedNote = true;
+
+                            mCourseId = findViewById(R.id.courseIdTxt);
                             mCourseNotes = findViewById(R.id.courseNotesTxt);
-                            String notes = mCourseNotes.getText().toString();
 
-                            Intent sendIntent = new Intent();
-                            sendIntent.setAction(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, notes);
-                            sendIntent.putExtra(Intent.EXTRA_TITLE, "Course Notes");
-                            sendIntent.setType("text/plain");
-                            Intent shareIntent = Intent.createChooser(sendIntent, null);
-                            startActivity(shareIntent);
+                            String courseNotes = mCourseNotes.getText().toString();
+                            int courseId = Integer.parseInt(mCourseId.getText().toString());
 
-                            return true;
+                            Course courseToCheck =
+                                    courseRepository.getCourse(courseId);
+
+                            if(courseToCheck != null){
+                                if(!courseToCheck.getCourseNotes().equals(courseNotes)){
+                                    isSavedNote = false;
+                                }
+                            }
+
+                            if(isSavedNote){
+
+                                Intent sendIntent = new Intent();
+                                sendIntent.setAction(Intent.ACTION_SEND);
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, courseNotes);
+                                sendIntent.putExtra(Intent.EXTRA_TITLE, "Course Notes");
+                                sendIntent.setType("text/plain");
+                                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                                startActivity(shareIntent);
+
+                                return true;
+
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),
+                                        "Note must be saved before it can be shared.",
+                                        Toast.LENGTH_LONG).show();
+                                return false;
+                            }
                         }
 
                         if(item.getItemId() == R.id.courseDeleteOpt){
