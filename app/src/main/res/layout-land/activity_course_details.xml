@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.CourseDetails">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/course_details_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/courseDetailsScrollView"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/course_details_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonWithShareLayout"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course ID#"></TextView>
+
+                <TextView
+                    android:id="@+id/courseIdTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:padding="10dp"></TextView>
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Title"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseTitleEdTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:padding="10dp"></EditText>
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Name"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseInstrNameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Phone"></TextView>
+
+                <EditText
+                    android:id="@+id/courseInstrPhoneTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:padding="10dp"></EditText>
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Instructor Email"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseInstrEmailTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:padding="10dp"></EditText>
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Notes"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseNotesTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Start Date"></TextView>
+
+                <EditText
+                    android:id="@+id/courseStrtTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="YYYY-MM-DD"></EditText>
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course End Date"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseEndTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:hint="YYYY-MM-DD"></EditText>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/courseStatusSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:entries="@array/courseStatusSpinnerArray" />
+
+                <Spinner
+                    android:id="@+id/courseTermIdSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"/>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id = "@+id/courseDtsRcylTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf = "@+id/courseEndTxt">
+
+            <TextView
+                android:id = "@+id/courseDtsColTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
+                android:text= "ASSOCIATED ASSESSMENTS"></TextView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id = "@+id/courseRcycleColLinLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf = "@+id/courseDtsColTitle">
+
+
+            <TextView
+                android:id = "@+id/courseRcycleColId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
+                android:text= "ID"></TextView>
+
+            <TextView
+                android:id = "@+id/courseRcycleColNm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
+                android:text= "Name"></TextView>
+
+            <TextView
+                android:id = "@+id/courseRcycleColStrt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
+                android:text= "Start Date"></TextView>
+
+            <TextView
+                android:id = "@+id/courseRcycleColEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                android:text= "End Date"></TextView>
+
+        </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/courseDtlsLstRcyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/courseRcycleColLinLay">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/coursePlusButFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_menu_24" />
+
+
+    <LinearLayout
+        android:id="@+id/buttonWithShareLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/saveAndDeleteLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
