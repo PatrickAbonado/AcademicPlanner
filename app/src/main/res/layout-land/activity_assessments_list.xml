@@ -40,7 +40,7 @@
             android:id="@+id/bottomTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select an Assessment to Edit"
+            android:text="@string/select_an_assessment_to_edit"
             android:textSize="20sp"
             android:padding="20dp"
             android:textStyle="bold"

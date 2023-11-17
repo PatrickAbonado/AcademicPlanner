@@ -22,6 +22,7 @@
     <string name="channel_description">First Channel DESCRIPTION</string>
     <string name="addAsmntsCrsLstLabel">+ASSESSMENT</string>
     <string name="addCrsCrsLstButtonLabel">+COURSE</string>
+    <string name="select_an_assessment_to_edit">Select an Assessment to Edit</string>
 
     <string-array name="courseStatusSpinnerArray">
         <item>Status Not Selected</item>
