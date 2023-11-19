@@ -4,26 +4,26 @@
 
     <item
         android:id="@+id/courseAllCoursesOpt"
-        android:title="ALL COURSES"/>
+        android:title="@string/all_courses"/>
 
     <item
         android:id = "@+id/courseStartNotifyOpt"
-        android:title="NOTIFY START DATE"/>
+        android:title="@string/notify_start_date_courses"/>
     <item
         android:id = "@+id/courseEndNotifyOpt"
-        android:title="NOTIFY END DATE"/>
+        android:title="@string/notify_end_date_courses"/>
 
     <item
         android:id="@+id/courseShareNoteOpt"
-        android:title="SHARE NOTE"/>
+        android:title="@string/share_note_courses"/>
 
     <item
         android:id="@+id/courseDeleteOpt"
-        android:title="DELETE"/>
+        android:title="@string/delete_courses"/>
 
     <item
         android:id="@+id/courseSaveOpt"
-        android:title="SAVE"/>
+        android:title="@string/save_courses"/>
 
 
 

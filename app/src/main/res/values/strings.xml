@@ -23,6 +23,22 @@
     <string name="addAsmntsCrsLstLabel">+ASSESSMENT</string>
     <string name="addCrsCrsLstButtonLabel">+COURSE</string>
     <string name="select_an_assessment_to_edit">Select an Assessment to Edit</string>
+    <string name="all_assessments">ALL ASSESSMENTS</string>
+    <string name="notify_start_date">NOTIFY START DATE</string>
+    <string name="notify_end_date">NOTIFY END DATE</string>
+    <string name="delete">DELETE</string>
+    <string name="save">SAVE</string>
+    <string name="all_terms">ALL TERMS</string>
+    <string name="notify_start_date_term">NOTIFY START DATE</string>
+    <string name="notify_end_date_term">NOTIFY END DATE</string>
+    <string name="delete_term">DELETE</string>
+    <string name="save_term">SAVE</string>
+    <string name="all_courses">ALL COURSES</string>
+    <string name="notify_start_date_courses">NOTIFY START DATE</string>
+    <string name="notify_end_date_courses">NOTIFY END DATE</string>
+    <string name="share_note_courses">SHARE NOTE</string>
+    <string name="delete_courses">DELETE</string>
+    <string name="save_courses">SAVE</string>
 
     <string-array name="courseStatusSpinnerArray">
         <item>Status Not Selected</item>

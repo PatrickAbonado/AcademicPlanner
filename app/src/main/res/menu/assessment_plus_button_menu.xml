@@ -3,23 +3,23 @@
 
     <item
         android:id="@+id/asmntAllAsmntsOpt"
-        android:title="ALL ASSESSMENTS"/>
+        android:title="@string/all_assessments"/>
 
     <item
         android:id="@+id/asmntStartNotifyOpt"
-        android:title="NOTIFY START DATE"/>
+        android:title="@string/notify_start_date"/>
 
     <item
         android:id="@+id/asmntEndNotifyOpt"
-        android:title="NOTIFY END DATE"/>
+        android:title="@string/notify_end_date"/>
 
     <item
         android:id="@+id/asmntDeleteOpt"
-        android:title="DELETE"/>
+        android:title="@string/delete"/>
 
     <item
         android:id="@+id/asmntSaveOpt"
-        android:title="SAVE"/>
+        android:title="@string/save"/>
 
 
 </menu>

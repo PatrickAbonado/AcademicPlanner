@@ -4,22 +4,22 @@
 
     <item
         android:id="@+id/termAllTermsOpt"
-        android:title="ALL TERMS"/>
+        android:title="@string/all_terms"/>
 
     <item
         android:id="@+id/termStartNotifyOpt"
-        android:title="NOTIFY START DATE"/>
+        android:title="@string/notify_start_date_term"/>
 
     <item
         android:id="@+id/termEndNotifyOpt"
-        android:title="NOTIFY END DATE"/>
+        android:title="@string/notify_end_date_term"/>
 
     <item
         android:id="@+id/termDeleteOpt"
-        android:title="DELETE"/>
+        android:title="@string/delete_term"/>
 
     <item
         android:id="@+id/termSaveOpt"
-        android:title="SAVE"/>
+        android:title="@string/save_term"/>
 
 </menu>
