@@ -66,6 +66,9 @@ public class CourseDetails extends AppCompatActivity {
     int courseToUpdateId = 0;
     String selectedCrseTrmId;
     FloatingActionButton coursePlusButtonMenuFab;
+    List<Assessment> associatedAssessments;
+    RecyclerView recyclerView;
+    AssessmentAdapter assessmentAdapter;
 
 
 
@@ -185,12 +188,12 @@ public class CourseDetails extends AppCompatActivity {
         }
 
         assessmentRepository = new AssessmentRepository(getApplication());
-        List<Assessment> asscAsmnts = assessmentRepository.getCourseAsscAsmnts(courseToUpdateId);
-        RecyclerView recyclerView = findViewById(R.id.courseDtlsLstRcyle);
-        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        associatedAssessments = assessmentRepository.getCourseAsscAsmnts(courseToUpdateId);
+        recyclerView = findViewById(R.id.courseDtlsLstRcyle);
+        assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        assessmentAdapter.setAssessments(asscAsmnts);
+        assessmentAdapter.setAssessments(associatedAssessments);
 
         Toolbar myToolbar = findViewById(R.id.course_details_toolbar);
         setSupportActionBar(myToolbar);
@@ -593,6 +596,14 @@ public class CourseDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        associatedAssessments = assessmentRepository.getCourseAsscAsmnts(courseToUpdateId);
+        assessmentAdapter.setAssessments(associatedAssessments);
     }
 
 

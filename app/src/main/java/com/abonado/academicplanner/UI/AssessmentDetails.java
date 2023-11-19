@@ -63,6 +63,10 @@ public class AssessmentDetails extends AppCompatActivity {
     String mAsmntTypeSelction;
     ArrayList<String> allCourseIds = new ArrayList<>();
     Course associatedCourse;
+    List<Course> courseList;
+    RecyclerView recyclerView;
+    CourseAdapter courseAdapter;
+    int asmntCrsIdSlct;
 
 
 
@@ -165,7 +169,7 @@ public class AssessmentDetails extends AppCompatActivity {
                     int positionCounter = 0;
 
 
-                    int asmntCrsIdSlct = assessment.getAsmntCourseId();
+                    asmntCrsIdSlct = assessment.getAsmntCourseId();
                     for(String id : allCourseIds){
                         if(id.equals(String.valueOf(asmntCrsIdSlct))){
                             break;
@@ -197,10 +201,10 @@ public class AssessmentDetails extends AppCompatActivity {
 
         if(isAsmntUpdate){
 
-            List<Course> courseList = new ArrayList<>();
+            courseList = new ArrayList<>();
             courseList.add(associatedCourse);
-            RecyclerView recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
-            final CourseAdapter courseAdapter = new CourseAdapter(this);
+            recyclerView = findViewById(R.id.asmntDtlsLstRcyle);
+            courseAdapter = new CourseAdapter(this);
             recyclerView.setAdapter(courseAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             courseAdapter.setCourses(courseList);
@@ -506,9 +510,18 @@ public class AssessmentDetails extends AppCompatActivity {
             }
         });
 
-
-
     }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        associatedCourse = courseRepository.getCourse(asmntCrsIdSlct);
+        courseList.clear();
+        courseList.add(associatedCourse);
+        courseAdapter.setCourses(courseList);
+    }
+
 
     public String getNextNewAsmntId(){
 

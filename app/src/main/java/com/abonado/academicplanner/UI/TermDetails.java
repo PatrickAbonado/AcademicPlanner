@@ -56,7 +56,9 @@ public class TermDetails extends AppCompatActivity {
     boolean isTermUpdate = false;
     int termIdToUpdate = 0;
     FloatingActionButton termFloatButtonMenu;
-
+    List<Course> associatedCourses;
+    CourseAdapter courseAdapter;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -83,10 +85,10 @@ public class TermDetails extends AppCompatActivity {
 
         termIdToUpdate = intent.getIntExtra("term_id",0);
 
-        RecyclerView recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
+        recyclerView = findViewById(R.id.coursesLstTermDtlsRcyle);
         courseRepository = new CourseRepository(getApplication());
-        List<Course> associatedCourses = courseRepository.getAllAsscCourses(termIdToUpdate);
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        associatedCourses = courseRepository.getAllAsscCourses(termIdToUpdate);
+        courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourses(associatedCourses);
@@ -425,6 +427,14 @@ public class TermDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        associatedCourses = courseRepository.getAllAsscCourses(termIdToUpdate);
+        courseAdapter.setCourses(associatedCourses);
 
     }
 
