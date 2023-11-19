@@ -82,8 +82,6 @@ public class TermsList extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onSupportNavigateUp(){
         finish();
