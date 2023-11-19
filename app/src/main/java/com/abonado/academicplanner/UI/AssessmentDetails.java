@@ -516,10 +516,15 @@ public class AssessmentDetails extends AppCompatActivity {
     protected void onResume(){
 
         super.onResume();
-        associatedCourse = courseRepository.getCourse(asmntCrsIdSlct);
-        courseList.clear();
-        courseList.add(associatedCourse);
-        courseAdapter.setCourses(courseList);
+
+        if(isAsmntUpdate){
+
+            associatedCourse = courseRepository.getCourse(asmntCrsIdSlct);
+            courseList.add(associatedCourse);
+            courseAdapter.setCourses(courseList);
+
+        }
+
     }
 
 
