@@ -8,10 +8,10 @@
 
     <item
         android:id = "@+id/courseStartNotifyOpt"
-        android:title="NOTIFY COURSE START"/>
+        android:title="NOTIFY START DATE"/>
     <item
         android:id = "@+id/courseEndNotifyOpt"
-        android:title="NOTIFY COURSE END"/>
+        android:title="NOTIFY END DATE"/>
 
     <item
         android:id="@+id/courseShareNoteOpt"

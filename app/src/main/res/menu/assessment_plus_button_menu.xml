@@ -7,11 +7,11 @@
 
     <item
         android:id="@+id/asmntStartNotifyOpt"
-        android:title="NOTIFY START"/>
+        android:title="NOTIFY START DATE"/>
 
     <item
         android:id="@+id/asmntEndNotifyOpt"
-        android:title="NOTIFY END"/>
+        android:title="NOTIFY END DATE"/>
 
     <item
         android:id="@+id/asmntDeleteOpt"

@@ -8,11 +8,11 @@
 
     <item
         android:id="@+id/termStartNotifyOpt"
-        android:title="NOTIFY START"/>
+        android:title="NOTIFY START DATE"/>
 
     <item
         android:id="@+id/termEndNotifyOpt"
-        android:title="NOTIFY END"/>
+        android:title="NOTIFY END DATE"/>
 
     <item
         android:id="@+id/termDeleteOpt"
