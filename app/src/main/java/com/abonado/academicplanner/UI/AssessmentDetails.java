@@ -528,22 +528,6 @@ public class AssessmentDetails extends AppCompatActivity {
 
     }
 
-
-    public String getNextNewAsmntId(){
-
-        assessmentRepository = new AssessmentRepository(getApplication());
-        List<Assessment> assessmentList = assessmentRepository.getAllAssessments();
-        int maxNum = assessmentList.get(0).getAssessmentId();
-
-        for(Assessment assessment : assessmentList){
-            if(assessment.getAssessmentId() > maxNum){
-                maxNum = assessment.getAssessmentId();
-            }
-        }
-
-        return String.valueOf(maxNum+1);
-    }
-
     public void getDeleteConfirmation(){
 
         mAsmntId = findViewById(R.id.asmntIdTxt);
