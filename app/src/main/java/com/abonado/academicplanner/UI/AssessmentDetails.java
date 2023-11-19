@@ -520,6 +520,7 @@ public class AssessmentDetails extends AppCompatActivity {
         if(isAsmntUpdate){
 
             associatedCourse = courseRepository.getCourse(asmntCrsIdSlct);
+            courseList.clear();
             courseList.add(associatedCourse);
             courseAdapter.setCourses(courseList);
 
