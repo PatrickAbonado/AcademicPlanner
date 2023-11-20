@@ -105,7 +105,6 @@ public class TermsList extends AppCompatActivity {
             Intent intent = new Intent(this, Home.class);
             startActivity(intent);
 
-            //Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.termLstMenuPop ) {
@@ -113,7 +112,6 @@ public class TermsList extends AppCompatActivity {
             Intent intent = new Intent(this, TermsList.class);
             startActivity(intent);
 
-            //Toast.makeText(this, "Item 2 selected", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id ==R.id.courseLstMenuPop ) {
@@ -121,20 +119,19 @@ public class TermsList extends AppCompatActivity {
             Intent intent = new Intent(this, CoursesList.class);
             startActivity(intent);
 
-            //Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.asmntLstMenuPop ) {
 
             Intent intent = new Intent(this, AssessmentsList.class);
             startActivity(intent);
-            //Toast.makeText(this, "Item 4 selected", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if ( id == R.id.exitMenuPop){
 
             finishAffinity();
-            //Toast.makeText(this, "Item 5 selected", Toast.LENGTH_SHORT).show();
+
             return true;
         }
 

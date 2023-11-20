@@ -44,9 +44,6 @@ import java.util.Locale;
 public class AssessmentDetails extends AppCompatActivity {
 
     FloatingActionButton asmntPlusMenuFab;
-    Button asmntNotify;
-    Button asmntSave;
-    Button asmntDelete;
     TextView mAsmntId;
     EditText mAsmntTitle;
     EditText mAsmntStart;
