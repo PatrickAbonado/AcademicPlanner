@@ -84,7 +84,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
         courseRepository = new CourseRepository(getApplication());
         List<Course> mAllCourses = new ArrayList<>(courseRepository.getAllCourses());
-        allCourseIds.add("Select Course ID");
+        allCourseIds.add("ID Not Selected");
         for (Course course : mAllCourses){
             allCourseIds.add(String.valueOf(course.getCourseId()));
         }

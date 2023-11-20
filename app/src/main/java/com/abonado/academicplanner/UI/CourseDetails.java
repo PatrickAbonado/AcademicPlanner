@@ -104,7 +104,7 @@ public class CourseDetails extends AppCompatActivity {
         termRepository = new TermRepository(getApplication());
         ArrayList<Term> allTerms = new ArrayList<>(termRepository.getAllTerms());
         ArrayList<String> allTermIds = new ArrayList<>();
-        allTermIds.add("Select Term ID");
+        allTermIds.add("ID Not Selected");
         for(Term term : allTerms){
             allTermIds.add(String.valueOf(term.getTermId()));
         }

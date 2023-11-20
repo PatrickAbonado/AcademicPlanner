@@ -126,19 +126,7 @@
                     android:layout_marginEnd="20dp"
                     android:padding="10dp"></EditText>
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="50dp"
-                    android:textSize="20dp"
-                    android:padding="10dp"
-                    android:text="Course Notes"></TextView>
 
-
-                <EditText
-                    android:id="@+id/courseNotesTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"></EditText>
 
 
             </LinearLayout>
@@ -181,25 +169,80 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:text="Course Notes"></TextView>
+
+
+                <EditText
+                    android:id="@+id/courseNotesTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"></EditText>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/courseStatusSpinner"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="20dp"
-                    android:entries="@array/courseStatusSpinnerArray" />
+                    android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/courseTermIdSpinner"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:padding="5dp"
+                        android:text="Select Status"></TextView>
+
+
+                    <Spinner
+                        android:id="@+id/courseStatusSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="5dp"
+                        android:entries="@array/courseStatusSpinnerArray" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"/>
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:padding="5dp"
+                        android:text="Term ID#"></TextView>
+
+
+                    <Spinner
+                        android:id="@+id/courseTermIdSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                </LinearLayout>
+
+
 
             </LinearLayout>
 

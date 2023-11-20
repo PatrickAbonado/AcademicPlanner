@@ -108,9 +108,7 @@
                         android:padding="10dp"
                         android:hint="YYYY-MM-DD"></EditText>
 
-
                 </LinearLayout>
-
 
 
                 <LinearLayout
@@ -135,18 +133,46 @@
 
                 </LinearLayout>
 
-
-                <Spinner
-                    android:id="@+id/asmntCrsIdSpinner"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"/>
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-                <Spinner
-                    android:id="@+id/asmntTestTypeSpinner"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="Course ID#"></TextView>
+
+                    <Spinner
+                        android:id="@+id/asmntCrsIdSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"/>
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="Test Type"></TextView>
+
+                    <Spinner
+                        android:id="@+id/asmntTestTypeSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

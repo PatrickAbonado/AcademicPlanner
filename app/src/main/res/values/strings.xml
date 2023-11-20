@@ -49,7 +49,7 @@
     </string-array>
 
     <string-array name="asmntTypeSpinArr">
-        <item>Select Type</item>
+        <item>Type Not Selected</item>
         <item>Performance</item>
         <item>Objective</item>
     </string-array>

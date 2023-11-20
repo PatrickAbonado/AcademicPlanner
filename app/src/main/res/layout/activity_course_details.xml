@@ -219,18 +219,49 @@
             </LinearLayout>
 
 
-            <Spinner
-                android:id="@+id/courseStatusSpinner"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:entries="@array/courseStatusSpinnerArray" />
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-            <Spinner
-                android:id="@+id/courseTermIdSpinner"
-                android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Course Status"></TextView>
+
+
+                <Spinner
+                    android:id="@+id/courseStatusSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/courseStatusSpinnerArray"
+                    android:paddingLeft="37dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Term ID#"></TextView>
+
+
+                <Spinner
+                    android:id="@+id/courseTermIdSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="78dp"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
